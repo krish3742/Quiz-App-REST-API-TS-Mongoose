@@ -1,12 +1,18 @@
-import './App.css';
+import {Routes, Route} from 'react-router-dom';
+import OuterLayout from './components/layout/OuterLayout';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import ResetPassword from './pages/ResetPassword';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        Hello
-      </header>
-    </div>
+    <OuterLayout>
+      <Routes>
+        <Route path='/' element={<Home />}></Route>
+        <Route path='/login' element={<Login />}></Route>
+        <Route path='/reset-password' element={<ResetPassword />}></Route>
+      </Routes>
+    </OuterLayout>
   );
 }
 
