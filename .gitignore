@@ -3,6 +3,7 @@ logs
 build
 node_modules
 yarn-error.log
+nodemon.json
 
 # TypeScript v1 declaration files
 typings/
