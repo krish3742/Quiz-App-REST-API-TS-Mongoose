@@ -10,7 +10,7 @@ import { ReturnResponse } from "../utils/interfaces";
 import Mailgen from 'mailgen';
 
 
-import OTP from "../models/OTP"
+import OTP from "../models/otp"
 import sendEmailOTPRegister from "./otp"
 
 
@@ -48,7 +48,7 @@ const registerUser: RequestHandler = async (req, res, next) => {
         await checkUserExits.save()
         resp = {
             status: "success",
-            message: "OTP has sent on your email. Please Verify..",
+            message: "OTP has sent on your email. Please Verify",
             // data: { userId: checkUserExits._id, token:token },
             data: { email, token: token },
         };
