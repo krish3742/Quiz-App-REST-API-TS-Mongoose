@@ -154,3 +154,8 @@
 .resend:hover {
     cursor: pointer;
 }
+
+.helloDiv {
+    display: flex;
+    justify-content: center;
+}

@@ -108,7 +108,7 @@ function Home() {
             axios
                 .post("http://localhost:3002/auth", data)
                 .then((response) => {
-                    if(response.data.message === "OTP has sent on your email. Please Verify..") {
+                    if(response.data.message === "OTP has sent on your email. Please Verify") {
                         navigate('/verify-account', { state: { token: response.data.data.token }});
                     }
                 })

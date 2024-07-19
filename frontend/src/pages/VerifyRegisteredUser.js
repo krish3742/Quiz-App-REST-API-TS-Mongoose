@@ -163,7 +163,9 @@ function VerifyRegisteredUser() {
     }, [otp, flag]);
     if(state === null) {
         return (
-            <div>Hello</div>
+            <div className={Style.helloDiv}>
+                <h2>You are not authorized!</h2>
+            </div>
         )
     }
     return (
