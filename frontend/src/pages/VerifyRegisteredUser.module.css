@@ -129,7 +129,7 @@
 }
 
 .instructionParaDiv {
-    width: 16rem;
+    width: 15.5rem;
     background-color: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     color: black;
@@ -139,4 +139,18 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
+}
+
+.resend {
+    margin: 0;
+    font-size: small;
+    margin-top: .5rem;
+}
+
+.resendDiv {
+    margin: 0;
+}
+
+.resend:hover {
+    cursor: pointer;
 }

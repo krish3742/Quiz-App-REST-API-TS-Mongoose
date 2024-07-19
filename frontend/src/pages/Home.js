@@ -109,11 +109,19 @@ function Home() {
                 .post("http://localhost:3002/auth", data)
                 .then((response) => {
                     if(response.data.message === "OTP has sent on your email. Please Verify..") {
-                        navigate('/verify-account');
+                        navigate('/verify-account', { state: { token: response.data.data.token }});
                     }
                 })
                 .catch((error) => {
-                    console.log(error);
+                    const message = error.response.data.message;
+                    if(message.includes("Validation failed!")) {
+                        setErrors((oldArray) => {
+                            if(oldArray.includes("Account already registered, login")) {
+                                return [...oldArray];
+                            }
+                            return [...oldArray, "Account already registered, login"];
+                        });
+                    }
                 })
         }
     },[errors])
