@@ -10,7 +10,7 @@ import { ReturnResponse } from "../utils/interfaces";
 import Mailgen from 'mailgen';
 
 
-import OTP from "../models/otp"
+import OTP from "../models/OTP"
 import sendEmailOTPRegister from "./otp"
 
 
@@ -36,19 +36,23 @@ const registerUser: RequestHandler = async (req, res, next) => {
     if (sendOtp) {
       // check user already present in User DataBase or not
       const checkUserExits = await User.findOne({ email });
-      // if User present in databse then only update the data 
+      // if User present in databse then only update the data
       if (checkUserExits) {
-           // update data
-           checkUserExits.name = name;
-           checkUserExits.password = password;
-           await checkUserExits.save()
-           resp = {
-              status: "success",
-              message: "OTP has sent on your email. Please Verify..",
-              // data: { userId: checkUserExits._id, token:token },
-             data: { email, token: token },
-          };
-          res.status(201).send(resp);
+        if(checkUserExits.isVerified) {
+          resp = { status: "error", message: "User already exists!", data: {} };
+          res.status(404).send(resp);
+        }
+        // update data
+        checkUserExits.name = name;
+        checkUserExits.password = password;
+        await checkUserExits.save()
+        resp = {
+            status: "success",
+            message: "OTP has sent on your email. Please Verify..",
+            // data: { userId: checkUserExits._id, token:token },
+            data: { email, token: token },
+        };
+        res.status(201).send(resp);
       }
       else {
         // if user does not present in Databse then create a new entry 

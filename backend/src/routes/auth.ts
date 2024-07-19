@@ -33,7 +33,8 @@ router.post(
     body("email")
       .trim()
       .isEmail()
-      .custom((emailId: String) => {
+      .toLowerCase()
+      .custom(async (emailId: String) => {
         return isUserExist(emailId)
           .then((status: Boolean) => {
             if (status) {
