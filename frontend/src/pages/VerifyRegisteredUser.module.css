@@ -1,0 +1,142 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title {
+    margin-left: 3rem;
+    margin-top: 2rem;
+}
+
+.linear {
+    width: 87.5%;
+    min-height: 75vh;
+    border-radius: 15px;
+    border: 1px solid white;
+    margin-left: 4.5rem;
+    background-image: linear-gradient(to bottom right, #080E2F, #14257B);
+    display: flex;
+    margin-bottom: 1.5rem;
+}
+
+.LoginButton {
+    margin-right: 4.25rem;
+    height: 2.5rem;
+    width: 7rem;
+    border-radius: 50px;
+    font-size: large;
+    border: none;
+    margin-top: .8rem;
+    background-color: white;
+}
+
+.LoginButton:hover {
+    cursor: pointer;
+} 
+
+.RegisterButton:hover {
+    cursor: pointer;
+}
+
+.img {
+    height: 345px;
+    width: 345px;
+    background-image: url('../../public/Image.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    margin-top: 4.5rem;
+    rotate: -12.5deg;
+}
+
+.body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 60%;
+}
+
+.input {
+    height: 2.25rem;
+    width: 2rem;
+    margin-top: 0px;
+    margin-bottom: .5rem;
+    font-size: medium;
+    outline: none;
+    background-color: rgba(128, 128, 128, 0.2);
+    border: none;
+    border-radius: 5px;
+    color: #e3e3e3;
+    text-align: center;
+}
+
+.inputDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.imgDiv {
+    display: flex;
+    align-items: center;
+    width: 40%;
+    left: 50%;
+}
+
+.paraDiv {
+    margin-top: 0;
+}
+
+.otpPara {
+    height: 2.5rem;
+    width: 7rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: large;
+    font-weight: 550;
+    border: none;
+    background-color: #779ED8;
+    color: #0F0C2C;
+    margin-bottom: 1.5rem;
+}
+
+.para {
+    font-size: small;
+}
+
+.RegisterButton {
+    height: 2.5rem;
+    width: 7rem;
+    border-radius: 50px;
+    font-size: large;
+    border: none;
+    background-color: white;
+    color: #0F0C2C;
+    margin-bottom: 1rem;
+}
+
+.heading {
+    margin-top: .5rem;
+}
+
+.link {
+    text-decoration: none;
+    color: #0F0C2C;
+}
+
+.instructionParaDiv {
+    width: 16rem;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: black;
+    font-size: small;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
