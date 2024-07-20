@@ -15,22 +15,22 @@ function VerifyRegisteredUser() {
     const [otp4, setOtp4] = useState();
     const [otp5, setOtp5] = useState();
     const [otp6, setOtp6] = useState();
-    function handleOtp1Click(evt) {
+    function handleOtp1Change(evt) {
         setOtp1(evt.target.value);
     }
-    function handleOtp2Click(evt) {
+    function handleOtp2Change(evt) {
         setOtp2(evt.target.value);
     }
-    function handleOtp3Click(evt) {
+    function handleOtp3Change(evt) {
         setOtp3(evt.target.value);
     }
-    function handleOtp4Click(evt) {
+    function handleOtp4Change(evt) {
         setOtp4(evt.target.value);
     }
-    function handleOtp5Click(evt) {
+    function handleOtp5Change(evt) {
         setOtp5(evt.target.value);
     }
-    function handleOtp6Click(evt) {
+    function handleOtp6Change(evt) {
         setOtp6(evt.target.value);
     }
     function handleResendClick(evt) {
@@ -183,27 +183,27 @@ function VerifyRegisteredUser() {
                     <div className={Style.inputDiv}>
                         <div>
                             <label htmlFor='OTP'></label>
-                            <input type='text' id='otp1' onChange={handleOtp1Click} className={Style.input}></input>
+                            <input type='text' id='otp1' value={otp1} onChange={handleOtp1Change} className={Style.input}></input>
                         </div>
                         <div>
                             <label htmlFor='OTP'></label>
-                            <input type='text' id='otp2' onChange={handleOtp2Click} className={Style.input}></input>
+                            <input type='text' id='otp2' value={otp2} onChange={handleOtp2Change} className={Style.input}></input>
                         </div>
                         <div>
                             <label htmlFor='OTP'></label>
-                            <input type='text' id='otp3' onChange={handleOtp3Click} className={Style.input}></input>
+                            <input type='text' id='otp3' value={otp3} onChange={handleOtp3Change} className={Style.input}></input>
                         </div>
                         <div>
                             <label htmlFor='OTP'></label>
-                            <input type='text' id='otp4' onChange={handleOtp4Click} className={Style.input}></input>
+                            <input type='text' id='otp4' value={otp4} onChange={handleOtp4Change} className={Style.input}></input>
                         </div>
                         <div>
                             <label htmlFor='OTP'></label>
-                            <input type='text' id='otp5' onChange={handleOtp5Click} className={Style.input}></input>
+                            <input type='text' id='otp5' value={otp5} onChange={handleOtp5Change} className={Style.input}></input>
                         </div>
                         <div>
                             <label htmlFor='OTP'></label>
-                            <input type='text' id='otp6' onChange={handleOtp6Click} className={Style.input}></input>
+                            <input type='text' id='otp6' value={otp6} onChange={handleOtp6Change} className={Style.input}></input>
                         </div>
                     </div>
                     <div className={Style.resendDiv}>

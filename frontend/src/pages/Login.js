@@ -12,11 +12,11 @@ function Login() {
                     <h2 className={Style.heading}>Login yourself!</h2>
                     <div>
                         <label htmlFor='Email'></label>
-                        <input type='text' id='Email' className={Style.input} placeholder='Email ID'></input>
+                        <input type='text' id='Email' onChange={handleEmailChange} className={Style.input} placeholder='Email ID'></input>
                     </div>
                     <div>
                         <label htmlFor='Password'></label>
-                        <input type='password' id='Password' className={Style.input} placeholder='Password'></input>
+                        <input type='password' id='Password' onChange={handlePasswordChange} className={Style.input} placeholder='Password'></input>
                     </div>
                     <div className={Style.paraDiv}>
                         <p className={Style.para}>Forgot password?</p>
