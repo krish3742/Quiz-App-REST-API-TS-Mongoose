@@ -38,10 +38,6 @@ const registerUser: RequestHandler = async (req, res, next) => {
       const checkUserExits = await User.findOne({ email });
       // if User present in databse then only update the data
       if (checkUserExits) {
-        if(checkUserExits.isVerified) {
-          resp = { status: "error", message: "User already exists!", data: {} };
-          res.status(404).send(resp);
-        }
         // update data
         checkUserExits.name = name;
         checkUserExits.password = password;
@@ -77,8 +73,6 @@ const registerUser: RequestHandler = async (req, res, next) => {
       err.statusCode = 401;
       throw err;
     }
-
-
   } catch (error) {
     next(error);
   }
