@@ -17,10 +17,10 @@
     margin-left: 4.5rem;
     background-image: linear-gradient(to bottom right, #080E2F, #14257B);
     display: flex;
-    /* justify-content: space-around; */
+    margin-bottom: 1.5rem;
 }
 
-.RegisterButton {
+.LoginButton {
     margin-right: 4.25rem;
     height: 2.5rem;
     width: 7rem;
@@ -59,16 +59,38 @@
 
 .input {
     height: 2.25rem;
-    width: 20rem;
-    margin-bottom: .5rem;
-    padding-left: .5rem;
-    padding-right: .5rem;
+    width: 2rem;
+    margin-top: 0px;
+    margin-bottom: .25rem;
     font-size: medium;
     outline: none;
     background-color: rgba(128, 128, 128, 0.2);
     border: none;
-    border-radius: 5px ;
+    border-radius: 5px;
     color: #e3e3e3;
+    text-align: center;
+}
+
+.inputEmail {
+    height: 2.25rem;
+    width: 18rem;
+    margin-top: 0px;
+    margin-bottom: .5rem;
+    font-size: medium;
+    outline: none;
+    background-color: rgba(128, 128, 128, 0.2);
+    border: none;
+    border-radius: 5px;
+    color: #e3e3e3;
+    margin-bottom: 1rem;
+    padding: 0 .5rem 0 .5rem;
+}
+
+.inputDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
 }
 
 .imgDiv {
@@ -76,34 +98,48 @@
     align-items: center;
     width: 40%;
     left: 50%;
-    /* padding-left: 10rem; */
 }
 
 .paraDiv {
-    width: 8rem;
     margin-top: 0;
-    text-align: center;
+    width: 26.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.keyPara {
+    height: 2.5rem;
+    width: 7rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: large;
+    font-weight: 550;
+    border: none;
+    background-color: #779ED8;
+    color: #0F0C2C;
+    margin-bottom: .75rem;
 }
 
 .para {
     font-size: small;
 }
 
-.para:hover {
-    cursor: pointer;
-}
-
-.LoginButton {
+.RegisterButton {
     height: 2.5rem;
     width: 7rem;
     border-radius: 50px;
     font-size: large;
     border: none;
     background-color: white;
+    color: #0F0C2C;
+    margin-bottom: 1rem;
 }
 
 .heading {
-    margin-top: 0;
+    margin-top: .5rem;
 }
 
 .link {
@@ -112,7 +148,7 @@
 }
 
 .instructionParaDiv {
-    width: 22rem;
+    width: 15.5rem;
     background-color: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     color: black;
@@ -121,5 +157,25 @@
     border-radius: 5px;
     display: flex;
     align-items: center;
-    /* justify-content: flex-start; */
+    justify-content: flex-start;
 }
+
+.resend {
+    margin: 0;
+    font-size: small;
+    margin-top: .5rem;
+}
+
+.resendDiv {
+    margin: 0;
+}
+
+.resend:hover {
+    cursor: pointer;
+}
+
+.helloDiv {
+    display: flex;
+    justify-content: center;
+}
+

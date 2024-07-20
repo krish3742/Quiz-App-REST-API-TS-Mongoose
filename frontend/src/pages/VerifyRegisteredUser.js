@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import Style from './VerifyRegisteredUser.module.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { AutoTabProvider } from 'react-auto-tab';
 
 function VerifyRegisteredUser() {
     const location = useLocation();
@@ -9,12 +10,12 @@ function VerifyRegisteredUser() {
     const [flag, setFlag] = useState(true);
     const [errors, setErrors] = useState([]);
     const [otp, setOtp] = useState();
-    const [otp1, setOtp1] = useState();
-    const [otp2, setOtp2] = useState();
-    const [otp3, setOtp3] = useState();
-    const [otp4, setOtp4] = useState();
-    const [otp5, setOtp5] = useState();
-    const [otp6, setOtp6] = useState();
+    const [otp1, setOtp1] = useState("");
+    const [otp2, setOtp2] = useState("");
+    const [otp3, setOtp3] = useState("");
+    const [otp4, setOtp4] = useState("");
+    const [otp5, setOtp5] = useState("");
+    const [otp6, setOtp6] = useState("");
     function handleOtp1Change(evt) {
         setOtp1(evt.target.value);
     }
@@ -172,7 +173,7 @@ function VerifyRegisteredUser() {
         <>
             <div className={Style.container}>
                 <h2 className={Style.title}>Quiz App</h2>
-                <button className={Style.LoginButton}><Link to='/login' className={Style.link}>Login</Link></button>
+                <button className={Style.LoginButton}><Link to='/auth/login' className={Style.link}>Login</Link></button>
             </div>
             <div className={Style.linear}>
                 <div className={Style.body}>
@@ -180,32 +181,34 @@ function VerifyRegisteredUser() {
                     <div className={Style.otpPara}>
                         Enter OTP
                     </div>
-                    <div className={Style.inputDiv}>
-                        <div>
-                            <label htmlFor='OTP'></label>
-                            <input type='text' id='otp1' value={otp1} onChange={handleOtp1Change} className={Style.input}></input>
+                    <AutoTabProvider settings={{tabOnMax: true}}>
+                        <div className={Style.inputDiv}>
+                            <div>
+                                <label htmlFor='OTP'></label>
+                                <input type='text' id='otp1' value={otp1} maxLength={1} onChange={handleOtp1Change} className={Style.input} tabbable="true" ></input>
+                            </div>
+                            <div>
+                                <label htmlFor='OTP'></label>
+                                <input type='text' id='otp2' value={otp2} maxLength={1} onChange={handleOtp2Change} className={Style.input} tabbable="true" ></input>
+                            </div>
+                            <div>
+                                <label htmlFor='OTP'></label>
+                                <input type='text' id='otp3' value={otp3} maxLength={1} onChange={handleOtp3Change} className={Style.input} tabbable="true" ></input>
+                            </div>
+                            <div>
+                                <label htmlFor='OTP'></label>
+                                <input type='text' id='otp4' value={otp4} maxLength={1} onChange={handleOtp4Change} className={Style.input} tabbable="true" ></input>
+                            </div>
+                            <div>
+                                <label htmlFor='OTP'></label>
+                                <input type='text' id='otp5' value={otp5} maxLength={1} onChange={handleOtp5Change} className={Style.input} tabbable="true" ></input>
+                            </div>
+                            <div>
+                                <label htmlFor='OTP'></label>
+                                <input type='text' id='otp6' value={otp6} maxLength={1} onChange={handleOtp6Change} className={Style.input} tabbable="true" ></input>
+                            </div>
                         </div>
-                        <div>
-                            <label htmlFor='OTP'></label>
-                            <input type='text' id='otp2' value={otp2} onChange={handleOtp2Change} className={Style.input}></input>
-                        </div>
-                        <div>
-                            <label htmlFor='OTP'></label>
-                            <input type='text' id='otp3' value={otp3} onChange={handleOtp3Change} className={Style.input}></input>
-                        </div>
-                        <div>
-                            <label htmlFor='OTP'></label>
-                            <input type='text' id='otp4' value={otp4} onChange={handleOtp4Change} className={Style.input}></input>
-                        </div>
-                        <div>
-                            <label htmlFor='OTP'></label>
-                            <input type='text' id='otp5' value={otp5} onChange={handleOtp5Change} className={Style.input}></input>
-                        </div>
-                        <div>
-                            <label htmlFor='OTP'></label>
-                            <input type='text' id='otp6' value={otp6} onChange={handleOtp6Change} className={Style.input}></input>
-                        </div>
-                    </div>
+                    </AutoTabProvider>
                     <div className={Style.resendDiv}>
                         <p className={Style.resend} onClick={handleResendClick}>Resend</p>
                     </div>

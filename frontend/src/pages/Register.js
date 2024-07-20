@@ -2,9 +2,9 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-import Style from './Home.module.css';
+import Style from './Register.module.css';
 
-function Home() {
+function Register() {
     let flag = 1;
     const navigate = useNavigate();
     const [name, setName] = useState("");
@@ -109,7 +109,7 @@ function Home() {
                 .post("http://localhost:3002/auth", data)
                 .then((response) => {
                     if(response.data.message === "OTP has sent on your email. Please Verify") {
-                        navigate('/verify-account', { state: { token: response.data.data.token }});
+                        navigate('/auth/verify-account', { state: { token: response.data.data.token }});
                     }
                 })
                 .catch((error) => {
@@ -129,7 +129,7 @@ function Home() {
         <>
             <div className={Style.container}>
                 <h2 className={Style.title}>Quiz App</h2>
-                <button className={Style.LoginButton}><Link to='/login' className={Style.link}>Login</Link></button>
+                <button className={Style.LoginButton}><Link to='/auth/login' className={Style.link}>Login</Link></button>
             </div>
             <div className={Style.linear}>
                 <div className={Style.body}>
@@ -172,4 +172,4 @@ function Home() {
     )
 };
 
-export default Home;
+export default Register;
