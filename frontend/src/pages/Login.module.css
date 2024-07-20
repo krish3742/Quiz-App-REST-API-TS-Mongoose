@@ -110,3 +110,16 @@
     text-decoration: none;
     color: #0F0C2C;
 }
+
+.instructionParaDiv {
+    width: 15.5rem;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: black;
+    font-size: small;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
