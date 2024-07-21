@@ -2,6 +2,7 @@ import {Routes, Route, Navigate} from 'react-router-dom';
 import OuterLayout from './components/layout/OuterLayout';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import Quiz from './pages/Quiz';
 import ResetPassword from './pages/ResetPassword';
 import VerifyRegisteredUser from './pages/VerifyRegisteredUser';
 import ActivateAccount from './pages/ActivateAccount';
@@ -17,6 +18,7 @@ function App() {
         <Route path='/auth/forgotpassword/:token' element={<ForgotPasword />} ></Route>
         <Route path='/auth/resetpassword' element={<ResetPassword />}></Route>
         <Route path='/auth/verifyaccount' element={<VerifyRegisteredUser />}></Route>
+        <Route path='/auth/quiz' element={<Quiz />}></Route>
         <Route path='*' element={<Navigate to='/auth/register' />}></Route>
       </Routes>
     </OuterLayout>

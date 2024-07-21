@@ -1,8 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Style from './Login.module.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 function Login() {
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [color, setColor] = useState("");
     const [password, setPassword] = useState("");
@@ -55,7 +56,6 @@ function Login() {
                     if(message.includes("No user exist")) {
                         setErrors(["Account not registered, please register"])
                     }
-                    console.log(error);
                 })
         }
     }
@@ -64,7 +64,8 @@ function Login() {
             axios
                 .post("http://localhost:3002/auth/login", { email, password })
                 .then((response) => {
-                    console.log(response);
+                    const token = response?.data?.data?.token;
+                    navigate('/auth/quiz', { state: { token }});
                 })
                 .catch((error) => {
                     const message = error?.response?.data?.message;
@@ -89,7 +90,6 @@ function Login() {
                     }
                     if(message.includes("Credential mismatch")) {
                         const subMessage = message.charAt(29);
-                        console.log(message.length);
                         setErrors((oldArray) => {
                             if(oldArray.includes(`Incorrect password, remaining try ${subMessage}`)) {
                                 return [...oldArray];
