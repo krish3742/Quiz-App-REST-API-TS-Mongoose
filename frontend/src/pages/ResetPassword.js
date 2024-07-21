@@ -6,6 +6,7 @@ function ResetPassword() {
     let passwordCheck = 1;
     const location = useLocation();
     const userId = location?.state?.userId;
+    const [color, setColor] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errors, setErrors] = useState(["Testing"]);
@@ -85,6 +86,7 @@ function ResetPassword() {
                 .post(`http://localhost:3002/auth/forgotpassword/${userId}`, { password, confirmPassword})
                 .then((response) => {
                     setErrors(["Password successfully reset"]);
+                    setColor("black");
                 })
                 .catch((error) => {
                     if(error.response.status === 500) {
@@ -120,7 +122,7 @@ function ResetPassword() {
                         <div className={Style.instructionParaDiv}>
                             <ul>
                                 {errors.map(message =>  {
-                                    return <li key={message}>{message}</li>
+                                    return <li className={!!color ? Style.black : Style.red} key={message}>{message}</li>
                                 })}
                             </ul>
                         </div>

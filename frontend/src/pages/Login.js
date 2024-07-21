@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 function Login() {
     const [email, setEmail] = useState("");
+    const [color, setColor] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState(["testing"]);
     const [flag, setFlag] = useState(true);
@@ -43,6 +44,7 @@ function Login() {
                 .post('http://localhost:3002/auth/forgotpassword', {email})
                 .then((response) => {
                     setErrors(["An email has been sent on your account, verify"]);
+                    setColor("black");
                 })
                 .catch((error) => {
                     const message = errors?.response?.data?.message;
@@ -169,7 +171,7 @@ function Login() {
                         <div className={Style.instructionParaDiv}>
                             <ul>
                                 {errors.map(message =>  {
-                                    return <li key={message}>{message}</li>
+                                    return <li className={!!color ? Style.black : Style.red} key={message}>{message}</li>
                                 })}
                             </ul>
                         </div>

@@ -8,6 +8,7 @@ function VerifyRegisteredUser() {
     const location = useLocation();
     const state = location.state;
     const [flag, setFlag] = useState(true);
+    const [color, setColor] = useState("");
     const [errors, setErrors] = useState([]);
     const [otp, setOtp] = useState();
     const [otp1, setOtp1] = useState("");
@@ -127,6 +128,7 @@ function VerifyRegisteredUser() {
                             }
                             return [...oldArray, "Account registered, please login"];
                         });
+                        setColor("black");
                     })
                     .catch((error) => {
                         const message = error.response.data.message;
@@ -221,7 +223,7 @@ function VerifyRegisteredUser() {
                         <div className={Style.instructionParaDiv}>
                             <ul>
                                 {errors.map(message =>  {
-                                    return <li key={message}>{message}</li>
+                                    return <li className={!!color ? Style.black : Style.red} key={message}>{message}</li>
                                 })}
                             </ul>
                         </div>

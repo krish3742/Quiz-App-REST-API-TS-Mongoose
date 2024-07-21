@@ -6,6 +6,7 @@ import {AutoTabProvider} from 'react-auto-tab';
 
 function ActivateAccount() {
     const [flag, setFlag] = useState(true);
+    const [color, setColor] = useState("");
     const [errors, setErrors] = useState([]);
     const [email, setEmail] = useState("");
     const [key, setKey] = useState(1);
@@ -66,7 +67,8 @@ function ActivateAccount() {
             axios
                 .post('http://localhost:3002/auth/activateaccount', {email, key})
                 .then((response) => {
-                    setErrors(["Account activated, please login"])
+                    setErrors(["Account activated, please login"]);
+                    setColor("black");
                 })
                 .catch((error) => {
                     const message = error?.response?.data?.message;
@@ -154,7 +156,7 @@ function ActivateAccount() {
                         <div className={Style.instructionParaDiv}>
                             <ul>
                                 {errors.map(message =>  {
-                                    return <li key={message}>{message}</li>
+                                    return <li className={!!color ? Style.black : Style.red} key={message}>{message}</li>
                                 })}
                             </ul>
                         </div>
