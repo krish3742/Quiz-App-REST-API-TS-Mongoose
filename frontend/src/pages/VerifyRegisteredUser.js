@@ -63,6 +63,7 @@ function VerifyRegisteredUser() {
     function handleVerifyClick(evt) {
         evt.preventDefault();
         setErrors([]);
+        setColor("");
         if(!otp1 || otp1 === undefined) {
             setErrors((oldArray) =>  {
                 if(oldArray.includes("Please enter OTP")) {

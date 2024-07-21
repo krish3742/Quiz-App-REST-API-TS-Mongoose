@@ -49,6 +49,7 @@ function ActivateAccount() {
         evt.preventDefault();
         setErrors([]);
         setFlag(!flag);
+        setColor("");
         if(!email) {
             setErrors((oldArray) =>  [...oldArray, "Please enter email"]);
         }

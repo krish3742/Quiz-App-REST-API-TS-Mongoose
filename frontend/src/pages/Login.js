@@ -34,6 +34,7 @@ function Login() {
             })
         }
         setFlag(!flag);
+        setColor("");
     }
     function handleForgotPasswordClick(evt) {
         evt.preventDefault();

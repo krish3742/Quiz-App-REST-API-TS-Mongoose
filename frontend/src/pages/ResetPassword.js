@@ -20,6 +20,7 @@ function ResetPassword() {
     function handleVerifyClick(evt) {
         evt.preventDefault();
         setErrors([]);
+        setColor("");
         passwordCheck = 1;
         if(!password) {
             setErrors((oldArray) => [...oldArray, "Please enter password"]);
