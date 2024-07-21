@@ -34,6 +34,28 @@ function Login() {
         }
         setFlag(!flag);
     }
+    function handleForgotPasswordClick(evt) {
+        evt.preventDefault();
+        if(!email) {
+            setErrors(["Please enter email"]);
+        } else {
+            axios
+                .post('http://localhost:3002/auth/forgotpassword', {email})
+                .then((response) => {
+                    setErrors(["An email has been sent on your account, verify"]);
+                })
+                .catch((error) => {
+                    const message = errors?.response?.data?.message;
+                    if(error.response.status === 500) {
+                        setErrors(["Try again after some time"])
+                    }
+                    if(message.includes("No user exist")) {
+                        setErrors(["Account not registered, please register"])
+                    }
+                    console.log(error);
+                })
+        }
+    }
     useEffect(() => {
         if(errors.length === 0) {
             axios
@@ -41,9 +63,9 @@ function Login() {
                 .then((response) => {
                     console.log(response);
                 })
-                .catch((errors) => {
-                    const message = errors?.response?.data?.message;
-                    if(errors.response.status === 500) {
+                .catch((error) => {
+                    const message = error?.response?.data?.message;
+                    if(error.response.status === 500) {
                         setErrors(["Try again after some time"])
                     }
                     if(message.includes("Validation failed!")) {
@@ -141,7 +163,7 @@ function Login() {
                         <input type='password' id='Password' value={password} onChange={handlePasswordChange} className={Style.input} placeholder='Password'></input>
                     </div>
                     <div className={Style.paraDiv}>
-                        <p className={Style.para}>Forgot password?</p>
+                        <p className={Style.para} onClick={handleForgotPasswordClick}>Forgot password?</p>
                     </div>
                     {errors.length > 0 && !errors.includes("testing") &&
                         <div className={Style.instructionParaDiv}>

@@ -109,11 +109,14 @@ function Register() {
                 .post("http://localhost:3002/auth", data)
                 .then((response) => {
                     if(response.data.message === "OTP has sent on your email. Please Verify") {
-                        navigate('/auth/verify-account', { state: { token: response.data.data.token }});
+                        navigate('/auth/verifyaccount', { state: { token: response.data.data.token }});
                     }
                 })
                 .catch((error) => {
                     const message = error.response.data.message;
+                    if(error?.response?.status === 500) {
+                        setErrors(["Try again after some time"])
+                    }
                     if(message.includes("Validation failed!")) {
                         setErrors((oldArray) => {
                             if(oldArray.includes("Account already registered, login")) {

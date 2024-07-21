@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, Navigate } from 'react-router-dom';
 import Style from './VerifyRegisteredUser.module.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -43,6 +43,9 @@ function VerifyRegisteredUser() {
             .then((response) => {})
             .catch((error) => {
                 const message = error.response.data.message;
+                if(error.response.status === 500) {
+                    setErrors(["Try again after some time"])
+                }
                 if(message.includes("Resend OTP")) {
                     setErrors([message]);
                 }
@@ -127,6 +130,9 @@ function VerifyRegisteredUser() {
                     })
                     .catch((error) => {
                         const message = error.response.data.message;
+                        if(error.response.status === 500) {
+                            setErrors(["Try again after some time"])
+                        }
                         if(message.includes("OTP has not send on this email or Invalid OTP")) {
                             setErrors((oldArray) => {
                                 if(oldArray.includes("OTP expired, please resend")) {
@@ -163,11 +169,7 @@ function VerifyRegisteredUser() {
         }
     }, [otp, flag]);
     if(state === null) {
-        return (
-            <div className={Style.helloDiv}>
-                <h2>You are not authorized!</h2>
-            </div>
-        )
+        return <Navigate to='/auth/register' /> ; 
     }
     return (
         <>

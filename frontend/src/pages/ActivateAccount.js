@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Style from './ActivateAccount.module.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';

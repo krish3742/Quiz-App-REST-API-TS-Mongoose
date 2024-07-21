@@ -1,21 +1,23 @@
-import {Routes, Route} from 'react-router-dom';
+import {Routes, Route, Navigate} from 'react-router-dom';
 import OuterLayout from './components/layout/OuterLayout';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import ResetPassword from './pages/ResetPassword';
 import VerifyRegisteredUser from './pages/VerifyRegisteredUser';
 import ActivateAccount from './pages/ActivateAccount';
+import ForgotPasword from './components/ForgotPassword';
 
 function App() {
   return (
     <OuterLayout>
       <Routes>
-        {/* <Route path='/' element={<Home />}></Route> */}
         <Route path='/auth/register' element={<Register />}></Route>
         <Route path='/auth/login' element={<Login />}></Route>
         <Route path='/auth/activateaccount' element={<ActivateAccount />}></Route>
-        <Route path='/reset-password' element={<ResetPassword />}></Route>
-        <Route path='/auth/verify-account' element={<VerifyRegisteredUser />}></Route>
+        <Route path='/auth/forgotpassword/:token' element={<ForgotPasword />} ></Route>
+        <Route path='/auth/resetpassword' element={<ResetPassword />}></Route>
+        <Route path='/auth/verifyaccount' element={<VerifyRegisteredUser />}></Route>
+        <Route path='*' element={<Navigate to='/auth/register' />}></Route>
       </Routes>
     </OuterLayout>
   );
