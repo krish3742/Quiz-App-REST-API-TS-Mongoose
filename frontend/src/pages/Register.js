@@ -7,6 +7,7 @@ import Style from './Register.module.css';
 function Register() {
     let flag = 1;
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -26,6 +27,7 @@ function Register() {
     }
     function handleRegisterClick(evt) {
         evt.preventDefault();
+        setIsLoading(true);
         setErrors([]);
         flag = 1;
         if(name.length < 5) {
@@ -108,24 +110,39 @@ function Register() {
             axios
                 .post("http://localhost:3002/auth", data)
                 .then((response) => {
+                    setIsLoading(false);
                     if(response.data.message === "OTP has sent on your email. Please Verify") {
                         navigate('/auth/verifyaccount', { state: { token: response.data.data.token }});
                     }
                 })
                 .catch((error) => {
-                    const message = error.response.data.message;
+                    console.log(error);
+                    setIsLoading(false);
+                    const message = error?.response?.data?.message;
                     if(error?.response?.status === 500) {
                         setErrors(["Try again after some time"])
                     }
                     if(message.includes("Validation failed!")) {
-                        setErrors((oldArray) => {
-                            if(oldArray.includes("Account already registered, login")) {
-                                return [...oldArray];
-                            }
-                            return [...oldArray, "Account already registered, login"];
-                        });
+                        const path = error?.response?.data?.data[0]?.msg;
+                        if(path.includes("User already exist!")) {
+                            setErrors((oldArray) => {
+                                if(oldArray.includes("Account already registered, login")) {
+                                    return [...oldArray];
+                                }
+                                return [...oldArray, "Account already registered, login"];
+                            });
+                        } else {
+                            setErrors((oldArray) => {
+                                if(oldArray.includes("Invalid email")) {
+                                    return [...oldArray];
+                                }
+                                return [...oldArray, "Invalid email"];
+                            });
+                        }
                     }
                 })
+        } else {
+            setIsLoading(false);
         }
     },[errors])
     return (
@@ -171,6 +188,11 @@ function Register() {
                     <div className={Style.img}></div>
                 </div>
             </div>
+            {isLoading && 
+                <div className={Style.loading}>
+                    <div className={Style.loader}></div>
+                </div>
+            }
         </>
     )
 };

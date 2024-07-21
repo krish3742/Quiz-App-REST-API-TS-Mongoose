@@ -6,6 +6,7 @@ function Login() {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [color, setColor] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState(["testing"]);
     const [flag, setFlag] = useState(true);
@@ -18,6 +19,7 @@ function Login() {
     function handleLoginClick(evt) {
         evt.preventDefault();
         setErrors([]);
+        setIsLoading(true);
         if(!email) {
             setErrors((oldArray) => {
                 if(oldArray.includes("Please enter email")) {
@@ -39,17 +41,21 @@ function Login() {
     }
     function handleForgotPasswordClick(evt) {
         evt.preventDefault();
+        setIsLoading(true);
         if(!email) {
+            setIsLoading(false);
             setErrors(["Please enter email"]);
         } else {
             axios
                 .post('http://localhost:3002/auth/forgotpassword', {email})
                 .then((response) => {
+                    setIsLoading(false);
                     setErrors(["An email has been sent on your account, verify"]);
                     setColor("black");
                 })
                 .catch((error) => {
                     const message = errors?.response?.data?.message;
+                    setIsLoading(false);
                     if(error.response.status === 500) {
                         setErrors(["Try again after some time"])
                     }
@@ -64,11 +70,13 @@ function Login() {
             axios
                 .post("http://localhost:3002/auth/login", { email, password })
                 .then((response) => {
+                    setIsLoading(false);
                     const token = response?.data?.data?.token;
                     navigate('/auth/quiz', { state: { token }});
                 })
                 .catch((error) => {
                     const message = error?.response?.data?.message;
+                    setIsLoading(false);
                     if(error.response.status === 500) {
                         setErrors(["Try again after some time"])
                     }
@@ -146,6 +154,8 @@ function Login() {
                         });
                     }
                 })
+        } else {
+            setIsLoading(false);
         }
     }, [flag])
     return (
@@ -183,6 +193,11 @@ function Login() {
                     <div className={Style.img}></div>
                 </div>
             </div>
+            {isLoading && 
+                <div className={Style.loading}>
+                    <div className={Style.loader}></div>
+                </div>
+            }
         </>
     )
 };

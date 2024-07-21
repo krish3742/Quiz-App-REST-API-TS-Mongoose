@@ -5,6 +5,7 @@ import axios from 'axios';
 function ResetPassword() {
     let passwordCheck = 1;
     const location = useLocation();
+    const [isLoading, setIsLoading] = useState(false);
     const userId = location?.state?.userId;
     const [color, setColor] = useState("");
     const [password, setPassword] = useState("");
@@ -20,6 +21,7 @@ function ResetPassword() {
     function handleVerifyClick(evt) {
         evt.preventDefault();
         setErrors([]);
+        setIsLoading(true);
         setColor("");
         passwordCheck = 1;
         if(!password) {
@@ -86,14 +88,18 @@ function ResetPassword() {
             axios
                 .post(`http://localhost:3002/auth/forgotpassword/${userId}`, { password, confirmPassword})
                 .then((response) => {
+                    setIsLoading(false);
                     setErrors(["Password successfully reset"]);
                     setColor("black");
                 })
                 .catch((error) => {
+                    setIsLoading(false);
                     if(error.response.status === 500) {
                         setErrors(["Try again after some time"])
                     }
                 })
+        } else {
+            setIsLoading(false);
         }
     }, [flag]);
     if(!userId) {
@@ -134,6 +140,11 @@ function ResetPassword() {
                     <div className={Style.img}></div>
                 </div>
             </div>
+            {isLoading && 
+                <div className={Style.loading}>
+                    <div className={Style.loader}></div>
+                </div>
+            }
         </>
     )
 };

@@ -7,6 +7,7 @@ import { AutoTabProvider } from 'react-auto-tab';
 function VerifyRegisteredUser() {
     const location = useLocation();
     const state = location.state;
+    const [isLoading, setIsLoading] = useState(false);
     const [flag, setFlag] = useState(true);
     const [color, setColor] = useState("");
     const [errors, setErrors] = useState([]);
@@ -38,12 +39,14 @@ function VerifyRegisteredUser() {
     function handleResendClick(evt) {
         evt.preventDefault();
         setErrors([]);
+        setIsLoading(true);
         const token = state.token;
         axios
             .get(`http://localhost:3002/auth/resend-registration-otp/${token}`)
-            .then((response) => {})
+            .then((response) => {setIsLoading(false)})
             .catch((error) => {
                 const message = error.response.data.message;
+                setIsLoading(false);
                 if(error.response.status === 500) {
                     setErrors(["Try again after some time"])
                 }
@@ -64,6 +67,7 @@ function VerifyRegisteredUser() {
         evt.preventDefault();
         setErrors([]);
         setColor("");
+        setIsLoading(true);
         if(!otp1 || otp1 === undefined) {
             setErrors((oldArray) =>  {
                 if(oldArray.includes("Please enter OTP")) {
@@ -123,6 +127,7 @@ function VerifyRegisteredUser() {
                 axios
                     .post(`http://localhost:3002/auth/verify-registration-otp/${token}`, { otp })
                     .then((response) => {
+                        setIsLoading(false);
                         setErrors((oldArray) => {
                             if(oldArray.includes("Account registered, please login")) {
                                 return [...oldArray];
@@ -133,6 +138,7 @@ function VerifyRegisteredUser() {
                     })
                     .catch((error) => {
                         const message = error.response.data.message;
+                        setIsLoading(false);
                         if(error.response.status === 500) {
                             setErrors(["Try again after some time"])
                         }
@@ -169,6 +175,8 @@ function VerifyRegisteredUser() {
                     return [...oldArray, "Please enter OTP"];
                 });
             }
+        } else {
+            setIsLoading(false);
         }
     }, [otp, flag]);
     if(state === null) {
@@ -235,6 +243,11 @@ function VerifyRegisteredUser() {
                     <div className={Style.img}></div>
                 </div>
             </div>
+            {isLoading && 
+                <div className={Style.loading}>
+                    <div className={Style.loader}></div>
+                </div>
+            }
         </>
     )
 };

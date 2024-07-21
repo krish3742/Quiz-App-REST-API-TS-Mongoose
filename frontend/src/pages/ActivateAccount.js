@@ -8,6 +8,7 @@ function ActivateAccount() {
     const [flag, setFlag] = useState(true);
     const [color, setColor] = useState("");
     const [errors, setErrors] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     const [email, setEmail] = useState("");
     const [key, setKey] = useState(1);
     const [key1, setKey1] = useState("");
@@ -48,6 +49,7 @@ function ActivateAccount() {
     function handleVerifyClick(evt) {
         evt.preventDefault();
         setErrors([]);
+        setIsLoading(true);
         setFlag(!flag);
         setColor("");
         if(!email) {
@@ -57,6 +59,7 @@ function ActivateAccount() {
     }
     useEffect(() => {
         if(!key) {
+            setIsLoading(false);
             setErrors((oldArray) => {
                 if(oldArray.includes("Please enter key")) {
                     return [...oldArray];
@@ -68,10 +71,12 @@ function ActivateAccount() {
             axios
                 .post('http://localhost:3002/auth/activateaccount', {email, key})
                 .then((response) => {
+                    setIsLoading(false);
                     setErrors(["Account activated, please login"]);
                     setColor("black");
                 })
                 .catch((error) => {
+                    setIsLoading(false);
                     const message = error?.response?.data?.message;
                     if(error.response.status === 500) {
                         setErrors(["Try again after some time"])
@@ -87,6 +92,7 @@ function ActivateAccount() {
                     }
                 })
         } else if(!!key && key.length < 8) {
+            setIsLoading(false);
             setErrors((oldArray) => {
                 if(oldArray.includes("Please enter key")) {
                     return [...oldArray];
@@ -168,6 +174,11 @@ function ActivateAccount() {
                     <div className={Style.img}></div>
                 </div>
             </div>
+            {isLoading && 
+                <div className={Style.loading}>
+                    <div className={Style.loader}></div>
+                </div>
+            }
         </>
     )
 };

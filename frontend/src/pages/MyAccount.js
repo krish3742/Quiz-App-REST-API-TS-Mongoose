@@ -1,11 +1,12 @@
+import Style from './MyAccount.module.css';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import Style from './Quiz.module.css';
 import { useState } from 'react';
 import axios from 'axios';
 
-function Quiz() {
+function MyAccount() {
     const location = useLocation();
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const token = location?.state?.token;
     const headers = {'Authorization': `Bearer ${token}`};
@@ -19,9 +20,9 @@ function Quiz() {
                 navigate('/auth/register');
             })
     }
-    if(!token) {
-        return <Navigate to='/auth/login' />
-    }
+    // if(!token) {
+    //     return <Navigate to='/auth/login' />
+    // }
     return (
         <>
             <div className={Style.container}>
@@ -32,12 +33,11 @@ function Quiz() {
                     <h4 className={Style.menu}>My Quiz</h4>
                 </div>
                 <div className={Style.profile} onMouseEnter={() => {setIsProfileOpen(true)}} onMouseLeave={() => {setIsProfileOpen(false)}}></div>
-                {isProfileOpen &&
-                    <div className={Style.myAccountDiv} onMouseEnter={() => setIsProfileOpen(true)} onMouseLeave={() => {setIsProfileOpen(false)}}>
-                        <p className={Style.options}>My Account</p>
-                        <p onClick={handleLogoutClick} className={Style.options}> Logout</p>
-                    </div>
-                }
+                    {isProfileOpen &&
+                        <div className={Style.myAccountDiv} onMouseEnter={() => setIsProfileOpen(true)} onMouseLeave={() => {setIsProfileOpen(false)}}>
+                            <p onClick={handleLogoutClick} className={Style.options}> Logout</p>
+                        </div>
+                    }
             </div>
             <div className={Style.linear}>
                 <div className={Style.quizDiv}>
@@ -55,4 +55,4 @@ function Quiz() {
     )
 }
 
-export default Quiz;
+export default MyAccount;
