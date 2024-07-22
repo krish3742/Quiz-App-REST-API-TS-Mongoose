@@ -5,6 +5,7 @@
     width: 90%;
     margin-top: .5rem;
     margin-left: 3.1rem;
+    cursor: default;
 }
 
 .linear {
@@ -20,6 +21,7 @@
     flex-direction: column;
     margin-bottom: 1.5rem;
     gap: 1rem;
+    cursor: default;
 }
 
 .menuDiv {
