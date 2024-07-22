@@ -40,6 +40,29 @@ function ChangeName() {
             setErrors((oldArray) => [...oldArray, "Please enter name"])
         }
     }
+    function handleDeactivateAccountClick(evt) {
+        evt.preventDefault();
+        setIsLoading(true);
+        axios.patch('http://localhost:3002/user/deactivate', {}, { headers })
+            .then((response) => {
+                setIsLoading(false);
+                navigate('/auth/user/deactivateaccount', { state: { token }})
+            })
+            .catch((error) => {
+                setIsLoading(false);
+                const message = error?.response?.data?.message;
+                if(message.includes("Resend OTP after")) {
+                    const minute = message.charAt(17);
+                    if(minute == 0) {
+                        setErrors('Try again after 1 minute');
+                    } else {
+                        setErrors(`Try again after ${minute} minutes`);
+                    }
+                } else {
+                    navigate('/auth/login');
+                }
+            })
+    }
     useEffect(() => {
         if(!!token) {
             axios
@@ -50,7 +73,6 @@ function ChangeName() {
                     setEmail(data.email);
                 })
                 .catch((error) => {
-                    console.log(error);
                     setIsLoading(false);
                     navigate('/auth/register');
                 })
@@ -65,7 +87,6 @@ function ChangeName() {
                     navigate('/auth/user/my-account', { state: { token }})
                 })
                 .catch((error) => {
-                    console.log(error);
                     setIsLoading(false);
                     navigate('/auth/login')
                 })
@@ -117,7 +138,13 @@ function ChangeName() {
                     </div>
                     <div className={Style.line}></div>
                     <div className={Style.deactivateAccountDiv}>
-                        <button className={Style.deactivateAccountButton}>Deactivate account!</button>
+                        <button className={Style.deactivateAccountButton} onClick={handleDeactivateAccountClick}>Deactivate account!</button>
+                        {!!errors && errors?.includes("Try again") &&
+                            <>
+                                <i className={Style.icon}>{String.fromCodePoint(0x26A0)}</i>
+                                <p className={Style.errorPara}>{errors}</p>
+                            </>
+                        }
                     </div>   
                 </div>
             </div>

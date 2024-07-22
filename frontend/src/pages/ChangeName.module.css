@@ -5,6 +5,7 @@
     width: 90%;
     margin-top: .5rem;
     margin-left: 3.1rem;
+    cursor: default;
 }
 
 .linear {
@@ -19,6 +20,7 @@
     flex-direction: column;
     margin-bottom: 1.5rem;
     gap: 1rem;
+    cursor: default;
 }
 
 .menuDiv {
@@ -62,6 +64,7 @@
 .heading {
     margin: 1rem 0 0 0;
     margin-left: -46rem;
+    cursor: default;
 }
 
 .para {
@@ -96,10 +99,34 @@
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.deactivateAccountButton:hover {
+    cursor: pointer;
+}
+
+.editButton {
+    cursor: pointer;
+}
+
 .deactivateAccountDiv {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.errorPara {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    font-size: small;
+    margin-left: 29.5rem;
+    color: red;
+}
+
+.icon {
+    color: red;
+    position: absolute;
+    margin-left: 19rem;
+    margin-top: -.1rem;
 }
    
 .button {

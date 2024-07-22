@@ -11,7 +11,7 @@ function MyAccount() {
     const token = location?.state?.token;
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
-    const [userId, setUserId] = useState("");
+    const [errors, setErrors] = useState("");
     const headers = {'Authorization': `Bearer ${token}`};
     function handleLogoutClick(evt) {
         setIsLoading(true);
@@ -33,9 +33,31 @@ function MyAccount() {
         evt.preventDefault();
         navigate('/auth/user/change-name', { state: { token }}) 
     }
+    function handleDeactivateAccountClick(evt) {
+        evt.preventDefault();
+        setIsLoading(true);
+        axios.patch('http://localhost:3002/user/deactivate', {}, { headers })
+            .then((response) => {
+                setIsLoading(false);
+                navigate('/auth/user/deactivateaccount', { state: { token }})
+            })
+            .catch((error) => {
+                setIsLoading(false);
+                const message = error?.response?.data?.message;
+                if(message.includes("Resend OTP after")) {
+                    const minute = message.charAt(17);
+                    if(minute == 0) {
+                        setErrors('Try again after 1 minute');
+                    } else {
+                        setErrors(`Try again after ${minute} minutes`);
+                    }
+                } else {
+                    navigate('/auth/login');
+                }
+            })
+    }
     useEffect(() => {
         if(!!token) {
-
             axios
                 .get('http://localhost:3002/user', { headers })
                 .then((response) => {
@@ -43,7 +65,6 @@ function MyAccount() {
                     const data = response.data.data;
                     setName(data.name);
                     setEmail(data.email);
-                    setUserId(data.userId); 
                 })
                 .catch((error) => {
                     setIsLoading(false);
@@ -98,7 +119,13 @@ function MyAccount() {
                     </div>
                     <div className={Style.line}></div>
                     <div className={Style.deactivateAccountDiv}>
-                        <button className={Style.deactivateAccountButton}>Deactivate account!</button>
+                        <button className={Style.deactivateAccountButton} onClick={handleDeactivateAccountClick}>Deactivate account!</button>
+                        {!!errors && errors?.includes("Try again") &&
+                            <>
+                                <i className={Style.icon}>{String.fromCodePoint(0x26A0)}</i>
+                                <p className={Style.errorPara}>{errors}</p>
+                            </>
+                        }
                     </div>   
                 </div>
             </div>
