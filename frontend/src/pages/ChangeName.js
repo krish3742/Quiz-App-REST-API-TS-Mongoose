@@ -63,6 +63,9 @@ function ChangeName() {
                 }
             })
     }
+    function handleChangePasswordClick(evt) {
+        navigate('/auth/user/change-password', { state: { token }});
+    }
     useEffect(() => {
         if(!!token) {
             axios
@@ -134,7 +137,7 @@ function ChangeName() {
                             <h4 className={Style.title}>Password</h4>
                             <p className={Style.para}>**********</p>
                         </div>
-                        <button className={Style.editButton}>Edit</button>
+                        <button className={Style.editButton} onClick={handleChangePasswordClick}>Edit</button>
                     </div>
                     <div className={Style.line}></div>
                     <div className={Style.deactivateAccountDiv}>

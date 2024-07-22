@@ -29,6 +29,9 @@ function MyAccount() {
     function handleMyAccountClick(evt) {
         navigate('/auth/user/my-account', { state: { token }});
     }
+    function handleChangePasswordClick(evt) {
+        navigate('/auth/user/change-password', { state: { token }});
+    }
     function handleNameEditClick(evt) {
         evt.preventDefault();
         navigate('/auth/user/change-name', { state: { token }}) 
@@ -115,7 +118,7 @@ function MyAccount() {
                             <h4 className={Style.title}>Password</h4>
                             <p className={Style.para}>**********</p>
                         </div>
-                        <button className={Style.editButton}>Edit</button>
+                        <button className={Style.editButton} onClick={handleChangePasswordClick}>Edit</button>
                     </div>
                     <div className={Style.line}></div>
                     <div className={Style.deactivateAccountDiv}>

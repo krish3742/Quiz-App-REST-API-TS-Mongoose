@@ -1,18 +1,13 @@
-import { Link, useLocation, Navigate, useNavigate } from 'react-router-dom';
-import Style from './VerifyDeactivateOtpPage.module.css';
+import { useLocation, Navigate, useNavigate } from 'react-router-dom';
+import { AutoTabProvider } from 'react-auto-tab';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { AutoTabProvider } from 'react-auto-tab';
+
+import Style from './VerifyDeactivateOtpPage.module.css';
 
 function VerifyDeactivateOtpPage() {
     const navigate = useNavigate();
     const location = useLocation();
-    const token = location?.state?.token;
-    const [isProfileOpen, setIsProfileOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [flag, setFlag] = useState(true);
-    const [color, setColor] = useState("");
-    const [errors, setErrors] = useState([]);
     const [otp, setOtp] = useState();
     const [otp1, setOtp1] = useState("");
     const [otp2, setOtp2] = useState("");
@@ -20,6 +15,12 @@ function VerifyDeactivateOtpPage() {
     const [otp4, setOtp4] = useState("");
     const [otp5, setOtp5] = useState("");
     const [otp6, setOtp6] = useState("");
+    const [color, setColor] = useState("");
+    const [flag, setFlag] = useState(true);
+    const [errors, setErrors] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const token = location?.state?.token;
     const headers = {'Authorization': `Bearer ${token}`};
     function handleOtp1Change(evt) {
         setOtp1(evt.target.value);
@@ -229,7 +230,7 @@ function VerifyDeactivateOtpPage() {
                             </ul>
                         </div>
                     }
-                    <button type='submit' onClick={handleVerifyClick} className={Style.RegisterButton}>Verify</button>
+                    <button type='submit' onClick={handleVerifyClick} className={Style.VerifyButton}>Verify</button>
                 </div>
                 <div className={Style.imgDiv}>
                     <div className={Style.img}></div>

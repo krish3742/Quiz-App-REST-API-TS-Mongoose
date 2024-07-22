@@ -1,15 +1,11 @@
-import { Link } from 'react-router-dom';
-import Style from './ActivateAccount.module.css';
+import { AutoTabProvider } from 'react-auto-tab';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
-import {AutoTabProvider} from 'react-auto-tab';
+
+import Style from './ActivateAccount.module.css';
 
 function ActivateAccount() {
-    const [flag, setFlag] = useState(true);
-    const [color, setColor] = useState("");
-    const [errors, setErrors] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [email, setEmail] = useState("");
     const [key, setKey] = useState(1);
     const [key1, setKey1] = useState("");
     const [key2, setKey2] = useState("");
@@ -19,6 +15,11 @@ function ActivateAccount() {
     const [key6, setKey6] = useState("");
     const [key7, setKey7] = useState("");
     const [key8, setKey8] = useState("");
+    const [color, setColor] = useState("");
+    const [email, setEmail] = useState("");
+    const [flag, setFlag] = useState(true);
+    const [errors, setErrors] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     function handleKey1Change(evt) {
         setKey1(evt.target.value);
     }

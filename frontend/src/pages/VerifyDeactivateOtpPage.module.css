@@ -126,7 +126,7 @@
     font-size: small;
 }
 
-.RegisterButton {
+.VerifyButton {
     height: 2.5rem;
     width: 7rem;
     border-radius: 50px;
@@ -141,11 +141,6 @@
     margin-top: .5rem;
 }
 
-.link {
-    text-decoration: none;
-    color: #0F0C2C;
-}
-
 .instructionParaDiv {
     width: 18rem;
     background-color: white;
@@ -158,27 +153,8 @@
     justify-content: flex-start;
 }
 
-.RegisterButton:hover {
+.VerifyButton:hover {
     cursor: pointer;
-}
-
-.resend {
-    margin: 0;
-    font-size: small;
-    margin-top: .5rem;
-}
-
-.resendDiv {
-    margin: 0;
-}
-
-.resend:hover {
-    cursor: pointer;
-}
-
-.helloDiv {
-    display: flex;
-    justify-content: center;
 }
 
 .black {
