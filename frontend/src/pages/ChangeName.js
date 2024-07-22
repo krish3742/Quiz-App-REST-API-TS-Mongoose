@@ -1,9 +1,9 @@
-import Style from './MyAccount.module.css';
+import Style from './ChangeName.module.css';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function MyAccount() {
+function ChangeName() {
     const location = useLocation();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
@@ -11,8 +11,8 @@ function MyAccount() {
     const token = location?.state?.token;
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
-    const [userId, setUserId] = useState("");
     const headers = {'Authorization': `Bearer ${token}`};
+    const [errors, setErrors] = useState([]);
     function handleLogoutClick(evt) {
         setIsLoading(true);
         axios
@@ -29,30 +29,48 @@ function MyAccount() {
     function handleMyAccountClick(evt) {
         navigate('/auth/user/my-account', { state: { token }});
     }
-    function handleNameEditClick(evt) {
+    function handleNameChange(evt) {
+        setName(evt.target.value);
+    }
+    function handleNameSubmitClick(evt) {
         evt.preventDefault();
-        navigate('/auth/user/change-name', { state: { token }}) 
+        setErrors([]);
+        setIsLoading(true);
+        if(!name) {
+            setErrors((oldArray) => [...oldArray, "Please enter name"])
+        }
     }
     useEffect(() => {
         if(!!token) {
-
             axios
                 .get('http://localhost:3002/user', { headers })
                 .then((response) => {
                     setIsLoading(false);
                     const data = response.data.data;
-                    setName(data.name);
                     setEmail(data.email);
-                    setUserId(data.userId); 
                 })
                 .catch((error) => {
+                    console.log(error);
                     setIsLoading(false);
                     navigate('/auth/register');
                 })
         } else {
             navigate('/auth/login');
         }
-    }, []);
+        if(!!errors && errors.length === 0 && name.length >= 1) {
+            axios
+                .put('http://localhost:3002/user', { name }, { headers })
+                .then((response) => {
+                    setIsLoading(false);
+                    navigate('/auth/user/my-account', { state: { token }})
+                })
+                .catch((error) => {
+                    console.log(error);
+                    setIsLoading(false);
+                    navigate('/auth/login')
+                })
+        }
+    }, [errors]);
     if(!token) {
         return <Navigate to='/auth/login' />
     }
@@ -79,9 +97,10 @@ function MyAccount() {
                     <div className={Style.titleDiv}>
                         <div>
                             <h4 className={Style.title}>Name</h4>
-                            <p className={Style.para}>{name}</p>
+                            <label htmlFor='Name'></label>
+                            <input type='text' placeholder='Enter name' value={name} onChange={handleNameChange} className={Style.input}></input>
                         </div>
-                        <button className={Style.editButton} onClick={handleNameEditClick}>Edit</button>
+                        <button className={Style.editButton} onClick={handleNameSubmitClick} >Submit</button>
                     </div>
                     <div className={Style.line}></div>
                     <div className={Style.paraDiv}>
@@ -111,4 +130,4 @@ function MyAccount() {
     )
 }
 
-export default MyAccount;
+export default ChangeName;

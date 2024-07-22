@@ -8,6 +8,7 @@ import VerifyRegisteredUser from './pages/VerifyRegisteredUser';
 import ActivateAccount from './pages/ActivateAccount';
 import ForgotPasword from './components/ForgotPassword';
 import MyAccount from './pages/MyAccount';
+import ChangeName from './pages/ChangeName';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path='/auth/resetpassword' element={<ResetPassword />}></Route>
         <Route path='/auth/verifyaccount' element={<VerifyRegisteredUser />}></Route>
         <Route path='/auth/user/my-account' element={<MyAccount />}></Route>
+        <Route path='/auth/user/change-name' element={<ChangeName />}></Route>
         <Route path='/auth/quiz' element={<Quiz />}></Route>
         <Route path='*' element={<Navigate to='/auth/register' />}></Route>
       </Routes>

@@ -19,6 +19,9 @@ function Quiz() {
                 navigate('/auth/register');
             })
     }
+    function handleMyAccountClick(evt) {
+        navigate('/auth/user/my-account', { state: { token }});
+    }
     if(!token) {
         return <Navigate to='/auth/login' />
     }
@@ -34,7 +37,7 @@ function Quiz() {
                 <div className={Style.profile} onMouseEnter={() => {setIsProfileOpen(true)}} onMouseLeave={() => {setIsProfileOpen(false)}}></div>
                 {isProfileOpen &&
                     <div className={Style.myAccountDiv} onMouseEnter={() => setIsProfileOpen(true)} onMouseLeave={() => {setIsProfileOpen(false)}}>
-                        <p className={Style.options}>My Account</p>
+                        <p onClick={handleMyAccountClick} className={Style.options}>My Account</p>
                         <p onClick={handleLogoutClick} className={Style.options}> Logout</p>
                     </div>
                 }
