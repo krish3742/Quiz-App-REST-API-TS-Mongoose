@@ -1,17 +1,18 @@
-import Style from './MyAccount.module.css';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
+import Style from './MyAccount.module.css';
+
 function MyAccount() {
     const location = useLocation();
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(true);
-    const [isProfileOpen, setIsProfileOpen] = useState(false);
-    const token = location?.state?.token;
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [errors, setErrors] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const token = location?.state?.token;
     const headers = {'Authorization': `Bearer ${token}`};
     function handleLogoutClick(evt) {
         setIsLoading(true);

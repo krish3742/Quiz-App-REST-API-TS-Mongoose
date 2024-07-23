@@ -1,7 +1,8 @@
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import Style from './Quiz.module.css';
 import { useState } from 'react';
 import axios from 'axios';
+
+import Style from './Quiz.module.css';
 
 function Quiz() {
     const location = useLocation();

@@ -11,6 +11,8 @@ import MyAccount from './pages/MyAccount';
 import ChangeName from './pages/ChangeName';
 import ChangePassword from './pages/ChangePassword';
 import VerifyDeactivateOtpPage from './pages/VerifyDeactivateOtpPage';
+import ActivateUserCallback from './components/ActivateUserCallback';
+import ActivateUser from './pages/ActivateUser';
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
         <Route path='/auth/quiz' element={<Quiz />}></Route>
         <Route path='/auth/user/deactivateaccount' element={<VerifyDeactivateOtpPage />}></Route>
         <Route path='/auth/user/change-password' element={<ChangePassword />}></Route>
+        <Route path='/auth/activateuser' element={<ActivateUser />}></Route>
+        <Route path='/auth/activate/:token' element={<ActivateUserCallback />}></Route>
         <Route path='*' element={<Navigate to='/auth/register' />}></Route>
       </Routes>
     </OuterLayout>

@@ -1,17 +1,19 @@
-import { useEffect, useState } from 'react';
-import Style from './ResetPassword.module.css';
 import { Link, useLocation, Navigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
+
+import Style from './ResetPassword.module.css';
+
 function ResetPassword() {
     let passwordCheck = 1;
     const location = useLocation();
-    const [isLoading, setIsLoading] = useState(false);
-    const userId = location?.state?.userId;
+    const [flag, setFlag] = useState(true);
     const [color, setColor] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errors, setErrors] = useState(["Testing"]);
-    const [flag, setFlag] = useState(true);
+    const userId = location?.state?.userId;
     function handlePasswordChange(evt) {
         setPassword(evt.target.value);
     }

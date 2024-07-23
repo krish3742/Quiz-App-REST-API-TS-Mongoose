@@ -1,18 +1,18 @@
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import Style from './Register.module.css';
 
 function Register() {
     let flag = 1;
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(false);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
     const [errors, setErrors] = useState(["Testing"]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [confirmPassword, setConfirmPassword] = useState("");
     function handleNameChange(evt) {
         setName(evt.target.value);
     }
@@ -116,7 +116,6 @@ function Register() {
                     }
                 })
                 .catch((error) => {
-                    console.log(error);
                     setIsLoading(false);
                     const message = error?.response?.data?.message;
                     if(error?.response?.status === 500) {

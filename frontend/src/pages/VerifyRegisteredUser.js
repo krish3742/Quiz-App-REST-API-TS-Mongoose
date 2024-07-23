@@ -1,16 +1,13 @@
 import { Link, useLocation, Navigate } from 'react-router-dom';
-import Style from './VerifyRegisteredUser.module.css';
+import { AutoTabProvider } from 'react-auto-tab';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { AutoTabProvider } from 'react-auto-tab';
+
+import Style from './VerifyRegisteredUser.module.css';
 
 function VerifyRegisteredUser() {
     const location = useLocation();
     const state = location.state;
-    const [isLoading, setIsLoading] = useState(false);
-    const [flag, setFlag] = useState(true);
-    const [color, setColor] = useState("");
-    const [errors, setErrors] = useState([]);
     const [otp, setOtp] = useState();
     const [otp1, setOtp1] = useState("");
     const [otp2, setOtp2] = useState("");
@@ -18,6 +15,10 @@ function VerifyRegisteredUser() {
     const [otp4, setOtp4] = useState("");
     const [otp5, setOtp5] = useState("");
     const [otp6, setOtp6] = useState("");
+    const [flag, setFlag] = useState(true);
+    const [color, setColor] = useState("");
+    const [errors, setErrors] = useState([]);
+    const [isLoading, setIsLoading]= useState(false);
     function handleOtp1Change(evt) {
         setOtp1(evt.target.value);
     }

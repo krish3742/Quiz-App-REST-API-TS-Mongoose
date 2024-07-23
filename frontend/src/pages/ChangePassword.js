@@ -113,9 +113,6 @@ function Register() {
     }
     useEffect(() => {
         if(errors.length === 0) {
-            console.log(currentPassword)
-            console.log(newPassword)
-            console.log(confirmPassword)
             axios
                 .put("http://localhost:3002/user/changepassword", {currentPassword, newPassword, confirmPassword}, { headers })
                 .then((response) => {
@@ -127,7 +124,6 @@ function Register() {
                     }, 1000);
                 })
                 .catch((error) => {
-                    console.log(error);
                     setIsLoading(false);
                     const message = error?.response?.data?.message;
                     if(error?.response?.status === 500) {

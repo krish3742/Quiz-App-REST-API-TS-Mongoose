@@ -1,18 +1,19 @@
-import Style from './ChangeName.module.css';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
+import Style from './ChangeName.module.css';
+
 function ChangeName() {
     const location = useLocation();
     const navigate = useNavigate();
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [errors, setErrors] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const token = location?.state?.token;
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
     const headers = {'Authorization': `Bearer ${token}`};
-    const [errors, setErrors] = useState([]);
     function handleLogoutClick(evt) {
         setIsLoading(true);
         axios

@@ -1,15 +1,19 @@
-import { Link, useNavigate } from 'react-router-dom';
-import Style from './Login.module.css';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+
+import Style from './Login.module.css';
+
 function Login() {
     const navigate = useNavigate();
-    const [email, setEmail] = useState("");
-    const [color, setColor] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState(["testing"]);
+    const location = useLocation();
     const [flag, setFlag] = useState(true);
+    const [color, setColor] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [errors, setErrors] = useState(["testing"]);
+    const [message, setMessage] = useState(location?.state?.message);
     function handleEmailChange(evt) { 
         setEmail(evt.target.value);
     }
@@ -18,6 +22,7 @@ function Login() {
     }
     function handleLoginClick(evt) {
         evt.preventDefault();
+        setMessage("");
         setErrors([]);
         setIsLoading(true);
         if(!email) {
@@ -41,6 +46,7 @@ function Login() {
     }
     function handleForgotPasswordClick(evt) {
         evt.preventDefault();
+        setMessage("");
         setIsLoading(true);
         if(!email) {
             setIsLoading(false);
@@ -184,6 +190,13 @@ function Login() {
                                 {errors.map(message =>  {
                                     return <li className={!!color ? Style.black : Style.red} key={message}>{message}</li>
                                 })}
+                            </ul>
+                        </div>
+                    }
+                    {!!message &&
+                        <div className={Style.instructionParaDiv}>
+                            <ul>
+                                <li className={Style.black}>{message}</li>
                             </ul>
                         </div>
                     }
