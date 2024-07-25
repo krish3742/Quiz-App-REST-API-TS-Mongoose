@@ -315,7 +315,6 @@ function CreateQuiz() {
             .then((response) => {
                 setIsLoading(false);
                 setQuizzesList(response?.data?.data);
-                console.log(response);
             })
             .catch((error) => {
                 setIsLoading(false);
@@ -396,10 +395,10 @@ function CreateQuiz() {
                                 length = undefined;
                             }
                             return (
-                                <div className={Style.titleDiv}>
+                                <div className={Style.titleDiv} key={list.questionNumber}>
                                     <div>
                                         <h4 className={Style.title}>Question {list.questionNumber}: *</h4>
-                                        <input type='text' placeholder='Enter question' value={list.question} onChange={(e) => handleQuestionChange(list.questionNumber, e)} id='questionName' key={list.questionNumber} className={Style.input}></input>
+                                        <input type='text' placeholder='Enter question' value={list.question} onChange={(e) => handleQuestionChange(list.questionNumber, e)} id='questionName' className={Style.input}></input>
                                     </div>
                                     <div>
                                         <h4 className={Style.titleOption}>Options</h4>
@@ -411,16 +410,16 @@ function CreateQuiz() {
                                                     lastKeyString = lastKey.toString();
                                                 }
                                                 return (
-                                                    <div className={Style.optionDiv}>
+                                                    <div className={Style.optionDiv} key={key}>
                                                         <div>
                                                             <span key={key}>{key}: </span>
-                                                            <input type='text' value={list.options[key]} placeholder='Enter option' id='options' key={Object.keys(list.options).length} onChange={(e) => handleOptionsChange(list.questionNumber, key, e)} className={Style.input}></input>
+                                                            <input type='text' value={list.options[key]} placeholder='Enter option' id='options' onChange={(e) => handleOptionsChange(list.questionNumber, key, e)} className={Style.input}></input>
                                                         </div>
                                                         {key === '1' &&
-                                                            <button onClick={() => handleAddOptionClick(list.questionNumber)} className={Style.addRemoveButton} key={key}>Add Option</button>
+                                                            <button onClick={() => handleAddOptionClick(list.questionNumber)} className={Style.addRemoveButton} key='addOption'>Add Option</button>
                                                         }
                                                         {key === lastKeyString &&
-                                                            <button onClick={() => handleRemoveOptionClick(list.questionNumber)} className={Style.addRemoveButton} id={key}>Remove Option</button>
+                                                            <button onClick={() => handleRemoveOptionClick(list.questionNumber)} className={Style.addRemoveButton} key='removeOption'>Remove Option</button>
                                                         } 
                                                     </div>
                                                 )    
@@ -428,10 +427,10 @@ function CreateQuiz() {
                                         }
                                     </div>
                                     {list.questionNumber === 1 &&
-                                        <button className={Style.addRemoveQuesButton} onClick={handleAddQuesClick}>Add Question</button>
+                                        <button className={Style.addRemoveQuesButton} onClick={handleAddQuesClick} key='addQues'>Add Question</button>
                                     }
                                     {list.questionNumber === length &&
-                                        <button className={Style.addRemoveQuesButton} onClick={handleRemoveQuesClick}>Remove Question</button>
+                                        <button className={Style.addRemoveQuesButton} onClick={handleRemoveQuesClick} key='removeQues'>Remove Question</button>
                                     }
                                 </div>
                             )
@@ -443,7 +442,7 @@ function CreateQuiz() {
                             {!!questionList &&
                                 questionList.map((list) => {
                                     return (
-                                        <div>
+                                        <div key={list.questionNumber}>
                                             <span>Ques {list.questionNumber}: </span>
                                             <input type='text' maxLength={1} placeholder='Enter the correct option number' onChange={(e) => handleAnswersChange(list.questionNumber, e)}  id='Answers' className={Style.input}></input>
                                         </div>
@@ -482,7 +481,7 @@ function CreateQuiz() {
                                     const lastKey = allowedUser.length;
                                     if(index === 0) {
                                         return (
-                                            <div className={Style.optionDiv}>
+                                            <div className={Style.optionDiv} key={index}>
                                                 <div>
                                                     <span id={index}>{index + 1}: </span>
                                                     <input type='text' value={value} placeholder='Enter user id' id='allowedUser' onChange={(e) => handleAllowedUserChange(index, e)} className={Style.input}></input>

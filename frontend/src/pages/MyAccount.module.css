@@ -77,6 +77,10 @@
     cursor: pointer;
 }
 
+.quizApp {
+    cursor: pointer;
+}
+
 .titleDiv {
     display: flex;
     align-items: center;
@@ -255,6 +259,13 @@
     outline: none;
     background-color: white;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.noQuiz {
+    margin: .5rem 0 0 0;
+    font-size: medium;
+    padding: 0 .5rem 0 .5rem;
+    cursor: default;
 }
 
 .deactivateAccountButton:hover {

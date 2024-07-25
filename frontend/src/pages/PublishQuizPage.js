@@ -49,7 +49,6 @@ function PublishQuiz() {
                 .then((response) => {
                     setQuizId("");
                     setFlag(!flag);
-                    console.log(response);
                 })
                 .catch((error) => {
                     setQuizId("");
@@ -75,7 +74,6 @@ function PublishQuiz() {
             .then((response) => {
                 setIsLoading(false);
                 setQuizzesList(response?.data?.data);
-                console.log(response);
             })
             .catch((error) => {
                 setIsLoading(false);
@@ -124,7 +122,7 @@ function PublishQuiz() {
                     {!!myQuizList && myQuizList.length != 0 &&
                         myQuizList.map((list) => {
                             return (
-                                <div className={Style.accountDiv}> 
+                                <div className={Style.accountDiv} key={list._id}> 
                                     <div className={Style.titleDiv}>
                                         <div>
                                             <h4 className={Style.title}>{list.name}</h4>

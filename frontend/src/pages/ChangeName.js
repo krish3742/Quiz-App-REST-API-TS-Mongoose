@@ -119,7 +119,6 @@ function ChangeName() {
             .then((response) => {
                 setIsLoading(false);
                 setQuizzesList(response?.data?.data);
-                console.log(response);
             })
             .catch((error) => {
                 setIsLoading(false);
@@ -135,7 +134,7 @@ function ChangeName() {
     return (
         <>
             <div className={Style.container}>
-                <h2 className={Style.title} onClick={handleQuizAppClick}>Quiz App</h2>
+                <h2 className={Style.quizApp} onClick={handleQuizAppClick}>Quiz App</h2>
                 <div className={Style.menuDiv}>
                     <h4 className={Style.menu} onMouseEnter={() => {setIsQuizzesOpen(true)}} onMouseLeave={() => {setIsQuizzesOpen(false)}}>Quizzes</h4>
                     {isQuizzesOpen &&

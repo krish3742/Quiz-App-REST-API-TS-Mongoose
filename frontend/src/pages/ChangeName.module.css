@@ -78,6 +78,10 @@
     cursor: pointer;
 }
 
+.quizApp {
+    cursor: pointer;
+}
+
 .titleDiv {
     display: flex;
     align-items: center;
@@ -168,6 +172,12 @@
     cursor: pointer;
 }
 
+.noQuiz {
+    margin: .5rem 0 0 0;
+    font-size: medium;
+    padding: 0 .5rem 0 .5rem;
+    cursor: default;
+}
 
 .myQuizDiv {
     position: absolute;

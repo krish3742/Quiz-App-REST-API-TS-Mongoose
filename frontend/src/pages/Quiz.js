@@ -15,7 +15,6 @@ function Quiz() {
     const [myQuizList, setMyQuizList] = useState([]); 
     const token = location?.state?.token;
     const headers = {'Authorization': `Bearer ${token}`};
-    console.log(myQuizList);
     function handleLogoutClick(evt) {
         axios
             .post('http://localhost:3002/user/logout', {}, { headers })
@@ -58,7 +57,6 @@ function Quiz() {
             .then((response) => {
                 setIsLoading(false);
                 setQuizzesList(response?.data?.data);
-                console.log(response);
             })
             .catch((error) => {
                 setIsLoading(false);
