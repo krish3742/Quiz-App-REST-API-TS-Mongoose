@@ -23,6 +23,10 @@ function Quiz() {
     function handleMyAccountClick(evt) {
         navigate('/auth/user/my-account', { state: { token }});
     }
+    function handleCreateQuizClick(evt) {
+        evt.preventDefault();
+        navigate('/auth/quiz/create', { state: { token }});
+    }
     if(!token) {
         return <Navigate to='/auth/login' />
     }
@@ -47,7 +51,7 @@ function Quiz() {
                 <div className={Style.quizDiv}>
                     <h2 className={Style.heading}>Create Quiz</h2>
                     <span className={Style.para}>Create you own customized quiz.</span>
-                    <button className={Style.button}>Create Quiz</button>
+                    <button className={Style.button} onClick={handleCreateQuizClick}>Create Quiz</button>
                 </div>
                 <div className={Style.quizDiv}>
                     <h2 className={Style.heading}>Publish Quiz</h2>

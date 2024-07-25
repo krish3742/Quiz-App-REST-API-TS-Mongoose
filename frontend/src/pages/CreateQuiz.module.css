@@ -1,0 +1,327 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    margin-top: .5rem;
+    margin-left: 3.1rem;
+    cursor: default;
+}
+
+.linear {
+    cursor: default;
+    width: 87.5%;
+    min-height: 75vh;
+    border-radius: 15px;
+    border: 1px solid white;
+    margin-left: 4.5rem;
+    background-image: linear-gradient(to bottom right, #080E2F, #14257B);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+    padding: 0;
+    gap: 1rem;
+}
+
+.menuDiv {
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    gap: 1.5rem;
+    margin-left: -5rem;
+    margin-top: .5rem;
+}
+
+.profile {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: wheat;
+    background-image: url('../../public/profile.jpg');
+    background-repeat: no-repeat;
+    background-position: start;
+    background-size: 100%;
+    border: 1.5px solid white;
+}
+
+.menu:hover {
+    cursor: pointer;
+}
+
+.black {
+    color: black;
+}
+
+.red {
+    color: red;
+}
+
+.quizDiv {
+    width: 90%;
+    height: 32.5vh;
+    background-color: white;
+    border-radius: 10px;
+    color: #0F0C2C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.heading {
+    margin: 1rem 0 0 0;
+    margin-left: -51rem;
+}
+
+.para {
+    margin: 0 0 1rem 0;
+    font-size: larger;
+}
+
+.title {
+    margin: 0;
+    margin-top: 1rem;
+    color: #0F0C2C;
+}
+
+.QuizApp {
+    margin: 0;
+    margin-top: 1rem;
+    color: white;
+}
+
+.titleDiv {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    background-color: rgb(255, 255, 255);
+    padding: 0 1.5rem 0 1rem;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+}
+
+.titleOption {
+    margin: 0;
+    color: #0F0C2C;
+}
+
+.instructionParaDiv {
+    width: 21rem;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: red;
+    font-size: small;
+    margin: 1rem 0 0 21rem;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    
+}
+
+.paraDiv {
+    padding: 0 0 0 1rem;
+}
+
+.input {
+    outline: none;
+    width: 25rem;
+    height: 2rem;
+    font-size: large;
+    margin: 0.5rem 0 1rem 0;
+    border: none;
+    background-color: transparent;
+    border-bottom: 1.5px solid black;
+    padding: 0 0 0 0.25rem;
+    color: #0F0C2C;
+}
+
+.option {
+    outline: none;
+    width: 25rem;
+    height: 2rem;
+    font-size: medium;
+    border: none;
+    margin: 0.5rem 0 1rem 0;
+    background-color: transparent;
+    border-bottom: 1.5px solid black;
+    padding: 0;
+    color: #0F0C2C;
+}
+
+.createButton {
+    margin: 1rem 0 0 0;
+    height: 2.25rem;
+    width: 8rem;
+    border-radius: 10px;
+    border: none;
+    background-color: white;
+    font-size: medium;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.optionDiv{
+    display: flex;
+}
+
+.addRemoveButton {
+    height: 2rem;
+    width: 7rem;
+    margin-left: 1rem;
+    border-radius: 5px;
+    border: none;
+    background-color: #080E2F;
+    color: white;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+.optionNumber {
+    margin-top: 10rem;
+}
+
+.addRemoveQuesButton {
+    height: 2rem;
+    width: 9rem;
+    border-radius: 5px;
+    border: none;
+    background-color: #080E2F;
+    color: white;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    margin-left: 50rem;
+}
+
+.createDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+   
+.button {
+    height: 2.75rem;
+    width: 10rem;
+    background-color: #0F0C2C;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+    font-size: large;
+    color: white;
+}
+
+.button:hover {
+    cursor: pointer;
+}
+
+.errorPara {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    font-size: small;
+    margin-left: 29.5rem;
+    color: red;
+}
+
+.icon {
+    color: red;
+    position: absolute;
+    margin-left: 19rem;
+    margin-top: -.1rem;
+}
+
+.myAccountDiv {
+    position: absolute;
+    width: 8rem;
+    height: 4.3rem;
+    background-color: white;
+    top: 4.70rem;
+    right: 5rem;
+    border-radius: 5px;
+    border: 1px solid black;
+    color: black;
+    margin-bottom: 1rem;
+}
+
+.options {
+    margin: .5rem 0 0 0;
+    font-size: medium;
+    padding: 0 .5rem 0 .5rem;
+}
+
+.options:hover {
+    cursor: pointer;
+}
+
+.loading {
+    position: absolute;
+    width: 100vw;
+    min-height: 100vh;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader {
+    color: black;
+    width: 50px;
+    aspect-ratio: 1;
+    border: 2px solid;
+    box-sizing: border-box;
+    border-radius: 50%;
+    display: grid;
+    animation: l11 1.5s infinite linear;
+    transform-origin: 50% 80%;
+}
+
+.loader:before,
+.loader:after {
+    content: "";
+    grid-area: 1/1;
+    border: inherit;
+    border-radius: 50%;
+    animation: inherit;
+    animation-duration: 1s;
+    transform-origin: inherit;
+}
+
+.loader:after {
+    --s:-1;
+}
+
+@keyframes l11 {
+    100% {transform:rotate(calc(var(--s,1)*1turn))}
+}
+
+.accountDiv {
+    color: black;
+    width: 90%;
+    /* background-color: n; */
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.line {
+    width: 100%;
+    border: 1px solid black;
+}
+
+.editButton {
+    width: 6rem;
+    height: 2rem;
+    border-radius: 10px;
+    border: 1px solid black;
+    outline: none;
+    background-color: white;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.createButton:hover {
+    cursor: pointer;
+}
+
+.editButton {
+    cursor: pointer;
+}
