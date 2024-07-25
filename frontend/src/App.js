@@ -14,6 +14,7 @@ import VerifyDeactivateOtpPage from './pages/VerifyDeactivateOtpPage';
 import ActivateUserCallback from './components/ActivateUserCallback';
 import ActivateUser from './pages/ActivateUser';
 import CreateQuiz from './pages/CreateQuiz';
+import PublishQuiz from './pages/PublishQuizPage';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
 
         <Route path='/auth/quiz' element={<Quiz />}></Route>
         <Route path='/auth/quiz/create' element={<CreateQuiz />}></Route>
+        <Route path='/auth/quiz/publish' element={<PublishQuiz />}></Route>
 
         <Route path='/auth/user/my-account' element={<MyAccount />}></Route>
         <Route path='/auth/user/change-name' element={<ChangeName />}></Route>

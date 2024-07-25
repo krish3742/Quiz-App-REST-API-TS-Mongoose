@@ -92,6 +92,10 @@ function CreateQuiz() {
             })
         })
     }
+    function handleQuizAppClick(evt) {
+        evt.preventDefault();
+        navigate('/auth/quiz', { state: { token }});
+    }
     function handleLogoutClick(evt) {
         setIsLoading(true);
         axios
@@ -298,7 +302,7 @@ function CreateQuiz() {
     return (
         <>
             <div className={Style.container}>
-                <h2 className={Style.QuizApp}>Quiz App</h2>
+                <h2 className={Style.QuizApp} onClick={handleQuizAppClick}>Quiz App</h2>
                 <div className={Style.menuDiv}>
                     <h4 className={Style.menu}>Quizzes</h4>
                     <h4 className={Style.menu}>Reports</h4>
@@ -344,154 +348,50 @@ function CreateQuiz() {
                     </div>
                     {!!questionList && 
                         questionList.map((list) => {
-                            const length = questionList.length;
-                            if(list.questionNumber === 1) {
-                                return (
-                                    <div className={Style.titleDiv}>
-                                        <div>
-                                            <h4 className={Style.title}>Question {list.questionNumber}: *</h4>
-                                            <input type='text' placeholder='Enter question' value={list.question} onChange={(e) => handleQuestionChange(list.questionNumber, e)} id='questionName' key={list.questionNumber} className={Style.input}></input>
-                                        </div>
-                                        <div>
-                                            <h4 className={Style.titleOption}>Options</h4>
-                                            {!!list.options &&
-                                                Object.keys(list.options).map(function (key) {
-                                                    const lastKey = Object.keys(list.options).length;
-                                                    const lastKeyString = lastKey.toString();
-                                                    if(key.includes('1')) {
-                                                        return (
-                                                            <div className={Style.optionDiv}>
-                                                                <div>
-                                                                    <span key={key}>{key}: </span>
-                                                                    <input type='text' value={list.options[key]} placeholder='Enter option' id='options' key={Object.keys(list.options).length} onChange={(e) => handleOptionsChange(list.questionNumber, key, e)} className={Style.input}></input>
-                                                                </div>
-                                                                <button onClick={() => handleAddOptionClick(list.questionNumber)} className={Style.addRemoveButton} key={key}>Add Option</button>
-                                                            </div>
-                                                        )
-                                                    } else if(key.includes(lastKeyString)) {
-                                                        return (
-                                                            <div className={Style.optionDiv}>
-                                                                <div>
-                                                                    <span id={key}>{key}: </span>
-                                                                    <input type='text' value={list.options[key]} placeholder='Enter option' id='options' key={Object.keys(list.options).length} onChange={(e) => handleOptionsChange(list.questionNumber, key, e)} className={Style.input}></input>
-                                                                </div>
-                                                                <button onClick={() => handleRemoveOptionClick(list.questionNumber)} className={Style.addRemoveButton} id={key}>Remove Option</button>
-                                                            </div>
-                                                        )   
-                                                    } else  {
-                                                        return (
-                                                            <div className={Style.optionDiv}>
-                                                                <div>
-                                                                    <span id={key}>{key}: </span>
-                                                                    <input type='text' value={list.options[key]} placeholder='Enter option' id='options' key={Object.keys(list.options).length} onChange={(e) => handleOptionsChange(list.questionNumber, key, e)} className={Style.input}></input>
-                                                                </div>
-                                                            </div>
-                                                        )
-                                                    } 
-                                                })
-                                            }
-                                        </div>
+                            let length = questionList.length;
+                            if(length === 1) {
+                                length = undefined;
+                            }
+                            return (
+                                <div className={Style.titleDiv}>
+                                    <div>
+                                        <h4 className={Style.title}>Question {list.questionNumber}: *</h4>
+                                        <input type='text' placeholder='Enter question' value={list.question} onChange={(e) => handleQuestionChange(list.questionNumber, e)} id='questionName' key={list.questionNumber} className={Style.input}></input>
+                                    </div>
+                                    <div>
+                                        <h4 className={Style.titleOption}>Options</h4>
+                                        {!!list.options &&
+                                            Object.keys(list.options).map(function (key) {
+                                                const lastKey = Object.keys(list.options).length;
+                                                let lastKeyString;
+                                                if(lastKey !== 1) {
+                                                    lastKeyString = lastKey.toString();
+                                                }
+                                                return (
+                                                    <div className={Style.optionDiv}>
+                                                        <div>
+                                                            <span key={key}>{key}: </span>
+                                                            <input type='text' value={list.options[key]} placeholder='Enter option' id='options' key={Object.keys(list.options).length} onChange={(e) => handleOptionsChange(list.questionNumber, key, e)} className={Style.input}></input>
+                                                        </div>
+                                                        {key === '1' &&
+                                                            <button onClick={() => handleAddOptionClick(list.questionNumber)} className={Style.addRemoveButton} key={key}>Add Option</button>
+                                                        }
+                                                        {key === lastKeyString &&
+                                                            <button onClick={() => handleRemoveOptionClick(list.questionNumber)} className={Style.addRemoveButton} id={key}>Remove Option</button>
+                                                        } 
+                                                    </div>
+                                                )    
+                                            })
+                                        }
+                                    </div>
+                                    {list.questionNumber === 1 &&
                                         <button className={Style.addRemoveQuesButton} onClick={handleAddQuesClick}>Add Question</button>
-                                    </div>
-                                )
-                            } else if(list.questionNumber === length) {
-                                return (
-                                    <div className={Style.titleDiv}>
-                                        <div>
-                                            <h4 className={Style.title}>Question {list.questionNumber}:</h4>
-                                            <input type='text' placeholder='Enter question' id='questionName' key={list.questionNumber} onChange={(e) => handleQuestionChange(list.questionNumber, e)} className={Style.input}></input>
-                                        </div>
-                                        <div>
-                                            <h4 className={Style.titleOption}>Options</h4>
-                                            {!!list.options &&
-                                                Object.keys(list.options).map(function (key) {
-                                                    const lastKey = Object.keys(list.options).length;
-                                                    const lastKeyString = lastKey.toString();
-                                                    if(key.includes('1')) {
-                                                        return (
-                                                            <div className={Style.optionDiv}>
-                                                                <div>
-                                                                    <span id={key}>{key}: </span>
-                                                                    <input type='text' value={list.options[key]} placeholder='Enter option' id='options' key={Object.keys(list.options).length} onChange={(e) => handleOptionsChange(list.questionNumber, key, e)} className={Style.input}></input>
-                                                                </div>
-                                                                <button onClick={() => handleAddOptionClick(list.questionNumber)} className={Style.addRemoveButton} key={key}>Add Option</button>
-                                                            </div>
-                                                        )
-                                                    } else if(key.includes(lastKeyString)) {
-                                                        return (
-                                                            <div className={Style.optionDiv}>
-                                                                <div>
-                                                                    <span id={key}>{key}: </span>
-                                                                    <input type='text' value={list.options[key]} placeholder='Enter option' id='options' key={Object.keys(list.options).length} onChange={(e) => handleOptionsChange(list.questionNumber, key, e)} className={Style.input}></input>
-                                                                </div>
-                                                                <button onClick={() => handleRemoveOptionClick(list.questionNumber)} className={Style.addRemoveButton} id={key}>Remove Option</button>
-                                                            </div>
-                                                        )
-                                                    } else {
-                                                        return (
-                                                            <div className={Style.optionDiv}>
-                                                                <div>
-                                                                    <span id={key}>{key}: </span>
-                                                                    <input type='text' value={list.options[key]} placeholder='Enter option' id='options' key={Object.keys(list.options).length} onChange={(e) => handleOptionsChange(list.questionNumber, key, e)} className={Style.input}></input>
-                                                                </div>
-                                                            </div>
-                                                        )
-                                                    }
-                                                })
-                                            }
-                                        </div>
+                                    }
+                                    {list.questionNumber === length &&
                                         <button className={Style.addRemoveQuesButton} onClick={handleRemoveQuesClick}>Remove Question</button>
-                                    </div>
-                                )  
-                            } else {
-                                return (
-                                    <div className={Style.titleDiv}>
-                                        <div>
-                                            <h4 className={Style.title}>Question {list.questionNumber}:</h4>
-                                            <input type='text' placeholder='Enter question' onChange={(e) => handleQuestionChange(list.questionNumber, e)} id='questionName' key={list.questionNumber} className={Style.input}></input>
-                                        </div>
-                                        <div>
-                                            <h4 className={Style.titleOption}>Options</h4>
-                                            {!!list.options &&
-                                                Object.keys(list.options).map(function (key) {
-                                                    const lastKey = Object.keys(list.options).length;
-                                                    const lastKeyString = lastKey.toString();
-                                                    if(key.includes('1')) {
-                                                        return (
-                                                            <div className={Style.optionDiv}>
-                                                                <div>
-                                                                    <span id={key}>{key}: </span>
-                                                                    <input type='text' value={list.options[key]} id='options' key={Object.keys(list.options).length} placeholder='Enter option' onChange={(e) => handleOptionsChange(list.questionNumber, key, e)} className={Style.input}></input>
-                                                                </div>
-                                                                <button onClick={() => handleAddOptionClick(list.questionNumber)} className={Style.addRemoveButton} key={key}>Add Option</button>
-                                                            </div>
-                                                        )
-                                                    } else if(key.includes(lastKeyString)) {
-                                                        return (
-                                                            <div className={Style.optionDiv}>
-                                                                <div>
-                                                                    <span id={key}>{key}: </span>
-                                                                    <input type='text' value={list.options[key]} id='options' key={Object.keys(list.options).length} placeholder='Enter option' onChange={(e) => handleOptionsChange(list.questionNumber, key, e)} className={Style.input}></input>
-                                                                </div>
-                                                                <button onClick={() => handleRemoveOptionClick(list.questionNumber)}className={Style.addRemoveButton} id={key}>Remove Option</button>
-                                                            </div>
-                                                        )
-                                                    } else {
-                                                        return (
-                                                            <div className={Style.optionDiv}>
-                                                                <div>
-                                                                    <span id={key}>{key}: </span>
-                                                                    <input type='text' value={list.options[key]} id='options' key={Object.keys(list.options).length} placeholder='Enter option' onChange={(e) => handleOptionsChange(list.questionNumber, key, e)} className={Style.input}></input>
-                                                                </div>
-                                                            </div>
-                                                        )
-                                                    }
-                                                })
-                                            }
-                                        </div>
-                                    </div>
-                                )
-                            }      
+                                    }
+                                </div>
+                            )
                         })
                     }
                     <div className={Style.titleDiv}>

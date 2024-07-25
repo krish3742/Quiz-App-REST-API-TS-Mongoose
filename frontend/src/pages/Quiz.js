@@ -1,5 +1,5 @@
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import Style from './Quiz.module.css';
@@ -8,8 +8,12 @@ function Quiz() {
     const location = useLocation();
     const navigate = useNavigate();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isMyQuizOpen, setIsMyQuizOpen] = useState(false);
+    const [myQuizList, setMyQuizList] = useState([]); 
     const token = location?.state?.token;
     const headers = {'Authorization': `Bearer ${token}`};
+    console.log(myQuizList);
     function handleLogoutClick(evt) {
         axios
             .post('http://localhost:3002/user/logout', {}, { headers })
@@ -27,17 +31,47 @@ function Quiz() {
         evt.preventDefault();
         navigate('/auth/quiz/create', { state: { token }});
     }
+    function handleQuizAppClick(evt) {
+        evt.preventDefault();
+        navigate('/auth/quiz', { state: { token }});
+    }
+    function handlePublishQuizClick(evt) {
+        evt.preventDefault();
+        navigate('/auth/quiz/publish', {state: {token}});
+    }
+    useEffect(() => {
+        axios
+            .get('http://localhost:3002/quiz', { headers })
+            .then((response) => {
+                setIsLoading(false);
+                setMyQuizList(response?.data?.data);
+            })
+            .catch((error) => {
+                setIsLoading(false);
+                const message = error?.response?.data?.message;
+                if(message.includes('Quiz not found!')) {
+                    setMyQuizList(["No quiz found"]);
+                }
+            })
+    }, [])
     if(!token) {
         return <Navigate to='/auth/login' />
     }
     return (
         <>
             <div className={Style.container}>
-                <h2 className={Style.title}>Quiz App</h2>
+                <h2 className={Style.title} onClick={handleQuizAppClick}>Quiz App</h2>
                 <div className={Style.menuDiv}>
                     <h4 className={Style.menu}>Quizzes</h4>
                     <h4 className={Style.menu}>Reports</h4>
-                    <h4 className={Style.menu}>My Quiz</h4>
+                    <h4 className={Style.menu} onMouseEnter={() => {setIsMyQuizOpen(true)}} onMouseLeave={() => {setIsMyQuizOpen(false)}}>My Quiz</h4>
+                    {isMyQuizOpen &&
+                        <div className={Style.myQuizDiv} onMouseEnter={() => setIsMyQuizOpen(true)} onMouseLeave={() => {setIsMyQuizOpen(false)}}>
+                            {myQuizList.length !== 0 ? myQuizList.map((list) => {
+                                return <p className={Style.options} key={list.name}>{list.name}</p>
+                            }) : <p className={Style.noQuiz} key='noQuiz'>No quiz created!</p>}
+                        </div>
+                    }
                 </div>
                 <div className={Style.profile} onMouseEnter={() => {setIsProfileOpen(true)}} onMouseLeave={() => {setIsProfileOpen(false)}}></div>
                 {isProfileOpen &&
@@ -56,9 +90,14 @@ function Quiz() {
                 <div className={Style.quizDiv}>
                     <h2 className={Style.heading}>Publish Quiz</h2>
                     <span className={Style.para}>Users can attempt only published quizzes.</span>
-                    <button className={Style.button}>Publish Quiz</button>
+                    <button className={Style.button} onClick={handlePublishQuizClick}>Publish Quiz</button>
                 </div>
             </div>
+            {isLoading && 
+                <div className={Style.loading}>
+                    <div className={Style.loader}></div>
+                </div>
+            }
         </>
     )
 }

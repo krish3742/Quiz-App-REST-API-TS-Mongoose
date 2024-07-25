@@ -8,6 +8,10 @@
     cursor: default;
 }
 
+.title {
+    cursor: pointer;
+}
+
 .linear {
     width: 87.5%;
     min-height: 75vh;
@@ -166,10 +170,12 @@
 }
 
 .loading {
-    position: absolute;
+    position: fixed;
     width: 100vw;
     min-height: 100vh;
     background-color: rgba(255, 255, 255, 0.5);
+    overflow-y:scroll;
+    overflow-x:hidden;
     display: flex;
     align-items: center;
     justify-content: center;

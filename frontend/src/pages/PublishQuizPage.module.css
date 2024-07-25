@@ -8,7 +8,12 @@
     cursor: default;
 }
 
+.title {
+    cursor: pointer;
+}
+
 .linear {
+    cursor: default;
     width: 87.5%;
     min-height: 75vh;
     border-radius: 15px;
@@ -20,7 +25,7 @@
     flex-direction: column;
     margin-bottom: 1.5rem;
     gap: 1rem;
-    cursor: default;
+    padding-bottom: 2rem;
 }
 
 .menuDiv {
@@ -63,8 +68,7 @@
 
 .heading {
     margin: 1rem 0 0 0;
-    margin-left: -46rem;
-    cursor: default;
+    margin-left: -50rem;
 }
 
 .para {
@@ -72,17 +76,21 @@
     font-size: larger;
 }
 
-.title {
-    margin: 0;
-    margin-top: 1rem;
-    cursor: pointer;
+.accountDiv {
+    color: black;
+    width: 90%;
+    border-radius: 10px;
 }
 
 .titleDiv {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-direction: row;
+    background-color: rgb(255, 255, 255);
     padding: 0 1.5rem 0 1rem;
+    border-radius: 5px;
+    margin: 0;
 }
 
 .paraDiv {
@@ -100,34 +108,10 @@
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.deactivateAccountButton:hover {
-    cursor: pointer;
-}
-
-.editButton {
-    cursor: pointer;
-}
-
 .deactivateAccountDiv {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.errorPara {
-    position: absolute;
-    margin: 0;
-    padding: 0;
-    font-size: small;
-    margin-left: 29.5rem;
-    color: red;
-}
-
-.icon {
-    color: red;
-    position: absolute;
-    margin-left: 19rem;
-    margin-top: -.1rem;
 }
    
 .button {
@@ -145,12 +129,28 @@
     cursor: pointer;
 }
 
+.errorPara {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    font-size: small;
+    margin-left: 29.5rem;
+    color: red;
+}
+
+.icon {
+    color: red;
+    position: absolute;
+    margin-left: 19rem;
+    margin-top: -.1rem;
+}
+
 .myAccountDiv {
     position: absolute;
     width: 8rem;
     height: 4.3rem;
     background-color: white;
-    top: 4.75rem;
+    top: 4.70rem;
     right: 5rem;
     border-radius: 5px;
     border: 1px solid black;
@@ -211,14 +211,6 @@
     100% {transform:rotate(calc(var(--s,1)*1turn))}
 }
 
-.accountDiv {
-    color: black;
-    width: 90%;
-    background-color: white;
-    border-radius: 10px;
-    margin-bottom: 2rem;
-}
-
 .line {
     width: 100%;
     border: 1px solid black;
@@ -234,14 +226,40 @@
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.input {
+.editButtonDisabled {
+    width: 6rem;
     height: 2rem;
-    width: 18rem;
-    margin: 0.5rem 0 1rem 0;
+    border-radius: 10px;
     border: 1px solid black;
-    outline: 0;
+    outline: none;
+    background-color: white;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    cursor: not-allowed;
+}
+
+.myQuizDiv {
+    position: absolute;
+    width: 20rem;
+    background-color: white;
+    top: 4.65rem;
+    right: 24rem;
     border-radius: 5px;
-    padding: 0 .5rem 0 .5rem;
+    border: 1px solid black;
+    color: black;
+    padding: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.noQuiz {
+    margin: .5rem 0 0 0;
     font-size: medium;
-    background-color: rgba(128, 128, 128, 0.2);
+    padding: 0 .5rem 0 .5rem;
+    cursor: default;
+}
+
+.editButton {
+    cursor: pointer;
 }

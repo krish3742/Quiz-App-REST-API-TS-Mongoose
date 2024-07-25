@@ -30,6 +30,10 @@ function MyAccount() {
     function handleMyAccountClick(evt) {
         navigate('/auth/user/my-account', { state: { token }});
     }
+    function handleQuizAppClick(evt) {
+        evt.preventDefault();
+        navigate('/auth/quiz', { state: { token }});
+    }
     function handleChangePasswordClick(evt) {
         navigate('/auth/user/change-password', { state: { token }});
     }
@@ -84,7 +88,7 @@ function MyAccount() {
     return (
         <>
             <div className={Style.container}>
-                <h2 className={Style.title}>Quiz App</h2>
+                <h2 className={Style.title} onClick={handleQuizAppClick}>Quiz App</h2>
                 <div className={Style.menuDiv}>
                     <h4 className={Style.menu}>Quizzes</h4>
                     <h4 className={Style.menu}>Reports</h4>

@@ -8,6 +8,10 @@
     cursor: default;
 }
 
+.title {
+    cursor: pointer;
+}
+
 .linear {
     width: 87.5%;
     min-height: 75vh;
@@ -98,12 +102,79 @@
     color: black;
 }
 
+.myQuizDiv {
+    position: absolute;
+    width: 20rem;
+    background-color: white;
+    top: 4.65rem;
+    right: 24rem;
+    border-radius: 5px;
+    border: 1px solid black;
+    color: black;
+    padding: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
 .options {
     margin: .5rem 0 0 0;
     font-size: medium;
     padding: 0 .5rem 0 .5rem;
 }
 
+.noQuiz {
+    margin: .5rem 0 0 0;
+    font-size: medium;
+    padding: 0 .5rem 0 .5rem;
+    cursor: default;
+}
+
 .options:hover {
     cursor: pointer;
+}
+
+.loading {
+    position: fixed;
+    width: 100vw;
+    min-height: 100vh;
+    background-color: rgba(255, 255, 255, 0.5);
+    overflow-y:scroll;
+    overflow-x:hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader {
+    color: black;
+    width: 50px;
+    aspect-ratio: 1;
+    border: 2px solid;
+    box-sizing: border-box;
+    border-radius: 50%;
+    display: grid;
+    animation: l11 1.5s infinite linear;
+    transform-origin: 50% 80%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.loader:before,
+.loader:after {
+    content: "";
+    grid-area: 1/1;
+    border: inherit;
+    border-radius: 50%;
+    animation: inherit;
+    animation-duration: 1s;
+    transform-origin: inherit;
+}
+
+.loader:after {
+    --s:-1;
+}
+
+@keyframes l11 {
+    100% {transform:rotate(calc(var(--s,1)*1turn))}
 }
