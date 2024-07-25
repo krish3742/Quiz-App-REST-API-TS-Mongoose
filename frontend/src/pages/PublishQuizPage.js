@@ -9,10 +9,11 @@ function PublishQuiz() {
     const navigate = useNavigate();
     const [flag, setFlag] = useState(true);
     const [quizId, setQuizId] = useState();
-    const [errors, setErrors] = useState("testing");
     const [myQuizList, setMyQuizList] = useState([]); 
     const [isLoading, setIsLoading] = useState(true);
+    const [quizzesList, setQuizzesList] = useState([]);
     const [isMyQuizOpen, setIsMyQuizOpen] = useState(false);
+    const [isQuizzesOpen, setIsQuizzesOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const token = location?.state?.token;
     const headers = {'Authorization': `Bearer ${token}`};
@@ -69,8 +70,21 @@ function PublishQuiz() {
                     setMyQuizList(["No quiz found"]);
                 }
             })
+        axios
+            .get('http://localhost:3002/quiz/allpublishedquiz', { headers })
+            .then((response) => {
+                setIsLoading(false);
+                setQuizzesList(response?.data?.data);
+                console.log(response);
+            })
+            .catch((error) => {
+                setIsLoading(false);
+                const message = error?.response?.data?.message;
+                if(message.includes('No quiz found!')) {
+                    setMyQuizList(["No quiz published!"]);
+                }
+            })
     }, [quizId, flag]);
-    console.log(myQuizList);
     if(!token) {
         return <Navigate to='/auth/login' />
     }
@@ -79,7 +93,14 @@ function PublishQuiz() {
             <div className={Style.container}>
                 <h2 className={Style.title} onClick={handleQuizAppClick}>Quiz App</h2>
                 <div className={Style.menuDiv}>
-                    <h4 className={Style.menu}>Quizzes</h4>
+                    <h4 className={Style.menu} onMouseEnter={() => {setIsQuizzesOpen(true)}} onMouseLeave={() => {setIsQuizzesOpen(false)}}>Quizzes</h4>
+                    {isQuizzesOpen &&
+                        <div className={Style.quizzesDiv} onMouseEnter={() => setIsQuizzesOpen(true)} onMouseLeave={() => {setIsQuizzesOpen(false)}}>
+                            {quizzesList.length !== 0 ?quizzesList.map((list) => {
+                                return <p className={Style.options} key={list.name}>{list.name}</p>
+                            }) : <p className={Style.noQuiz} key='noQuiz'>No quiz published!</p>}
+                        </div>
+                    }
                     <h4 className={Style.menu}>Reports</h4>
                     <h4 className={Style.menu} onMouseEnter={() => {setIsMyQuizOpen(true)}} onMouseLeave={() => {setIsMyQuizOpen(false)}}>My Quiz</h4>
                     {isMyQuizOpen &&

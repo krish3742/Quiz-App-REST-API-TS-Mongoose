@@ -7,6 +7,10 @@ import Style from './CreateQuiz.module.css';
 function CreateQuiz() {
     const location = useLocation();
     const navigate = useNavigate();
+    const [myQuizList, setMyQuizList] = useState([]); 
+    const [quizzesList, setQuizzesList] = useState([]);
+    const [isMyQuizOpen, setIsMyQuizOpen] = useState(false);
+    const [isQuizzesOpen, setIsQuizzesOpen] = useState(false);
     const [errors, setErrors] = useState(["Testing"]);
     const [color, setColor] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -295,6 +299,31 @@ function CreateQuiz() {
         } else {
             setIsLoading(false);
         }
+        axios
+            .get('http://localhost:3002/quiz', { headers })
+            .then((response) => {
+                setMyQuizList(response?.data?.data);
+            })
+            .catch((error) => {
+                const message = error?.response?.data?.message;
+                if(message.includes('Quiz not found!')) {
+                    setMyQuizList(["No quiz found"]);
+                }
+            })
+        axios
+            .get('http://localhost:3002/quiz/allpublishedquiz', { headers })
+            .then((response) => {
+                setIsLoading(false);
+                setQuizzesList(response?.data?.data);
+                console.log(response);
+            })
+            .catch((error) => {
+                setIsLoading(false);
+                const message = error?.response?.data?.message;
+                if(message.includes('No quiz found!')) {
+                    setMyQuizList(["No quiz published!"]);
+                }
+            })
     }, [errors]);
     if(!token) {
         return <Navigate to='/auth/login' />
@@ -304,9 +333,23 @@ function CreateQuiz() {
             <div className={Style.container}>
                 <h2 className={Style.QuizApp} onClick={handleQuizAppClick}>Quiz App</h2>
                 <div className={Style.menuDiv}>
-                    <h4 className={Style.menu}>Quizzes</h4>
+                    <h4 className={Style.menu} onMouseEnter={() => {setIsQuizzesOpen(true)}} onMouseLeave={() => {setIsQuizzesOpen(false)}}>Quizzes</h4>
+                    {isQuizzesOpen &&
+                        <div className={Style.quizzesDiv} onMouseEnter={() => setIsQuizzesOpen(true)} onMouseLeave={() => {setIsQuizzesOpen(false)}}>
+                            {quizzesList.length !== 0 ?quizzesList.map((list) => {
+                                return <p className={Style.options} key={list.name}>{list.name}</p>
+                            }) : <p className={Style.noQuiz} key='noQuiz'>No quiz published!</p>}
+                        </div>
+                    }
                     <h4 className={Style.menu}>Reports</h4>
-                    <h4 className={Style.menu}>My Quiz</h4>
+                    <h4 className={Style.menu} onMouseEnter={() => {setIsMyQuizOpen(true)}} onMouseLeave={() => {setIsMyQuizOpen(false)}}>My Quiz</h4>
+                    {isMyQuizOpen &&
+                        <div className={Style.myQuizDiv} onMouseEnter={() => setIsMyQuizOpen(true)} onMouseLeave={() => {setIsMyQuizOpen(false)}}>
+                            {myQuizList.length !== 0 ? myQuizList.map((list) => {
+                                return <p className={Style.options} key={list.name}>{list.name}</p>
+                            }) : <p className={Style.noQuiz} key='noQuiz'>No quiz created!</p>}
+                        </div>
+                    }
                 </div>
                 <div className={Style.profile} onMouseEnter={() => {setIsProfileOpen(true)}} onMouseLeave={() => {setIsProfileOpen(false)}}></div>
                     {isProfileOpen &&

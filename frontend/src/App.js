@@ -1,20 +1,22 @@
 import {Routes, Route, Navigate} from 'react-router-dom';
-import OuterLayout from './components/layout/OuterLayout';
-import Register from './pages/Register';
-import Login from './pages/Login';
+
 import Quiz from './pages/Quiz';
-import ResetPassword from './pages/ResetPassword';
-import VerifyRegisteredUser from './pages/VerifyRegisteredUser';
-import ActivateAccount from './pages/ActivateAccount';
-import ForgotPasword from './components/ForgotPassword';
+import Login from './pages/Login';
+import Register from './pages/Register';
 import MyAccount from './pages/MyAccount';
 import ChangeName from './pages/ChangeName';
-import ChangePassword from './pages/ChangePassword';
-import VerifyDeactivateOtpPage from './pages/VerifyDeactivateOtpPage';
-import ActivateUserCallback from './components/ActivateUserCallback';
-import ActivateUser from './pages/ActivateUser';
 import CreateQuiz from './pages/CreateQuiz';
+import ActivateUser from './pages/ActivateUser';
 import PublishQuiz from './pages/PublishQuizPage';
+import ResetPassword from './pages/ResetPassword';
+import ChangePassword from './pages/ChangePassword';
+import ActivateAccount from './pages/ActivateAccount';
+import VerifyRegisteredUser from './pages/VerifyRegisteredUser';
+import VerifyDeactivateOtpPage from './pages/VerifyDeactivateOtpPage';
+
+import ForgotPasword from './components/ForgotPassword';
+import OuterLayout from './components/layout/OuterLayout';
+import ActivateUserCallback from './components/ActivateUserCallback';
 
 function App() {
   return (

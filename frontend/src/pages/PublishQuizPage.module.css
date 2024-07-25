@@ -168,6 +168,22 @@
     cursor: pointer;
 }
 
+.quizzesDiv {
+    position: absolute;
+    width: 20rem;
+    background-color: white;
+    top: 4.65rem;
+    left: 22.75rem;
+    border-radius: 5px;
+    border: 1px solid black;
+    color: black;
+    padding: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
 .loading {
     position: fixed;
     width: 100vw;
@@ -242,7 +258,7 @@
     width: 20rem;
     background-color: white;
     top: 4.65rem;
-    right: 24rem;
+    right: 23.75rem;
     border-radius: 5px;
     border: 1px solid black;
     color: black;
