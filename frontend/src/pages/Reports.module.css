@@ -8,6 +8,10 @@
     cursor: default;
 }
 
+.title {
+    cursor: pointer;
+}
+
 .linear {
     cursor: default;
     width: 87.5%;
@@ -20,8 +24,8 @@
     align-items: center;
     flex-direction: column;
     margin-bottom: 1.5rem;
-    padding: 0;
     gap: 1rem;
+    padding-bottom: 2rem;
 }
 
 .menuDiv {
@@ -49,14 +53,6 @@
     cursor: pointer;
 }
 
-.black {
-    color: black;
-}
-
-.red {
-    color: red;
-}
-
 .quizDiv {
     width: 90%;
     height: 32.5vh;
@@ -72,7 +68,7 @@
 
 .heading {
     margin: 1rem 0 0 0;
-    margin-left: -51rem;
+    margin-left: -54rem;
 }
 
 .para {
@@ -80,123 +76,39 @@
     font-size: larger;
 }
 
-.title {
-    margin: 0;
-    margin-top: 1rem;
-    color: #0F0C2C;
-}
-
-.QuizApp {
-    margin: 0;
-    padding: 0;
-    color: white;
-    cursor: pointer;
-    border: 1px solid transparent;
+.accountDiv {
+    color: black;
+    width: 90%;
+    border-radius: 10px;
 }
 
 .titleDiv {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    flex-direction: column;
+    flex-direction: row;
     background-color: rgb(255, 255, 255);
     padding: 0 1.5rem 0 1rem;
     border-radius: 5px;
-    margin-bottom: 0.5rem;
-}
-
-.titleOption {
     margin: 0;
-    color: #0F0C2C;
-}
-
-.instructionParaDiv {
-    width: 21rem;
-    background-color: white;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    color: red;
-    font-size: small;
-    margin: 1rem 0 0 21rem;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    
 }
 
 .paraDiv {
     padding: 0 0 0 1rem;
 }
 
-.input {
-    outline: none;
-    width: 25rem;
+.deactivateAccountButton {
+    margin: 1rem 0 1rem 0;
     height: 2rem;
-    font-size: large;
-    margin: 0.5rem 0 1rem 0;
-    border: none;
-    background-color: transparent;
-    border-bottom: 1.5px solid black;
-    padding: 0 0 0 0.25rem;
-    color: #0F0C2C;
-}
-
-.option {
-    outline: none;
-    width: 25rem;
-    height: 2rem;
-    font-size: medium;
-    border: none;
-    margin: 0.5rem 0 1rem 0;
-    background-color: transparent;
-    border-bottom: 1.5px solid black;
-    padding: 0;
-    color: #0F0C2C;
-}
-
-.createButton {
-    margin: 1rem 0 0 0;
-    height: 2.25rem;
-    width: 8rem;
+    width: 15rem;
     border-radius: 10px;
-    border: none;
+    border: 1px solid black;
     background-color: white;
-    font-size: medium;
+    font-size: small;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.optionDiv{
-    display: flex;
-}
-
-.addRemoveButton {
-    height: 2rem;
-    width: 7rem;
-    margin-left: 1rem;
-    border-radius: 5px;
-    border: none;
-    background-color: #080E2F;
-    color: white;
-    cursor: pointer;
-    margin-top: 0.5rem;
-}
-
-.optionNumber {
-    margin-top: 10rem;
-}
-
-.addRemoveQuesButton {
-    height: 2rem;
-    width: 9rem;
-    border-radius: 5px;
-    border: none;
-    background-color: #080E2F;
-    color: white;
-    cursor: pointer;
-    margin-bottom: 1rem;
-    margin-left: 50rem;
-}
-
-.createDiv {
+.deactivateAccountDiv {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -256,41 +168,20 @@
     cursor: pointer;
 }
 
-.noQuiz {
-    margin: .5rem 0 0 0;
-    font-size: medium;
-    padding: 0 .5rem 0 .5rem;
-    cursor: default;
-}
-
-.myQuizDiv {
-    position: absolute;
-    width: 5.5rem;
-    top: 4.65rem;
-    right: 30.75rem;
-    border-radius: 5px;
-    border: 1px solid white;
-    padding: 0;
-}
-
-.reportsDiv {
-    position: absolute;
-    width: 5rem;
-    top: 4.65rem;
-    right: 37.6rem;
-    border-radius: 5px;
-    border: 1px solid white;
-    padding: 0;
-}
-
 .quizzesDiv {
     position: absolute;
-    width: 5rem;
+    width: 20rem;
+    background-color: white;
     top: 4.65rem;
-    left: 30.1rem;
+    left: 22.75rem;
     border-radius: 5px;
-    border: 1px solid white;
-    padding: 0;
+    border: 1px solid black;
+    color: black;
+    padding: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .loading {
@@ -336,13 +227,6 @@
     100% {transform:rotate(calc(var(--s,1)*1turn))}
 }
 
-.accountDiv {
-    color: black;
-    width: 90%;
-    border-radius: 10px;
-    margin-bottom: 2rem;
-}
-
 .line {
     width: 100%;
     border: 1px solid black;
@@ -352,14 +236,46 @@
     width: 6rem;
     height: 2rem;
     border-radius: 10px;
+    margin-left: 1rem;
     border: 1px solid black;
     outline: none;
     background-color: white;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.createButton:hover {
-    cursor: pointer;
+.editButtonDisabled {
+    width: 6rem;
+    height: 2rem;
+    margin-left: 1rem;
+    border-radius: 10px;
+    border: 1px solid black;
+    outline: none;
+    background-color: white;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    cursor: not-allowed;
+}
+
+.myQuizDiv {
+    position: absolute;
+    width: 20rem;
+    background-color: white;
+    top: 4.65rem;
+    right: 23.75rem;
+    border-radius: 5px;
+    border: 1px solid black;
+    color: black;
+    padding: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.noQuiz {
+    margin: .5rem 0 0 0;
+    font-size: medium;
+    padding: 0 .5rem 0 .5rem;
+    cursor: default;
 }
 
 .editButton {

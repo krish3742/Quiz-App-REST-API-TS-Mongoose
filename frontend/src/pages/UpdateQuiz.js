@@ -2,38 +2,31 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import Style from './CreateQuiz.module.css';
+import Style from './UpdateQuiz.module.css';
 
-function CreateQuiz() {
+function UpdateQuiz() {
     const location = useLocation();
     const navigate = useNavigate();
+    const [_id, setId] = useState();
     const [color, setColor] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [errors, setErrors] = useState(["Testing"]);
     const [isMyQuizOpen, setIsMyQuizOpen] = useState(false);
     const [isQuizzesOpen, setIsQuizzesOpen] = useState(false);
     const [isReportsOpen, setIsReportsOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [name, setName] = useState("");
-    const [category, setCategory] = useState("Choose Option");
-    const [difficultyLevel, setDifficultyLevel] = useState("Choose Option");
     let [questionNo, setQuestionNo] = useState(1);
     const [questionList, setQuestionList] = useState([{questionNumber: 1, question: '', options: {'1': ''}}]);
     const [answers, setAnswers] = useState({});
     const [passingPercentage, setPassingPercentage] = useState(0);
-    const [attemptsAllowed, setAttemptsAllowed] = useState(0);
     const [isPublicQuiz, setIsPublicQuiz] = useState("Choose Option");
     const [allowedUser, setAllowedUser] = useState(['']);
     const token = location?.state?.token;
+    const [quizId, setQuizId] = useState(location?.state?.quizId);
     const headers = {'Authorization': `Bearer ${token}`};
     function handleQuizNameChange(evt) {
         setName(evt.target.value);
-    }
-    function handleCategoryChange(evt) {
-        setCategory(evt.target.value);
-    }
-    function handleDifficultyLevelChange(evt) {
-        setDifficultyLevel(evt.target.value);
     }
     function handleQuestionChange(questionNumber, e) {
         setQuestionList((oldArray) => {
@@ -66,18 +59,15 @@ function CreateQuiz() {
             })
         })
     }
-    function handleAnswersChange(questionNumber, e) {
+    function handleAnswersChange(key, e) {
+        e.preventDefault();
         setAnswers((oldObject) => {
-            return {...oldObject, [questionNumber]: e.target.value};
+            return {...oldObject, [key]: e.target.value};
         })
     }
     function handlePassingPercentageChange(evt) {
         evt.preventDefault();
         setPassingPercentage(evt.target.value);
-    }
-    function handleAttemptsAllowedChange(evt) {
-        evt.preventDefault();
-        setAttemptsAllowed(evt.target.value);
     }
     function handlePublicQuizChange(evt) {
         evt.preventDefault();
@@ -199,7 +189,7 @@ function CreateQuiz() {
             });
         })
     }
-    function handleCreateQuizClick(evt) {
+    function handleUpdateQuizClick(evt) {
         let flag = false;
         evt.preventDefault();
         setErrors([]);
@@ -207,22 +197,6 @@ function CreateQuiz() {
         setIsLoading(true);
         if(name.length < 10) {
             setErrors((oldArray) => [...oldArray, 'Quiz name should be 10 charcters long']);
-        }
-        if(category === 'Choose Option') {
-            setErrors((oldArray) => [...oldArray, 'Choose category']);
-        } else if(category === 'Exam') {
-            setCategory("exam");
-        } else if(category === 'Test') {
-            setCategory("test");
-        }
-        if(difficultyLevel === 'Choose Option') {
-            setErrors((oldArray) => [...oldArray, 'Choose difficulty level']);
-        } else if(difficultyLevel === 'Easy') {
-            setDifficultyLevel('easy');
-        } else if(difficultyLevel === "Medium") {
-            setDifficultyLevel('medium');
-        } else if(difficultyLevel === 'Hard') {
-            setDifficultyLevel('hard');
         }
         questionList.forEach((list) => {
             flag = true;
@@ -243,7 +217,6 @@ function CreateQuiz() {
         } else {
             flag = true;
             questionList.forEach((list) => {
-                // (question: { questionNumber: Number; question: String; options: {} }) => {
                 let opt = Object.keys(list.options);
                 if (
                     opt.indexOf(
@@ -264,9 +237,6 @@ function CreateQuiz() {
         } else if(isNaN(passingPercentage)) {
             setErrors((oldArray) => [...oldArray, 'Enter valid passing percentage']);
         }
-        if(!!attemptsAllowed && isNaN(attemptsAllowed)) {
-            setErrors((oldArray) => [...oldArray, "Enter valid attempts per user"]);
-        }
         if(isPublicQuiz === 'Choose Option') {
             setErrors((oldArray) => [...oldArray, "Please choose is this is a public quiz?"]);
         } else if(isPublicQuiz === 'True') {
@@ -276,26 +246,25 @@ function CreateQuiz() {
         }
     }
     const data = {
+        _id,
         name,
-        category,
-        difficultyLevel,
         questionList,
         answers,
+        difficultyLevel: "easy",
         passingPercentage,
-        attemptsAllowed,
         isPublicQuiz,
         allowedUser
     }
     useEffect(() => {
         if(errors.length === 0) {
             axios
-                .post('http://localhost:3002/quiz', data, { headers })
+                .put('http://localhost:3002/quiz', data, { headers })
                 .then((response) => {
                     setIsLoading(false);
-                    setErrors(["Quiz created, redirecting..."]);
+                    setErrors(["Quiz updated, redirecting..."]);
                     setColor("black");
                     setTimeout(() => {
-                        navigate('/auth/quiz', { state: { token }});
+                        navigate('/auth/quiz/myquiz', { state: { token }});
                     }, 1000);
                 })
                 .catch((error) => {
@@ -309,11 +278,32 @@ function CreateQuiz() {
                         navigate('/auth/login');
                     }
                 })
-        } else {
-            setIsLoading(false);
         }
+        if(!!quizId) {
+            axios
+            .get(`http://localhost:3002/quiz/${quizId}`, { headers })
+            .then((response) => {
+                setQuizId("");
+                setIsLoading(false);
+                const quiz = response?.data?.data; 
+                setId(quiz?._id);
+                setName(quiz?.name);
+                setQuestionList(quiz?.questionList);
+                setAnswers(quiz?.answers);
+                setPassingPercentage(quiz?.passingPercentage);
+                setIsPublicQuiz(quiz?.isPublicQuiz);
+                if(!!quiz?.allowedUser) {
+                    setAllowedUser(quiz?.allowedUser);
+                }
+            })
+            .catch(() => {
+                setIsLoading(false);
+                setQuizId("");
+                navigate('/auth/login');
+            })
+        }    
     }, [errors]);
-    if(!token) {
+    if(!token && !quizId) {
         return <Navigate to='/auth/login' />
     }
     return (
@@ -343,33 +333,12 @@ function CreateQuiz() {
                     }
             </div>
             <div className={Style.linear}>
-                <h2 className={Style.heading}>Create Quiz</h2>
+                <h2 className={Style.heading}>Update Quiz</h2>
                 <div className={Style.accountDiv}> 
                     <div className={Style.titleDiv}>
                         <div>
                             <h4 className={Style.title}>Quiz Name *</h4>
-                            <input type='text' id='Name' placeholder='Name must be 10 characters long and unique' className={Style.input} onChange={handleQuizNameChange}></input>
-                        </div>
-                    </div>
-                    <div className={Style.titleDiv}>
-                        <div>
-                            <h4 className={Style.title}>Category *</h4>
-                            <select id='Category' className={Style.option} onChange={handleCategoryChange}>
-                                <option value='Choose Option'>Choose Option</option>
-                                <option value='exam'>Exam</option>
-                                <option value='test'>Test</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className={Style.titleDiv}>
-                        <div>
-                            <h4 className={Style.title}>Difficulty Level *</h4>
-                            <select id='DifficultyLevel' className={Style.option} onChange={handleDifficultyLevelChange}>
-                                <option value='Choose Option'>Choose Option</option>
-                                <option value='easy'>Easy</option>
-                                <option value='medium'>Medium</option>
-                                <option value='hard'>Hard</option>
-                            </select>
+                            <input type='text' id='Name' value={name} placeholder='Name must be 10 characters long and unique' className={Style.input} onChange={handleQuizNameChange}></input>
                         </div>
                     </div>
                     {!!questionList && 
@@ -423,12 +392,12 @@ function CreateQuiz() {
                     <div className={Style.titleDiv}>
                         <div>
                             <h4 className={Style.title}>Answers *</h4>
-                            {!!questionList &&
-                                questionList.map((list) => {
+                            {!!answers &&
+                                Object.keys(answers).map(function (key) {
                                     return (
-                                        <div key={list.questionNumber}>
-                                            <span>Ques {list.questionNumber}: </span>
-                                            <input type='text' maxLength={1} placeholder='Enter the correct option number' onChange={(e) => handleAnswersChange(list.questionNumber, e)}  id='Answers' className={Style.input}></input>
+                                        <div key={key}>
+                                            <span>Ques {key}: </span>
+                                            <input type='text' maxLength={1} value={answers[key]} placeholder='Enter the correct option number' onChange={(e) => handleAnswersChange(key, e)}  id='Answers' className={Style.input}></input>
                                         </div>
                                     )
                                 })
@@ -438,22 +407,16 @@ function CreateQuiz() {
                     <div className={Style.titleDiv}>
                         <div>
                             <h4 className={Style.title}>Passing Percentage *</h4>
-                            <input type='text' placeholder='Enter the number only' id='passing' onChange={handlePassingPercentageChange} className={Style.input}></input>
-                        </div>
-                    </div>
-                    <div className={Style.titleDiv}>
-                        <div>
-                            <h4 className={Style.title}>Attempts allowed per user!</h4>
-                            <input type='text' placeholder='' onChange={handleAttemptsAllowedChange}id='attempts' className={Style.input}></input>
+                            <input type='text' placeholder='Enter the number only' value={passingPercentage} id='passing' onChange={handlePassingPercentageChange} className={Style.input}></input>
                         </div>
                     </div>
                     <div className={Style.titleDiv}>
                         <div>
                             <h4 className={Style.title}>Is this is a public quiz? *</h4>
-                            <select className={Style.option} onChange={handlePublicQuizChange}>
+                            <select className={Style.option} value={isPublicQuiz} onChange={handlePublicQuizChange}>
                                 <option value='Choose Option'>Choose Option</option>
-                                <option value='True'>True</option>
-                                <option value='False'>False</option>
+                                <option value='true'>True</option>
+                                <option value='false'>False</option>
                             </select>
                         </div>
                     </div>
@@ -494,7 +457,7 @@ function CreateQuiz() {
                         </div>
                     }
                     <div className={Style.createDiv}>
-                        <button className={Style.createButton} onClick={handleCreateQuizClick}>Create</button>
+                        <button className={Style.createButton} onClick={handleUpdateQuizClick}>Update</button>
                     </div>   
                 </div>
             </div>
@@ -507,4 +470,4 @@ function CreateQuiz() {
     )
 }
 
-export default CreateQuiz;
+export default UpdateQuiz;

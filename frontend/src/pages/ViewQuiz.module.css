@@ -72,7 +72,7 @@
 
 .heading {
     margin: 1rem 0 0 0;
-    margin-left: -51rem;
+    margin-left: -57.5rem;
 }
 
 .para {
@@ -127,8 +127,24 @@
     padding: 0 0 0 1rem;
 }
 
-.input {
-    outline: none;
+.sameLine {
+    display: flex;
+    gap: 1rem;
+}
+
+.spanPara {
+    width: 25rem;
+    height: 2rem;
+    font-size: large;
+    margin: 0 0 1rem 0;
+    border: none;
+    background-color: transparent;
+    border-bottom: 1.5px solid black;
+    padding: 0 0 0 0.25rem;
+    color: #0F0C2C;
+}
+
+.para {
     width: 25rem;
     height: 2rem;
     font-size: large;

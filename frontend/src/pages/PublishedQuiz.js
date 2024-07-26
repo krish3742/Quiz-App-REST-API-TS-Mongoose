@@ -2,15 +2,14 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import Style from './PublishQuizPage.module.css';
+import Style from './PublishedQuiz.module.css';
 
-function PublishQuiz() {
+function PublishedQuiz() {
     const location = useLocation();
-    const navigate = useNavigate();
-    const [flag, setFlag] = useState(true);
-    const [quizId, setQuizId] = useState();
+    const navigate = useNavigate(); 
+    const [quizExam, setQuizExam] = useState([]);
+    const [quizTest, setQuizTest] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [myQuizList, setMyQuizList] = useState([]);
     const [isMyQuizOpen, setIsMyQuizOpen] = useState(false);
     const [isQuizzesOpen, setIsQuizzesOpen] = useState(false);
     const [isReportsOpen, setIsReportsOpen] = useState(false);
@@ -37,11 +36,6 @@ function PublishQuiz() {
         evt.preventDefault();
         navigate('/auth/quiz', { state: { token }});
     }
-    function handlePublishButtonClick(id, e) {
-        e.preventDefault();
-        setIsLoading(true);
-        setQuizId(id);
-    }
     function handleMyQuizClick(evt) {
         evt.preventDefault();
         navigate('/auth/quiz/myquiz', { state: { token }});
@@ -55,33 +49,25 @@ function PublishQuiz() {
         navigate('/auth/published-quiz', { state: { token }});
     }
     useEffect(() => {
-        if(!!quizId) {
-            axios
-                .patch('http://localhost:3002/quiz/publish', { quizId }, { headers })
-                .then((response) => {
-                    setQuizId("");
-                    setFlag(!flag);
-                })
-                .catch((error) => {
-                    setQuizId("");
-                    setFlag(!flag);
-                    navigate('/auth/login');
-                })
-        }
         axios
-            .get('http://localhost:3002/quiz', { headers })
+            .get('http://localhost:3002/quiz/allpublishedquiz/exam', { headers })
+            .then((response) => {
+                setQuizExam(response?.data?.data);
+            })
+            .catch((error) => {
+                navigate('/auth/login');
+            })
+        axios
+            .get('http://localhost:3002/quiz/allpublishedquiz/test', { headers })
             .then((response) => {
                 setIsLoading(false);
-                setMyQuizList(response?.data?.data);
+                setQuizTest(response?.data?.data);
             })
             .catch((error) => {
                 setIsLoading(false);
-                const message = error?.response?.data?.message;
-                if(message.includes('Quiz not found!')) {
-                    setMyQuizList(["No quiz found"]);
-                }
+                navigate('/auth/login');
             })
-    }, [quizId, flag]);
+    }, []);
     if(!token) {
         return <Navigate to='/auth/login' />
     }
@@ -112,33 +98,58 @@ function PublishQuiz() {
                     }
             </div>
             <div className={Style.linear}>
-                <h2 className={Style.heading}>Publish Quiz</h2>
-                    {!!myQuizList && myQuizList.length != 0 &&
-                        myQuizList.map((list) => {
-                            return (
-                                <div className={Style.accountDiv} key={list._id}> 
-                                    <div className={Style.titleDiv}>
-                                        <div>
-                                            <h4 className={Style.title}>{list.name}</h4>
-                                        </div>
-                                        {list?.isPublished ? 
-                                            <button className={Style.editButtonDisabled} disabled>Published</button> :
-                                            <button className={Style.editButton} onClick={(e) => handlePublishButtonClick(list._id, e)}>Publish</button>
-                                        }
+                <h2 className={Style.headingExam}>Exam</h2>
+                {!!quizExam && quizExam.length !== 0 &&
+                    quizExam.map((list) => {
+                        return (
+                            <div className={Style.accountDiv} key={list._id}> 
+                                <div className={Style.titleDiv}>
+                                    <div>
+                                        <h4 className={Style.title}>{list.name}</h4>
+                                    </div>
+                                    <div className={Style.buttonDiv}>
+                                        <button className={Style.editButton}>Attempt</button>
                                     </div>
                                 </div>
-                            )
-                        })
-                    }
-                    {!!myQuizList && myQuizList.length === 0 &&
-                        <div className={Style.accountDiv}> 
-                            <div className={Style.titleDiv}>
-                                <div>
-                                    <h4 className={Style.title}>No quiz found!</h4>
-                                </div>
+                            </div>
+                        )
+                    })
+                }
+                {!!quizExam && quizExam.length === 0 &&
+                    <div className={Style.accountDiv}> 
+                        <div className={Style.titleDiv}>
+                            <div>
+                                <h4 className={Style.title}>No quiz found!</h4>
                             </div>
                         </div>
-                    }
+                    </div>
+                }
+                <h2 className={Style.headingTest}>Test</h2>
+                {!!quizTest && quizTest.length !== 0 &&
+                    quizTest.map((list) => {
+                        return (
+                            <div className={Style.accountDiv} key={list._id}> 
+                                <div className={Style.titleDiv}>
+                                    <div>
+                                        <h4 className={Style.title}>{list.name}</h4>
+                                    </div>
+                                    <div className={Style.buttonDiv}>
+                                        <button className={Style.editButton}>Attempt</button>
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
+                {!!quizTest && quizTest.length === 0 &&
+                    <div className={Style.accountDiv}> 
+                        <div className={Style.titleDiv}>
+                            <div>
+                                <h4 className={Style.title}>No quiz found!</h4>
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
             {isLoading && 
                 <div className={Style.loading}>
@@ -149,4 +160,4 @@ function PublishQuiz() {
     )
 }
 
-export default PublishQuiz;
+export default PublishedQuiz;

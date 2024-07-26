@@ -256,12 +256,6 @@
     cursor: pointer;
 }
 
-.noQuiz {
-    margin: .5rem 0 0 0;
-    font-size: medium;
-    padding: 0 .5rem 0 .5rem;
-    cursor: default;
-}
 
 .myQuizDiv {
     position: absolute;
@@ -291,6 +285,13 @@
     border-radius: 5px;
     border: 1px solid white;
     padding: 0;
+}
+
+.noQuiz {
+    margin: .5rem 0 0 0;
+    font-size: medium;
+    padding: 0 .5rem 0 .5rem;
+    cursor: default;
 }
 
 .loading {

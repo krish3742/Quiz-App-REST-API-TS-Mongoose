@@ -2,15 +2,16 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import Style from './PublishQuizPage.module.css';
+import Style from './MyQuiz.module.css';
 
-function PublishQuiz() {
+function MyQuiz() {
     const location = useLocation();
     const navigate = useNavigate();
     const [flag, setFlag] = useState(true);
     const [quizId, setQuizId] = useState();
+    const [viewQuizId, setViewQuizId] = useState();
+    const [myQuizList, setMyQuizList] = useState([]); 
     const [isLoading, setIsLoading] = useState(true);
-    const [myQuizList, setMyQuizList] = useState([]);
     const [isMyQuizOpen, setIsMyQuizOpen] = useState(false);
     const [isQuizzesOpen, setIsQuizzesOpen] = useState(false);
     const [isReportsOpen, setIsReportsOpen] = useState(false);
@@ -37,10 +38,11 @@ function PublishQuiz() {
         evt.preventDefault();
         navigate('/auth/quiz', { state: { token }});
     }
-    function handlePublishButtonClick(id, e) {
+    function handleEditButtonClick(id, e) {
         e.preventDefault();
-        setIsLoading(true);
         setQuizId(id);
+        setIsLoading(true);
+        setFlag(!flag);
     }
     function handleMyQuizClick(evt) {
         evt.preventDefault();
@@ -54,19 +56,41 @@ function PublishQuiz() {
         evt.preventDefault();
         navigate('/auth/published-quiz', { state: { token }});
     }
+    function handleDeleteQuizClick(id, e) {
+        e.preventDefault();
+        setIsLoading(true);
+        axios
+            .delete(`http://localhost:3002/quiz/${id}`, { headers })
+            .then(() => {
+                setFlag(!flag);
+            })
+            .catch(() => {
+                setIsLoading(false);
+                setFlag(!flag);
+                navigate('/auth/login');
+            })
+    }
+    function handleViewQuizClick(id, e) {
+        e.preventDefault();
+        setViewQuizId(id);
+        setIsLoading(true);
+        setFlag(!flag);
+    }
     useEffect(() => {
         if(!!quizId) {
             axios
-                .patch('http://localhost:3002/quiz/publish', { quizId }, { headers })
+                .get(`http://localhost:3002/quiz/${quizId}`, { headers })
                 .then((response) => {
-                    setQuizId("");
-                    setFlag(!flag);
+                    setIsLoading(false);
+                    navigate('/auth/quiz/update', { state: { token, quizId }});
                 })
                 .catch((error) => {
-                    setQuizId("");
-                    setFlag(!flag);
+                    setIsLoading(false);
                     navigate('/auth/login');
                 })
+        }
+        if(!!viewQuizId) {
+            navigate('/auth/quiz/view', { state: { token, viewQuizId}});
         }
         axios
             .get('http://localhost:3002/quiz', { headers })
@@ -112,7 +136,7 @@ function PublishQuiz() {
                     }
             </div>
             <div className={Style.linear}>
-                <h2 className={Style.heading}>Publish Quiz</h2>
+                <h2 className={Style.heading}>My Quiz</h2>
                     {!!myQuizList && myQuizList.length != 0 &&
                         myQuizList.map((list) => {
                             return (
@@ -121,10 +145,20 @@ function PublishQuiz() {
                                         <div>
                                             <h4 className={Style.title}>{list.name}</h4>
                                         </div>
-                                        {list?.isPublished ? 
-                                            <button className={Style.editButtonDisabled} disabled>Published</button> :
-                                            <button className={Style.editButton} onClick={(e) => handlePublishButtonClick(list._id, e)}>Publish</button>
-                                        }
+                                        <div className={Style.buttonDiv}>
+                                            {(!list?.isPublicQuiz && list.allowedUser.includes("")) ? 
+                                                <button className={Style.editButtonDisabled} disabled>View</button> :
+                                                <button className={Style.editButton} onClick={(e) => handleViewQuizClick(list._id, e)}>View</button>
+                                            }
+                                            {(list?.isPublished || (!list?.isPublicQuiz && list.allowedUser.includes(""))) ? 
+                                                <button className={Style.editButtonDisabled} disabled>Edit</button> :
+                                                <button className={Style.editButton} onClick={(e) => handleEditButtonClick(list._id, e)}>Edit</button>
+                                            }
+                                            {list?.isPublished ? 
+                                                <button className={Style.editButtonDisabled} disabled>Delete</button> :
+                                                <button className={Style.editButton} onClick={(e) => handleDeleteQuizClick(list._id, e)}>Delete</button>                                            
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             )
@@ -149,4 +183,4 @@ function PublishQuiz() {
     )
 }
 
-export default PublishQuiz;
+export default MyQuiz;

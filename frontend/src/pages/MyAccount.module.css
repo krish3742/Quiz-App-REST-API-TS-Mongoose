@@ -177,34 +177,32 @@
 
 .myQuizDiv {
     position: absolute;
-    width: 20rem;
-    background-color: white;
+    width: 5.5rem;
     top: 4.65rem;
-    right: 23.75rem;
+    right: 30.75rem;
     border-radius: 5px;
-    border: 1px solid black;
-    color: black;
-    padding: 0 0 0.5rem 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    border: 1px solid white;
+    padding: 0;
+}
+
+.reportsDiv {
+    position: absolute;
+    width: 5rem;
+    top: 4.65rem;
+    right: 37.6rem;
+    border-radius: 5px;
+    border: 1px solid white;
+    padding: 0;
 }
 
 .quizzesDiv {
     position: absolute;
-    width: 20rem;
-    background-color: white;
+    width: 5rem;
     top: 4.65rem;
-    left: 22.75rem;
+    left: 30.1rem;
     border-radius: 5px;
-    border: 1px solid black;
-    color: black;
-    padding: 0 0 0.5rem 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    border: 1px solid white;
+    padding: 0;
 }
 
 .loader {

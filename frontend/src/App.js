@@ -1,7 +1,9 @@
-import {Routes, Route, Navigate} from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import Quiz from './pages/Quiz';
 import Login from './pages/Login';
+import MyQuiz from './pages/MyQuiz';
+import ViewQuiz from './pages/ViewQuiz';
 import Register from './pages/Register';
 import MyAccount from './pages/MyAccount';
 import ChangeName from './pages/ChangeName';
@@ -17,6 +19,9 @@ import VerifyDeactivateOtpPage from './pages/VerifyDeactivateOtpPage';
 import ForgotPasword from './components/ForgotPassword';
 import OuterLayout from './components/layout/OuterLayout';
 import ActivateUserCallback from './components/ActivateUserCallback';
+import UpdateQuiz from './pages/UpdateQuiz';
+import Reports from './pages/Reports';
+import PublishedQuiz from './pages/PublishedQuiz';
 
 function App() {
   return (
@@ -33,6 +38,11 @@ function App() {
         <Route path='/auth/quiz' element={<Quiz />}></Route>
         <Route path='/auth/quiz/create' element={<CreateQuiz />}></Route>
         <Route path='/auth/quiz/publish' element={<PublishQuiz />}></Route>
+        <Route path='/auth/quiz/myquiz' element={<MyQuiz />}></Route>
+        <Route path='/auth/quiz/update' element={<UpdateQuiz />}></Route>
+        <Route path='/auth/quiz/view' element={<ViewQuiz />}></Route>
+        <Route path='/auth/reports' element={<Reports />}></Route>
+        <Route path='/auth/published-quiz' element={<PublishedQuiz />}></Route>
 
         <Route path='/auth/user/my-account' element={<MyAccount />}></Route>
         <Route path='/auth/user/change-name' element={<ChangeName />}></Route>
