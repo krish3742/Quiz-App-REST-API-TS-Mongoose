@@ -1,5 +1,5 @@
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 
 import Style from './Quiz.module.css';
@@ -37,10 +37,6 @@ function Quiz() {
     function handleQuizAppClick(evt) {
         evt.preventDefault();
         navigate('/auth/quiz', { state: { token }});
-    }
-    function handleMyQuizClick(evt) {
-        evt.preventDefault();
-        navigate('/auth/quiz/myquiz', { state: { token }});
     }
     function handlePublishQuizClick(evt) {
         evt.preventDefault();

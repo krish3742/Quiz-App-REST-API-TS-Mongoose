@@ -21,7 +21,7 @@ function CreateQuiz() {
     const [questionList, setQuestionList] = useState([{questionNumber: 1, question: '', options: {'1': ''}}]);
     const [answers, setAnswers] = useState({});
     const [passingPercentage, setPassingPercentage] = useState(0);
-    const [attemptsAllowed, setAttemptsAllowed] = useState(0);
+    const [attemptsAllowedPerUser, setAttemptsAllowed] = useState(0);
     const [isPublicQuiz, setIsPublicQuiz] = useState("Choose Option");
     const [allowedUser, setAllowedUser] = useState(['']);
     const token = location?.state?.token;
@@ -264,7 +264,7 @@ function CreateQuiz() {
         } else if(isNaN(passingPercentage)) {
             setErrors((oldArray) => [...oldArray, 'Enter valid passing percentage']);
         }
-        if(!!attemptsAllowed && isNaN(attemptsAllowed)) {
+        if(!!attemptsAllowedPerUser && isNaN(attemptsAllowedPerUser)) {
             setErrors((oldArray) => [...oldArray, "Enter valid attempts per user"]);
         }
         if(isPublicQuiz === 'Choose Option') {
@@ -282,7 +282,7 @@ function CreateQuiz() {
         questionList,
         answers,
         passingPercentage,
-        attemptsAllowed,
+        attemptsAllowedPerUser,
         isPublicQuiz,
         allowedUser
     }

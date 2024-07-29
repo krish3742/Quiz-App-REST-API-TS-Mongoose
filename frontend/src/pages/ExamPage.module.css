@@ -1,0 +1,154 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    margin-top: .5rem;
+    margin-left: 3.1rem;
+    cursor: default;
+}
+
+.titleOption {
+    margin: 0.5rem 0 0.5rem 0;
+    padding: 0;
+}
+
+.clearButton {
+    width: 5.5rem;
+    height: 1.5rem;
+    margin-bottom: 1rem;
+    padding: 0;
+}
+
+.submitButton {
+    width: 6rem;
+    height: 2rem;
+    border-radius: 50px;
+    border: 0;
+    font-size: medium;
+    background-color: white;
+    cursor: pointer;
+}
+
+.titleDiv {
+    display: flex;
+    width: 90%;
+    flex-direction: column;
+    background-color: rgb(255, 255, 255);
+    padding: 1rem 1.5rem 0 1rem;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+}
+
+.optionsDiv {
+    display: flex;
+    margin: 0 0 0.5rem 0.5rem; 
+    gap: 1rem;
+}
+
+.optionDiv {
+    margin: 0;
+    padding: 0;
+}
+
+.linear {
+    cursor: default;
+    width: 87.5%;
+    min-height: 75vh;
+    border-radius: 15px;
+    border: 1px solid white;
+    margin-left: 4.5rem;
+    background-image: linear-gradient(to bottom right, #080E2F, #14257B);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+    padding-bottom: 2rem;
+    color: #0F0C2C;
+}
+
+.instructionParaDiv {
+    width: 21rem;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: red;
+    font-size: small;
+    margin: 0;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.para {
+    margin: 0;
+    padding: 0;
+}
+
+.star {
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+
+.quesDiv {
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+}
+
+.quesTitle {
+    margin: 0;
+    padding: 0;
+}
+
+.heading {
+    margin: 1rem 0 0 0;
+    margin-left: -54rem;
+    color: white;
+}
+
+.loading {
+    position: fixed;
+    width: 100vw;
+    min-height: 100vh;
+    background-color: rgba(255, 255, 255, 0.5);
+    overflow-y:scroll;
+    overflow-x:hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader {
+    color: black;
+    width: 50px;
+    aspect-ratio: 1;
+    border: 2px solid;
+    box-sizing: border-box;
+    border-radius: 50%;
+    display: grid;
+    animation: l11 1.5s infinite linear;
+    transform-origin: 50% 80%;
+}
+
+.loader:before,
+.loader:after {
+    content: "";
+    grid-area: 1/1;
+    border: inherit;
+    border-radius: 50%;
+    animation: inherit;
+    animation-duration: 1s;
+    transform-origin: inherit;
+}
+
+.loader:after {
+    --s:-1;
+}
+
+@keyframes l11 {
+    100% {transform:rotate(calc(var(--s,1)*1turn))}
+}

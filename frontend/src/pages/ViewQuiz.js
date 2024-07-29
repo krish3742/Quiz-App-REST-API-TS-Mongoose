@@ -7,7 +7,6 @@ import Style from './ViewQuiz.module.css';
 function ViewQuiz() {
     const location = useLocation();
     const navigate = useNavigate();
-    const [_id, setId] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const [isMyQuizOpen, setIsMyQuizOpen] = useState(false);
     const [isQuizzesOpen, setIsQuizzesOpen] = useState(false);
@@ -55,23 +54,12 @@ function ViewQuiz() {
         evt.preventDefault();
         navigate('/auth/published-quiz', { state: { token }});
     }
-    const data = {
-        _id,
-        name,
-        category,
-        questionList,
-        answers,
-        passingPercentage,
-        isPublicQuiz,
-        allowedUser
-    }
     useEffect(() => {
         axios
             .get(`http://localhost:3002/quiz/${quizId}`, { headers })
             .then((response) => {
                 setIsLoading(false);
                 const quiz = response?.data?.data; 
-                setId(quiz?._id);
                 setName(quiz?.name);
                 setCategory(quiz?.category);
                 setQuestionList(quiz?.questionList);

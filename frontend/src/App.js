@@ -22,6 +22,7 @@ import ActivateUserCallback from './components/ActivateUserCallback';
 import UpdateQuiz from './pages/UpdateQuiz';
 import Reports from './pages/Reports';
 import PublishedQuiz from './pages/PublishedQuiz';
+import StartExamPage from './pages/ExamPage';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
         <Route path='/auth/quiz/view' element={<ViewQuiz />}></Route>
         <Route path='/auth/reports' element={<Reports />}></Route>
         <Route path='/auth/published-quiz' element={<PublishedQuiz />}></Route>
+        <Route path='/auth/exam/:id' element={<StartExamPage />}></Route>
 
         <Route path='/auth/user/my-account' element={<MyAccount />}></Route>
         <Route path='/auth/user/change-name' element={<ChangeName />}></Route>

@@ -7,29 +7,34 @@ import Style from './PublishedQuiz.module.css';
 function PublishedQuiz() {
     const location = useLocation();
     const navigate = useNavigate(); 
+    const [quizId, setQuizId] = useState();
     const [quizExam, setQuizExam] = useState([]);
     const [quizTest, setQuizTest] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isAttempt, setIsAttempt] = useState(false);
     const [isMyQuizOpen, setIsMyQuizOpen] = useState(false);
     const [isQuizzesOpen, setIsQuizzesOpen] = useState(false);
     const [isReportsOpen, setIsReportsOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const token = location?.state?.token;
+    const [isMessage, setIsAMessage] =  useState(location?.state?.message);
     const headers = {'Authorization': `Bearer ${token}`};
     function handleLogoutClick(evt) {
+        evt.preventDefault();
         setIsLoading(true);
         axios
             .post('http://localhost:3002/user/logout', {}, { headers })
-            .then((response) => {
+            .then(() => {
                 setIsLoading(false);
                 navigate('/auth/login');
             })
-            .catch((error) => {
+            .catch(() => {
                 setIsLoading(false);
                 navigate('/auth/register');
             })
     }
     function handleMyAccountClick(evt) {
+        evt.preventDefault();
         navigate('/auth/user/my-account', { state: { token }});
     }
     function handleQuizAppClick(evt) {
@@ -48,13 +53,19 @@ function PublishedQuiz() {
         evt.preventDefault();
         navigate('/auth/published-quiz', { state: { token }});
     }
+    function handleAttemptClick(evt) {
+        evt.preventDefault();
+        navigate(`/auth/exam/${quizId}`, { state: { token }});
+    }
     useEffect(() => {
         axios
             .get('http://localhost:3002/quiz/allpublishedquiz/exam', { headers })
             .then((response) => {
+                setIsLoading(false);
                 setQuizExam(response?.data?.data);
             })
             .catch((error) => {
+                setIsLoading(false);
                 navigate('/auth/login');
             })
         axios
@@ -63,7 +74,7 @@ function PublishedQuiz() {
                 setIsLoading(false);
                 setQuizTest(response?.data?.data);
             })
-            .catch((error) => {
+            .catch(() => {
                 setIsLoading(false);
                 navigate('/auth/login');
             })
@@ -108,9 +119,10 @@ function PublishedQuiz() {
                                         <h4 className={Style.title}>{list.name}</h4>
                                     </div>
                                     <div className={Style.buttonDiv}>
-                                        <button className={Style.editButton}>Attempt</button>
+                                        <button className={Style.editButton} onClick={() => {setIsAttempt(true); setQuizId(list._id)}}>Attempt</button>
                                     </div>
                                 </div>
+                                
                             </div>
                         )
                     })
@@ -134,7 +146,7 @@ function PublishedQuiz() {
                                         <h4 className={Style.title}>{list.name}</h4>
                                     </div>
                                     <div className={Style.buttonDiv}>
-                                        <button className={Style.editButton}>Attempt</button>
+                                        <button className={Style.editButton} onClick={() => {setIsAttempt(true); setQuizId(list._id)}}>Attempt</button>
                                     </div>
                                 </div>
                             </div>
@@ -151,6 +163,27 @@ function PublishedQuiz() {
                     </div>
                 }
             </div>
+            {isAttempt && 
+                <div className={Style.loading}>
+                    <div className={Style.isAttemptDiv}>
+                        <label>Are you sure?</label>
+                        <div className={Style.isAttemptButtonDiv}>
+                            <button className={Style.isAttemptButton} onClick={(e) => handleAttemptClick(e)}>Attempt</button>
+                            <button className={Style.isAttemptButton} onClick={(e) => setIsAttempt(false)}>Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            }
+            {!!isMessage && 
+                <div className={Style.loading}>
+                    <div className={Style.isAttemptDiv}>
+                        <label className={Style.label}>You have zero attempts left!</label>
+                        <div className={Style.isAttemptButtonDiv}>
+                            <button className={Style.isAttemptButton} onClick={(e) => setIsAMessage(false)}>Okay</button>
+                        </div>
+                    </div>
+                </div>
+            }
             {isLoading && 
                 <div className={Style.loading}>
                     <div className={Style.loader}></div>

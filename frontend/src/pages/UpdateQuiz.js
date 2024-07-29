@@ -75,7 +75,6 @@ function UpdateQuiz() {
     }
     function handleAllowedUserChange(index, e) {
         setAllowedUser((oldArray) => {
-            let allowedUserList = [];
             return oldArray.map((value, ind) => {
                 if(index === ind) {
                     return e.target.value;
@@ -173,7 +172,6 @@ function UpdateQuiz() {
     function handleAddUserClick(evt) {
         evt.preventDefault();
         setAllowedUser((oldArray) => {
-            let length = oldArray.length;
             return [...oldArray, ''];
         })
     }
