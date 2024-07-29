@@ -8,20 +8,6 @@
     cursor: default;
 }
 
-.title {
-    cursor: pointer;
-}
-
-.status {
-    margin: 0;
-}
-
-.statusBold {
-    margin: 0;
-    font-weight: bold;
-    padding: 0 0 0 1rem;
-}
-
 .linear {
     cursor: default;
     width: 87.5%;
@@ -34,8 +20,8 @@
     align-items: center;
     flex-direction: column;
     margin-bottom: 1.5rem;
+    padding: 1.75rem 0 0 0;
     gap: 1rem;
-    padding-bottom: 2rem;
 }
 
 .menuDiv {
@@ -63,6 +49,24 @@
     cursor: pointer;
 }
 
+.black {
+    color: black;
+}
+
+.red {
+    color: red;
+}
+
+.quizApp {
+    cursor: pointer;
+}
+
+.quesDiv {
+    margin-top: 0.75rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
 .quizDiv {
     width: 90%;
     height: 32.5vh;
@@ -78,7 +82,7 @@
 
 .heading {
     margin: 1rem 0 0 0;
-    margin-left: -55rem;
+    margin-left: -51rem;
 }
 
 .para {
@@ -86,39 +90,139 @@
     font-size: larger;
 }
 
-.accountDiv {
-    color: black;
-    width: 90%;
-    border-radius: 10px;
+.paraOption {
+    margin: 0;
+    padding: 0 0 1rem 1rem;
+    font-size: larger;
+}
+
+.paraBold {
+    margin: 0 0 0.75rem 0;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.title {
+    margin: 0;
+    margin-top: 1rem;
+    color: #0F0C2C;
+}
+
+.QuizApp {
+    margin: 0;
+    padding: 0;
+    color: white;
+    cursor: pointer;
+    border: 1px solid transparent;
 }
 
 .titleDiv {
+    width: 90%;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
     background-color: rgb(255, 255, 255);
+    padding: 0 0 0 1rem;
     border-radius: 5px;
-    margin: 0;
-    padding: 0.8rem 0 1rem 0;
     gap: 1rem;
+    margin-bottom: 1rem;
+    color: #0F0C2C;
+}
+
+.titleOption {
+    margin: 0;
+    color: #0F0C2C;
+}
+
+.instructionParaDiv {
+    width: 21rem;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: red;
+    font-size: small;
+    margin: 1rem 0 0 21rem;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    
 }
 
 .paraDiv {
     padding: 0 0 0 1rem;
 }
 
-.deactivateAccountButton {
-    margin: 1rem 0 1rem 0;
+.input {
+    outline: none;
+    width: 25rem;
     height: 2rem;
-    width: 15rem;
+    font-size: large;
+    margin: 0.5rem 0 1rem 0;
+    border: none;
+    background-color: transparent;
+    border-bottom: 1.5px solid black;
+    padding: 0 0 0 0.25rem;
+    color: #0F0C2C;
+}
+
+.option {
+    outline: none;
+    width: 25rem;
+    height: 2rem;
+    font-size: medium;
+    border: none;
+    margin: 0.5rem 0 1rem 0;
+    background-color: transparent;
+    border-bottom: 1.5px solid black;
+    padding: 0;
+    color: #0F0C2C;
+}
+
+.createButton {
+    margin: 1rem 0 0 0;
+    height: 2.25rem;
+    width: 8rem;
     border-radius: 10px;
-    border: 1px solid black;
+    border: none;
     background-color: white;
-    font-size: small;
+    font-size: medium;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.deactivateAccountDiv {
+.optionDiv {
+    margin: -1.5rem 0 0 0;
+    padding: 0;
+}
+
+.addRemoveButton {
+    height: 2rem;
+    width: 7rem;
+    margin-left: 1rem;
+    border-radius: 5px;
+    border: none;
+    background-color: #080E2F;
+    color: white;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+.optionNumber {
+    margin-top: 10rem;
+}
+
+.addRemoveQuesButton {
+    height: 2rem;
+    width: 9rem;
+    border-radius: 5px;
+    border: none;
+    background-color: #080E2F;
+    color: white;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    margin-left: 50rem;
+}
+
+.createDiv {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -168,14 +272,46 @@
     margin-bottom: 1rem;
 }
 
-.options {
-    margin: .5rem 0 0 0;
-    font-size: medium;
-    padding: 0 .5rem 0 .5rem;
+.optionsDiv {
+    display: flex;
+    margin: 0;
 }
 
-.options:hover {
-    cursor: pointer;
+.noQuiz {
+    margin: 1rem;
+    padding: 0;
+    font-size: larger;
+    cursor: default;
+}
+
+.myQuizDiv {
+    position: absolute;
+    width: 5.5rem;
+    top: 4.65rem;
+    right: 27.5rem;
+    border-radius: 5px;
+    border: 1px solid white;
+    padding: 0;
+}
+
+.favouriteQuestionsDiv {
+    position: absolute;
+    width: 11rem;
+    top: 4.65rem;
+    right: 34.55rem;
+    border-radius: 5px;
+    border: 1px solid white;
+    padding: 0;
+}
+
+.quizzesDiv {
+    position: absolute;
+    width: 5rem;
+    top: 4.65rem;
+    left: 26.8rem;
+    border-radius: 5px;
+    border: 1px solid white;
+    padding: 0;
 }
 
 .loading {
@@ -221,6 +357,13 @@
     100% {transform:rotate(calc(var(--s,1)*1turn))}
 }
 
+.accountDiv {
+    color: black;
+    width: 90%;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
 .line {
     width: 100%;
     border: 1px solid black;
@@ -230,60 +373,14 @@
     width: 6rem;
     height: 2rem;
     border-radius: 10px;
-    margin-left: 1rem;
     border: 1px solid black;
     outline: none;
     background-color: white;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.editButtonDisabled {
-    width: 6rem;
-    height: 2rem;
-    margin-left: 1rem;
-    border-radius: 10px;
-    border: 1px solid black;
-    outline: none;
-    background-color: white;
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    cursor: not-allowed;
-}
-
-.myQuizDiv {
-    position: absolute;
-    width: 5.5rem;
-    top: 4.65rem;
-    right: 27.5rem;
-    border-radius: 5px;
-    border: 1px solid white;
-    padding: 0;
-}
-
-.favouriteQuestionsDiv {
-    position: absolute;
-    width: 11rem;
-    top: 4.65rem;
-    right: 34.55rem;
-    border-radius: 5px;
-    border: 1px solid white;
-    padding: 0;
-}
-
-.quizzesDiv {
-    position: absolute;
-    width: 5rem;
-    top: 4.65rem;
-    left: 26.8rem;
-    border-radius: 5px;
-    border: 1px solid white;
-    padding: 0;
-}
-
-.noQuiz {
-    margin: .5rem 0 0 0;
-    font-size: medium;
-    padding: 0 .5rem 0 .5rem;
-    cursor: default;
+.createButton:hover {
+    cursor: pointer;
 }
 
 .editButton {

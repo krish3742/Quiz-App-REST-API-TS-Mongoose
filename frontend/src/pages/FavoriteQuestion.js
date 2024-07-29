@@ -2,22 +2,38 @@ import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import Style from './Reports.module.css';
+import Style from './FavoriteQuestion.module.css';
 
-function Reports() {
-    const params = useParams();
+function FavoriteQuestion() {
     const location = useLocation();
-    const navigate = useNavigate();
-    const [report, setReport] = useState();
-    const [quizId, setQuizId] = useState("");
+    const navigate = useNavigate(); 
+    const [favQues, setFavQues] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const [isMyQuizOpen, setIsMyQuizOpen] = useState(false);
     const [isQuizzesOpen, setIsQuizzesOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [isFavouriteQuestionOpen, setIsFavouriteQuestionOpen] = useState(false);
-    const reportId = params?.reportId;
     const token = location?.state?.token;
     const headers = {'Authorization': `Bearer ${token}`};
+    function handleMyQuizClick(evt) {
+        evt.preventDefault();
+        navigate('/auth/quiz/myquiz', { state: { token }});
+    }
+    function handleFavouriteQuestionClick(evt) {
+        evt.preventDefault();
+        navigate('/auth/user/fav-ques', { state: { token }});
+    }
+    function handleQuizzesClick(evt) {
+        evt.preventDefault();
+        navigate('/auth/published-quiz', { state: { token }});
+    }
+    function handleMyAccountClick(evt) {
+        navigate('/auth/user/my-account', { state: { token }});
+    }
+    function handleQuizAppClick(evt) {
+        evt.preventDefault();
+        navigate('/auth/quiz', { state: { token }});
+    }
     function handleLogoutClick(evt) {
         setIsLoading(true);
         axios
@@ -31,45 +47,25 @@ function Reports() {
                 navigate('/auth/register');
             })
     }
-    function handleMyAccountClick(evt) {
-        navigate('/auth/user/my-account', { state: { token }});
-    }
-    function handleQuizAppClick(evt) {
-        evt.preventDefault();
-        navigate('/auth/quiz', { state: { token }});
-    }
-    function handleMyQuizClick(evt) {
-        evt.preventDefault();
-        navigate('/auth/quiz/myquiz', { state: { token }});
-    }
-    function handleFavouriteQuestionClick(evt) {
-        evt.preventDefault();
-        navigate('/auth/user/fav-ques', { state: { token }});
-    }
-    function handleQuizzesClick(evt) {
-        evt.preventDefault();
-        navigate('/auth/published-quiz', { state: { token }});
-    }
     useEffect(() => {
         axios
-            .get(`http://localhost:3002/report/${reportId}`, { headers })
+            .get('http://localhost:3002/favquestion', { headers })
             .then((response) => {
                 setIsLoading(false);
-                setReport(response?.data?.data);
-                setQuizId(response?.data?.data?.quizId);
+                setFavQues(response?.data?.data?.favQues);
             })
             .catch((error) => {
                 setIsLoading(false);
                 navigate('/auth/login');
             })
-    }, [quizId]);
+    }, []);
     if(!token) {
         return <Navigate to='/auth/login' />
     }
     return (
         <>
             <div className={Style.container}>
-                <h2 className={Style.title} onClick={handleQuizAppClick}>Quiz App</h2>
+                <h2 className={Style.quizApp} onClick={handleQuizAppClick}>Quiz App</h2>
                 <div className={Style.menuDiv}>
                     <h4 className={Style.menu} onMouseEnter={() => {setIsQuizzesOpen(true)}} onMouseLeave={() => {setIsQuizzesOpen(false)}} onClick={handleQuizzesClick}>Quizzes</h4>
                     {isQuizzesOpen &&
@@ -93,22 +89,33 @@ function Reports() {
                     }
             </div>
             <div className={Style.linear}>
-                <h2 className={Style.heading}>Report</h2>
-                {!!report &&
+                {!!favQues && favQues.length !== 0 && favQues.map((list) => {
+                    return (
+                        <div className={Style.titleDiv} key={list.questionNumber}>
+                            <div className={Style.quesDiv}>
+                                <p className={Style.paraBold}>Question: </p>
+                                <p className={Style.para}>{list.question}</p>
+                            </div>
+                            {!!list.options &&
+                                <div className={Style.optionDiv}>
+                                    <p className={Style.paraBold}>Options:</p>
+                                    {Object.keys(list.options).map(function (key) {
+                                        return (
+                                            <div className={Style.optionsDiv} key={key}>
+                                                <p className={Style.paraOption}>{key}:</p>
+                                                <p className={Style.paraOption}>{list.options[key]}</p>
+                                            </div>
+                                        )    
+                                    })}
+                                </div>
+                            }
+                        </div>
+                    )
+                })}
+                {!!favQues && favQues.length === 0 &&
                     <div className={Style.accountDiv}> 
                         <div className={Style.titleDiv}>
-                            <div>
-                                <label className={Style.statusBold}>Status: </label>
-                                <label className={Style.status}>{report.result}</label>
-                            </div>
-                            <div>
-                                <label className={Style.statusBold}>Marks: </label>
-                                <label className={Style.status}>{report.score}/{report.total}</label>
-                            </div>
-                            <div>
-                                <label className={Style.statusBold}>Percentage: </label>
-                                <label className={Style.status}>{report.percentage}%</label>
-                            </div>
+                            <h4 className={Style.noQuiz}>No question added!</h4>
                         </div>
                     </div>
                 }
@@ -122,4 +129,4 @@ function Reports() {
     )
 }
 
-export default Reports;
+export default FavoriteQuestion;

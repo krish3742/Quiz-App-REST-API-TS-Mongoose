@@ -168,22 +168,21 @@
     cursor: pointer;
 }
 
-
 .myQuizDiv {
     position: absolute;
     width: 5.5rem;
     top: 4.65rem;
-    right: 30.75rem;
+    right: 27.5rem;
     border-radius: 5px;
     border: 1px solid white;
     padding: 0;
 }
 
-.reportsDiv {
+.favouriteQuestionsDiv {
     position: absolute;
-    width: 5rem;
+    width: 11rem;
     top: 4.65rem;
-    right: 37.6rem;
+    right: 34.55rem;
     border-radius: 5px;
     border: 1px solid white;
     padding: 0;
@@ -193,7 +192,7 @@
     position: absolute;
     width: 5rem;
     top: 4.65rem;
-    left: 30.1rem;
+    left: 26.8rem;
     border-radius: 5px;
     border: 1px solid white;
     padding: 0;

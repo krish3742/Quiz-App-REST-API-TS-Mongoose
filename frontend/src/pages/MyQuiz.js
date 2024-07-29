@@ -14,8 +14,8 @@ function MyQuiz() {
     const [isLoading, setIsLoading] = useState(true);
     const [isMyQuizOpen, setIsMyQuizOpen] = useState(false);
     const [isQuizzesOpen, setIsQuizzesOpen] = useState(false);
-    const [isReportsOpen, setIsReportsOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [isFavouriteQuestionOpen, setIsFavouriteQuestionOpen] = useState(false);
     const token = location?.state?.token;
     const headers = {'Authorization': `Bearer ${token}`};
     function handleLogoutClick(evt) {
@@ -48,9 +48,9 @@ function MyQuiz() {
         evt.preventDefault();
         navigate('/auth/quiz/myquiz', { state: { token }});
     }
-    function handleReportsClick(evt) {
+    function handleFavouriteQuestionClick(evt) {
         evt.preventDefault();
-        navigate('/auth/reports', { state: { token }});
+        navigate('/auth/user/fav-ques', { state: { token }});
     }
     function handleQuizzesClick(evt) {
         evt.preventDefault();
@@ -118,9 +118,9 @@ function MyQuiz() {
                     {isQuizzesOpen &&
                         <div className={Style.quizzesDiv}></div>
                     }
-                    <h4 className={Style.menu} onMouseEnter={() => {setIsReportsOpen(true)}} onMouseLeave={() => {setIsReportsOpen(false)}} onClick={handleReportsClick}>Reports</h4>
-                    {isReportsOpen &&
-                        <div className={Style.reportsDiv}></div>
+                    <h4 className={Style.menu} onMouseEnter={() => {setIsFavouriteQuestionOpen(true)}} onMouseLeave={() => {setIsFavouriteQuestionOpen(false)}} onClick={handleFavouriteQuestionClick}>Favorite Questions</h4>
+                    {isFavouriteQuestionOpen &&
+                        <div className={Style.favouriteQuestionsDiv}></div>
                     }
                     <h4 className={Style.menu} onMouseEnter={() => {setIsMyQuizOpen(true)}} onMouseLeave={() => {setIsMyQuizOpen(false)}} onClick={handleMyQuizClick}>My Quiz</h4>
                     {isMyQuizOpen &&

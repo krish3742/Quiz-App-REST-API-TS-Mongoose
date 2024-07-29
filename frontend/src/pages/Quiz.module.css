@@ -106,17 +106,17 @@
     position: absolute;
     width: 5.5rem;
     top: 4.65rem;
-    right: 31.32rem;
+    right: 28rem;
     border-radius: 5px;
     border: 1px solid white;
     padding: 0;
 }
 
-.reportsDiv {
+.favouriteQuestionsDiv {
     position: absolute;
-    width: 5rem;
+    width: 11rem;
     top: 4.65rem;
-    right: 38.1rem;
+    right: 35.12rem;
     border-radius: 5px;
     border: 1px solid white;
     padding: 0;
@@ -126,7 +126,7 @@
     position: absolute;
     width: 5rem;
     top: 4.65rem;
-    left: 30.6rem;
+    left: 27.25rem;
     border-radius: 5px;
     border: 1px solid white;
     padding: 0;

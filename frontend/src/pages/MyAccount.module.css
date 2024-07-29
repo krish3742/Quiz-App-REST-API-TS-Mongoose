@@ -9,7 +9,6 @@
 }
 
 .linear {
-    cursor: default;
     width: 87.5%;
     min-height: 75vh;
     border-radius: 15px;
@@ -21,6 +20,7 @@
     flex-direction: column;
     margin-bottom: 1.5rem;
     gap: 1rem;
+    cursor: default;
 }
 
 .menuDiv {
@@ -64,6 +64,7 @@
 .heading {
     margin: 1rem 0 0 0;
     margin-left: -46rem;
+    cursor: default;
 }
 
 .para {
@@ -103,25 +104,18 @@
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.deactivateAccountButton:hover {
+    cursor: pointer;
+}
+
+.editButton {
+    cursor: pointer;
+}
+
 .deactivateAccountDiv {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-   
-.button {
-    height: 2.75rem;
-    width: 10rem;
-    background-color: #0F0C2C;
-    border-radius: 50px;
-    border: none;
-    outline: none;
-    font-size: large;
-    color: white;
-}
-
-.button:hover {
-    cursor: pointer;
 }
 
 .errorPara {
@@ -139,13 +133,28 @@
     margin-left: 19rem;
     margin-top: -.1rem;
 }
+   
+.button {
+    height: 2.75rem;
+    width: 10rem;
+    background-color: #0F0C2C;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+    font-size: large;
+    color: white;
+}
+
+.button:hover {
+    cursor: pointer;
+}
 
 .myAccountDiv {
     position: absolute;
     width: 8rem;
     height: 4.3rem;
     background-color: white;
-    top: 4.70rem;
+    top: 4.75rem;
     right: 5rem;
     border-radius: 5px;
     border: 1px solid black;
@@ -163,6 +172,43 @@
     cursor: pointer;
 }
 
+.noQuiz {
+    margin: .5rem 0 0 0;
+    font-size: medium;
+    padding: 0 .5rem 0 .5rem;
+    cursor: default;
+}
+
+.myQuizDiv {
+    position: absolute;
+    width: 5.5rem;
+    top: 4.65rem;
+    right: 27.5rem;
+    border-radius: 5px;
+    border: 1px solid white;
+    padding: 0;
+}
+
+.favouriteQuestionsDiv {
+    position: absolute;
+    width: 11rem;
+    top: 4.65rem;
+    right: 34.55rem;
+    border-radius: 5px;
+    border: 1px solid white;
+    padding: 0;
+}
+
+.quizzesDiv {
+    position: absolute;
+    width: 5rem;
+    top: 4.65rem;
+    left: 26.8rem;
+    border-radius: 5px;
+    border: 1px solid white;
+    padding: 0;
+}
+
 .loading {
     position: fixed;
     width: 100vw;
@@ -173,36 +219,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.myQuizDiv {
-    position: absolute;
-    width: 5.5rem;
-    top: 4.65rem;
-    right: 30.75rem;
-    border-radius: 5px;
-    border: 1px solid white;
-    padding: 0;
-}
-
-.reportsDiv {
-    position: absolute;
-    width: 5rem;
-    top: 4.65rem;
-    right: 37.6rem;
-    border-radius: 5px;
-    border: 1px solid white;
-    padding: 0;
-}
-
-.quizzesDiv {
-    position: absolute;
-    width: 5rem;
-    top: 4.65rem;
-    left: 30.1rem;
-    border-radius: 5px;
-    border: 1px solid white;
-    padding: 0;
 }
 
 .loader {
@@ -259,17 +275,14 @@
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.noQuiz {
-    margin: .5rem 0 0 0;
-    font-size: medium;
+.input {
+    height: 2rem;
+    width: 18rem;
+    margin: 0.5rem 0 1rem 0;
+    border: 1px solid black;
+    outline: 0;
+    border-radius: 5px;
     padding: 0 .5rem 0 .5rem;
-    cursor: default;
-}
-
-.deactivateAccountButton:hover {
-    cursor: pointer;
-}
-
-.editButton {
-    cursor: pointer;
+    font-size: medium;
+    background-color: rgba(128, 128, 128, 0.2);
 }

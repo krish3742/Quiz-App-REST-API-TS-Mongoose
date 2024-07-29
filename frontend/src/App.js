@@ -23,6 +23,7 @@ import UpdateQuiz from './pages/UpdateQuiz';
 import Reports from './pages/Reports';
 import PublishedQuiz from './pages/PublishedQuiz';
 import StartExamPage from './pages/ExamPage';
+import FavoriteQuestion from './pages/FavoriteQuestion';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
         <Route path='/auth/report/:reportId' element={<Reports />}></Route>
         <Route path='/auth/published-quiz' element={<PublishedQuiz />}></Route>
         <Route path='/auth/exam/:id' element={<StartExamPage />}></Route>
+        <Route path='/auth/user/fav-ques' element={<FavoriteQuestion />}></Route>
 
         <Route path='/auth/user/my-account' element={<MyAccount />}></Route>
         <Route path='/auth/user/change-name' element={<ChangeName />}></Route>
