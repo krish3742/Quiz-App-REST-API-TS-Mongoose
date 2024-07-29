@@ -42,7 +42,7 @@ function App() {
         <Route path='/auth/quiz/myquiz' element={<MyQuiz />}></Route>
         <Route path='/auth/quiz/update' element={<UpdateQuiz />}></Route>
         <Route path='/auth/quiz/view' element={<ViewQuiz />}></Route>
-        <Route path='/auth/reports' element={<Reports />}></Route>
+        <Route path='/auth/report/:reportId' element={<Reports />}></Route>
         <Route path='/auth/published-quiz' element={<PublishedQuiz />}></Route>
         <Route path='/auth/exam/:id' element={<StartExamPage />}></Route>
 

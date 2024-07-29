@@ -1,20 +1,21 @@
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import Style from './Reports.module.css';
 
 function Reports() {
+    const params = useParams();
     const location = useLocation();
     const navigate = useNavigate();
-    const [flag, setFlag] = useState(true);
-    const [quizId, setQuizId] = useState();
-    const [viewQuizId, setViewQuizId] = useState();
-    const [myQuizList, setMyQuizList] = useState([]); 
+    const [report, setReport] = useState();
     const [isLoading, setIsLoading] = useState(true);
-    const [quizzesList, setQuizzesList] = useState([]);
+    const [isMyQuizOpen, setIsMyQuizOpen] = useState(false);
     const [isQuizzesOpen, setIsQuizzesOpen] = useState(false);
+    const [isReportsOpen, setIsReportsOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [quizId, setQuizId] = useState("");
+    const reportId = params?.reportId;
     const token = location?.state?.token;
     const headers = {'Authorization': `Bearer ${token}`};
     function handleLogoutClick(evt) {
@@ -37,66 +38,31 @@ function Reports() {
         evt.preventDefault();
         navigate('/auth/quiz', { state: { token }});
     }
-    function handleEditButtonClick(id, e) {
-        e.preventDefault();
-        setQuizId(id);
-        setIsLoading(true);
-        setFlag(!flag);
-    }
     function handleMyQuizClick(evt) {
         evt.preventDefault();
         navigate('/auth/quiz/myquiz', { state: { token }});
     }
-    function handleDeleteQuizClick(id, e) {
-        e.preventDefault();
-        setIsLoading(true);
-        axios
-            .delete(`http://localhost:3002/quiz/${id}`, { headers })
-            .then(() => {
-                setFlag(!flag);
-            })
-            .catch(() => {
-                setIsLoading(false);
-                setFlag(!flag);
-                navigate('/auth/login');
-            })
+    function handleReportsClick(evt) {
+        evt.preventDefault();
+        navigate('/auth/reports', { state: { token }});
     }
-    function handleViewQuizClick(id, e) {
-        e.preventDefault();
-        setViewQuizId(id);
-        setIsLoading(true);
-        setFlag(!flag);
+    function handleQuizzesClick(evt) {
+        evt.preventDefault();
+        navigate('/auth/published-quiz', { state: { token }});
     }
     useEffect(() => {
-        if(!!quizId) {
-            axios
-                .get(`http://localhost:3002/quiz/${quizId}`, { headers })
-                .then((response) => {
-                    setIsLoading(false);
-                    navigate('/auth/quiz/update', { state: { token, quizId }});
-                })
-                .catch((error) => {
-                    setIsLoading(false);
-                    navigate('/auth/login');
-                })
-        }
-        if(!!viewQuizId) {
-            navigate('/auth/quiz/view', { state: { token, viewQuizId}});
-        }
         axios
-            .get('http://localhost:3002/quiz', { headers })
+            .get(`http://localhost:3002/report/${reportId}`, { headers })
             .then((response) => {
                 setIsLoading(false);
-                setMyQuizList(response?.data?.data);
+                setReport(response?.data?.data);
+                setQuizId(response?.data?.data?.quizId);
             })
             .catch((error) => {
                 setIsLoading(false);
-                const message = error?.response?.data?.message;
-                if(message.includes('Quiz not found!')) {
-                    setMyQuizList(["No quiz found"]);
-                }
+                navigate('/auth/login');
             })
-    }, [quizId, flag]);
+    }, [quizId]);
     if(!token) {
         return <Navigate to='/auth/login' />
     }
@@ -105,16 +71,18 @@ function Reports() {
             <div className={Style.container}>
                 <h2 className={Style.title} onClick={handleQuizAppClick}>Quiz App</h2>
                 <div className={Style.menuDiv}>
-                    <h4 className={Style.menu} onMouseEnter={() => {setIsQuizzesOpen(true)}} onMouseLeave={() => {setIsQuizzesOpen(false)}}>Quizzes</h4>
+                    <h4 className={Style.menu} onMouseEnter={() => {setIsQuizzesOpen(true)}} onMouseLeave={() => {setIsQuizzesOpen(false)}} onClick={handleQuizzesClick}>Quizzes</h4>
                     {isQuizzesOpen &&
-                        <div className={Style.quizzesDiv} onMouseEnter={() => setIsQuizzesOpen(true)} onMouseLeave={() => {setIsQuizzesOpen(false)}}>
-                            {quizzesList.length !== 0 ?quizzesList.map((list) => {
-                                return <p className={Style.options} key={list.name}>{list.name}</p>
-                            }) : <p className={Style.noQuiz} key='noQuiz'>No quiz published!</p>}
-                        </div>
+                        <div className={Style.quizzesDiv}></div>
                     }
-                    <h4 className={Style.menu}>Reports</h4>
-                    <h4 className={Style.menu} onClick={handleMyQuizClick}>My Quiz</h4>
+                    <h4 className={Style.menu} onMouseEnter={() => {setIsReportsOpen(true)}} onMouseLeave={() => {setIsReportsOpen(false)}} onClick={handleReportsClick}>Reports</h4>
+                    {isReportsOpen &&
+                        <div className={Style.reportsDiv}></div>
+                    }
+                    <h4 className={Style.menu} onMouseEnter={() => {setIsMyQuizOpen(true)}} onMouseLeave={() => {setIsMyQuizOpen(false)}} onClick={handleMyQuizClick}>My Quiz</h4>
+                    {isMyQuizOpen &&
+                        <div className={Style.myQuizDiv}></div>
+                    }
                 </div>
                 <div className={Style.profile} onMouseEnter={() => {setIsProfileOpen(true)}} onMouseLeave={() => {setIsProfileOpen(false)}}></div>
                     {isProfileOpen &&
@@ -125,40 +93,25 @@ function Reports() {
                     }
             </div>
             <div className={Style.linear}>
-                <h2 className={Style.heading}>Reports Quiz</h2>
-                    {!!myQuizList && myQuizList.length != 0 &&
-                        myQuizList.map((list) => {
-                            return (
-                                <div className={Style.accountDiv} key={list._id}> 
-                                    <div className={Style.titleDiv}>
-                                        <div>
-                                            <h4 className={Style.title}>{list.name}</h4>
-                                        </div>
-                                        <div className={Style.buttonDiv}>
-                                            <button className={Style.editButton} onClick={(e) => handleViewQuizClick(list._id, e)}>View</button>
-                                            {list?.isPublished ? 
-                                                <button className={Style.editButtonDisabled} disabled>Edit</button> :
-                                                <button className={Style.editButton} onClick={(e) => handleEditButtonClick(list._id, e)}>Edit</button>
-                                            }
-                                            {list?.isPublished ? 
-                                                <button className={Style.editButtonDisabled} disabled>Delete</button> :
-                                                <button className={Style.editButton} onClick={(e) => handleDeleteQuizClick(list._id, e)}>Delete</button>                                            
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                            )
-                        })
-                    }
-                    {!!myQuizList && myQuizList.length === 0 &&
-                        <div className={Style.accountDiv}> 
-                            <div className={Style.titleDiv}>
-                                <div>
-                                    <h4 className={Style.title}>No quiz found!</h4>
-                                </div>
+                <h2 className={Style.heading}>Report</h2>
+                {!!report &&
+                    <div className={Style.accountDiv}> 
+                        <div className={Style.titleDiv}>
+                            <div>
+                                <label className={Style.statusBold}>Status: </label>
+                                <label className={Style.status}>{report.result}</label>
+                            </div>
+                            <div>
+                                <label className={Style.statusBold}>Marks: </label>
+                                <label className={Style.status}>{report.score}/{report.total}</label>
+                            </div>
+                            <div>
+                                <label className={Style.statusBold}>Percentage: </label>
+                                <label className={Style.status}>{report.percentage}%</label>
                             </div>
                         </div>
-                    }
+                    </div>
+                }
             </div>
             {isLoading && 
                 <div className={Style.loading}>

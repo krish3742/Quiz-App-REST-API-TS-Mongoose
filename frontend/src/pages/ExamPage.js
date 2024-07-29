@@ -9,9 +9,9 @@ function ExamPage() {
     const location = useLocation();
     const navigate = useNavigate(); 
     const [quiz, setQuiz] = useState();
-    const [errors, setErrors] = useState(["testing"]);
     const [quizId, setQuizId] = useState(params?.id);
     const [isLoading, setIsLoading] = useState(true);
+    const [errors, setErrors] = useState(["testing"]);
     const [attemptedQuestion, setAttemptedQuestion] = useState({});
     const token = location?.state?.token;
     const headers = {'Authorization': `Bearer ${token}`};
@@ -37,22 +37,25 @@ function ExamPage() {
     function handleSubmitClick(evt) {
         evt.preventDefault();
         setErrors([]);
-        // setIsLoading(true);
+        setIsLoading(true);
         if(quiz.questionList.length !== Object.keys(attemptedQuestion).length) {
             setErrors(["Attempt all the questions"]);
         }
     }
-    console.log(attemptedQuestion);
     useEffect(() => {
         if(!!errors && errors.length === 0) {
             axios
                 .post("http://localhost:3002/exam", {quizId: params?.id, attemptedQuestion}, { headers })
                 .then((response) => {
-                    console.log(response);
+                    setIsLoading(false);
+                    navigate(`/auth/report/${response?.data?.data?.reportId}`, { state: { token }});
                 })
                 .catch((error) => {
-                    console.log(error);
+                    setIsLoading(false);
+                    navigate('/auth/login');
                 })
+        } else {
+            setIsLoading(false);
         }
         if(!!quizId) {
             axios
@@ -60,7 +63,6 @@ function ExamPage() {
                 .then((response) => {
                     setIsLoading(false);
                     setQuizId("");
-                    console.log(response);
                     setQuiz(response?.data?.data);
                 })
                 .catch((error) => {
