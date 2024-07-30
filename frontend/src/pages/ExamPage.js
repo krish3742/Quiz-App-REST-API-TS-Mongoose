@@ -9,10 +9,11 @@ function ExamPage() {
     const location = useLocation();
     const navigate = useNavigate(); 
     const [quiz, setQuiz] = useState();
+    const [flag, setFlag] = useState(false);
     const [quizId, setQuizId] = useState(params?.id);
     const [isLoading, setIsLoading] = useState(true);
     const [errors, setErrors] = useState(["testing"]);
-    const [favouriteQuestion, setFavouriteQuestion] = useState();
+    const [favQues, setFavQues] = useState();
     const [attemptedQuestion, setAttemptedQuestion] = useState({});
     const token = location?.state?.token;
     const headers = {'Authorization': `Bearer ${token}`};
@@ -44,42 +45,49 @@ function ExamPage() {
         }
     }
     function handleToggleFavouriteClick(questionList, e) {
+        e.preventDefault();
         setIsLoading(true);
-        if(!!favouriteQuestion) {
-            const result = Object.keys(favouriteQuestion).some((key) => {
-                return key == questionList.questionNumber;
+        if(!!favQues && favQues.length !== 0) {
+            let id = "";
+            const result = favQues.some((list) => {
+                id = list._id;
+                return list.question === questionList.question;
             })
             if(!result) {
                 axios
                     .post('http://localhost:3002/favquestion', { question: questionList.question, options: questionList.options}, { headers })
                     .then(() => {
                         setIsLoading(false);
-                        setFavouriteQuestion((oldObject) => {
-                            return {...oldObject, [questionList.questionNumber]: ''};
-                        });
+                        setFlag(!flag);
                     })
                     .catch(() => {
                         setIsLoading(false);
                         navigate('/auth/login');
                     })
             } else {
-                setIsLoading(false);
+                axios
+                    .delete(`http://localhost:3002/favquestion/${id}`, { headers })
+                    .then(() => {
+                        setIsLoading(false);
+                        setFlag(!flag);
+                    })
+                    .catch(() => {
+                        setIsLoading(false);
+                        navigate('/auth/login')
+                    })
             }
         } else {
             axios
                 .post('http://localhost:3002/favquestion', { question: questionList.question, options: questionList.options}, { headers })
                 .then(() => {
                     setIsLoading(false);
-                    setFavouriteQuestion((oldObject) => {
-                        return {...oldObject, [questionList.questionNumber]: ''};
-                    });
+                    setFlag(!flag); 
                 })
                 .catch(() => {
                     setIsLoading(false);
                     navigate('/auth/login');
                 })
         }
-        
     }
     useEffect(() => {
         if(!!errors && errors.length === 0) {
@@ -115,7 +123,17 @@ function ExamPage() {
                     }
                 })
         }
-    }, [quizId, errors]);
+        axios
+            .get('http://localhost:3002/favquestion', { headers })
+            .then((response) => {
+                setIsLoading(false);
+                setFavQues(response?.data?.data?.favQues);
+            })
+            .catch(() => {
+                setIsLoading(false);
+                navigate('/auth/login');
+            })
+    }, [quizId, errors, flag]);
     if(!token) {
         return <Navigate to='/auth/login' />
     }
@@ -137,8 +155,8 @@ function ExamPage() {
                                         <p className={Style.star}>*</p>
                                     </div>
                                     <div>
-                                        <button className={!!favouriteQuestion && Object.keys(favouriteQuestion).some((key) => {
-                                            return key == list.questionNumber;
+                                        <button  className={!!favQues && favQues.some((favList) => {
+                                            return list.question === favList.question;
                                         }) ? Style.favItem : Style.unfavItem
                                         } onClick={(e) => handleToggleFavouriteClick(list, e)}></button>
                                     </div>

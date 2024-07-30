@@ -105,7 +105,7 @@ function FavoriteQuestion() {
             <div className={Style.linear}>
                 {!!favQues && favQues.length !== 0 && favQues.map((list) => {
                     return (
-                        <div className={Style.titleDiv} key={list.questionNumber}>
+                        <div className={Style.titleDiv} key={list.question}>
                             <div className={Style.itemDiv}>
                                 <div className={Style.quesDiv}>
                                     <p className={Style.paraBold}>Question: </p>
