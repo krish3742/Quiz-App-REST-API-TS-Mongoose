@@ -294,6 +294,23 @@
     padding: 0;
 }
 
+
+.favItem {
+    display: inline-block;
+    width: 40px;
+    aspect-ratio: 1;
+    border-image: radial-gradient(red 69%, #0000 70%) 84.5% fill/100%;
+    clip-path: polygon(-41% 0, 50% 91%, 141% 0);
+    background-color: transparent;
+    margin: 1rem;
+    cursor: pointer;
+}
+
+.itemDiv {
+    display: flex;
+    justify-content: space-between;
+}
+
 .favouriteQuestionsDiv {
     position: absolute;
     width: 11rem;

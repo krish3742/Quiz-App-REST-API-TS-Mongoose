@@ -12,6 +12,7 @@ function ExamPage() {
     const [quizId, setQuizId] = useState(params?.id);
     const [isLoading, setIsLoading] = useState(true);
     const [errors, setErrors] = useState(["testing"]);
+    const [favouriteQuestion, setFavouriteQuestion] = useState();
     const [attemptedQuestion, setAttemptedQuestion] = useState({});
     const token = location?.state?.token;
     const headers = {'Authorization': `Bearer ${token}`};
@@ -41,6 +42,44 @@ function ExamPage() {
         if(quiz.questionList.length !== Object.keys(attemptedQuestion).length) {
             setErrors(["Attempt all the questions"]);
         }
+    }
+    function handleToggleFavouriteClick(questionList, e) {
+        setIsLoading(true);
+        if(!!favouriteQuestion) {
+            const result = Object.keys(favouriteQuestion).some((key) => {
+                return key == questionList.questionNumber;
+            })
+            if(!result) {
+                axios
+                    .post('http://localhost:3002/favquestion', { question: questionList.question, options: questionList.options}, { headers })
+                    .then(() => {
+                        setIsLoading(false);
+                        setFavouriteQuestion((oldObject) => {
+                            return {...oldObject, [questionList.questionNumber]: ''};
+                        });
+                    })
+                    .catch(() => {
+                        setIsLoading(false);
+                        navigate('/auth/login');
+                    })
+            } else {
+                setIsLoading(false);
+            }
+        } else {
+            axios
+                .post('http://localhost:3002/favquestion', { question: questionList.question, options: questionList.options}, { headers })
+                .then(() => {
+                    setIsLoading(false);
+                    setFavouriteQuestion((oldObject) => {
+                        return {...oldObject, [questionList.questionNumber]: ''};
+                    });
+                })
+                .catch(() => {
+                    setIsLoading(false);
+                    navigate('/auth/login');
+                })
+        }
+        
     }
     useEffect(() => {
         if(!!errors && errors.length === 0) {
@@ -91,10 +130,18 @@ function ExamPage() {
                     return (
                         <div className={Style.titleDiv} key={list.questionNumber}>
                             <div>
-                                <div className={Style.quesDiv}>
-                                    <h4 className={Style.quesTitle}>Question {list.questionNumber}:</h4>
-                                    <p className={Style.para}>{list.question}</p>
-                                    <p className={Style.star}>*</p>
+                                <div className={Style.questionDiv}>
+                                    <div className={Style.quesDiv}>
+                                        <h4 className={Style.quesTitle}>Question {list.questionNumber}:</h4>
+                                        <p className={Style.para}>{list.question}</p>
+                                        <p className={Style.star}>*</p>
+                                    </div>
+                                    <div>
+                                        <button className={!!favouriteQuestion && Object.keys(favouriteQuestion).some((key) => {
+                                            return key == list.questionNumber;
+                                        }) ? Style.favItem : Style.unfavItem
+                                        } onClick={(e) => handleToggleFavouriteClick(list, e)}></button>
+                                    </div>
                                 </div>
                                 <div className={Style.optionDiv}>
                                     <h4 className={Style.titleOption}>Options</h4>

@@ -7,6 +7,7 @@ import Style from './FavoriteQuestion.module.css';
 function FavoriteQuestion() {
     const location = useLocation();
     const navigate = useNavigate(); 
+    const [flag, setFlag] = useState(false);
     const [favQues, setFavQues] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const [isMyQuizOpen, setIsMyQuizOpen] = useState(false);
@@ -38,13 +39,26 @@ function FavoriteQuestion() {
         setIsLoading(true);
         axios
             .post('http://localhost:3002/user/logout', {}, { headers })
-            .then((response) => {
+            .then(() => {
                 setIsLoading(false);
                 navigate('/auth/login');
             })
-            .catch((error) => {
+            .catch(() => {
                 setIsLoading(false);
                 navigate('/auth/register');
+            })
+    }
+    function handleRemoveFavouriteClick(id, e) {
+        setIsLoading(true);
+        axios
+            .delete(`http://localhost:3002/favquestion/${id}`, { headers })
+            .then(() => {
+                setIsLoading(false);
+                setFlag(!flag);
+            })
+            .catch(() => {
+                setIsLoading(false);
+                navigate('/auth/login')
             })
     }
     useEffect(() => {
@@ -58,7 +72,7 @@ function FavoriteQuestion() {
                 setIsLoading(false);
                 navigate('/auth/login');
             })
-    }, []);
+    }, [flag]);
     if(!token) {
         return <Navigate to='/auth/login' />
     }
@@ -92,9 +106,14 @@ function FavoriteQuestion() {
                 {!!favQues && favQues.length !== 0 && favQues.map((list) => {
                     return (
                         <div className={Style.titleDiv} key={list.questionNumber}>
-                            <div className={Style.quesDiv}>
-                                <p className={Style.paraBold}>Question: </p>
-                                <p className={Style.para}>{list.question}</p>
+                            <div className={Style.itemDiv}>
+                                <div className={Style.quesDiv}>
+                                    <p className={Style.paraBold}>Question: </p>
+                                    <p className={Style.para}>{list.question}</p>
+                                </div>
+                                <div>
+                                    <button className={Style.favItem} onClick={(e) => handleRemoveFavouriteClick(list._id, e)}></button>
+                                </div>
                             </div>
                             {!!list.options &&
                                 <div className={Style.optionDiv}>
