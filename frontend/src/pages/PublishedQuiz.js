@@ -13,7 +13,7 @@ function PublishedQuiz() {
     const [isLoading, setIsLoading] = useState(true);
     const [isAttempt, setIsAttempt] = useState(false);
     const [isMyQuizOpen, setIsMyQuizOpen] = useState(false);
-    const [isQuizzesOpen, setIsQuizzesOpen] = useState(false);
+    const [isQuizzesOpen, setIsQuizzesOpen] = useState(true);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [isFavouriteQuestionOpen, setIsFavouriteQuestionOpen] = useState(false);
     const token = location?.state?.token;
@@ -87,7 +87,7 @@ function PublishedQuiz() {
             <div className={Style.container}>
                 <h2 className={Style.title} onClick={handleQuizAppClick}>Quiz App</h2>
                 <div className={Style.menuDiv}>
-                    <h4 className={Style.menu} onMouseEnter={() => {setIsQuizzesOpen(true)}} onMouseLeave={() => {setIsQuizzesOpen(false)}} onClick={handleQuizzesClick}>Quizzes</h4>
+                    <h4 className={Style.menu} onClick={handleQuizzesClick}>Quizzes</h4>
                     {isQuizzesOpen &&
                         <div className={Style.quizzesDiv}></div>
                     }

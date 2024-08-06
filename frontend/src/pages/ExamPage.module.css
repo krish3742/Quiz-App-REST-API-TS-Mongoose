@@ -111,8 +111,8 @@
 }
 
 .heading {
+    text-align: flex-start;
     margin: 1rem 0 0 0;
-    margin-left: -54rem;
     color: white;
 }
 

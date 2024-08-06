@@ -7,6 +7,7 @@ import Style from './ViewQuiz.module.css';
 function ViewQuiz() {
     const location = useLocation();
     const navigate = useNavigate();
+    const [users, setUsers] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const [isMyQuizOpen, setIsMyQuizOpen] = useState(false);
     const [isQuizzesOpen, setIsQuizzesOpen] = useState(false);
@@ -66,15 +67,23 @@ function ViewQuiz() {
                 setAnswers(quiz?.answers);
                 setPassingPercentage(quiz?.passingPercentage);
                 setIsPublicQuiz(quiz?.isPublicQuiz);
-                if(!!quiz?.allowedUser) {
-                    setAllowedUser(quiz?.allowedUser);
-                }
+                setAllowedUser(quiz?.allowedUser);
             })
             .catch(() => {
                 setIsLoading(false);
                 setQuizId("");
                 navigate('/auth/login');
+            });
+        axios
+            .get('http://localhost:3002/user/all', { headers })
+            .then((response) => {
+                setIsLoading(false);
+                setUsers(response?.data?.data);
             })
+            .catch((error) => {
+                setIsLoading(false);
+                navigate('/auth/login');
+            });
     }, []);
     if(!token && !quizId) {
         return <Navigate to='/auth/login' />
@@ -174,23 +183,29 @@ function ViewQuiz() {
                             <p className={Style.para}>{isPublicQuiz ? "True" : "False"}</p>
                         </div>
                     </div>
-                    <div className={Style.titleDiv}>
-                        <div>
-                            <h4 className={Style.title}>Allowed User</h4>
-                            {!!allowedUser &&
-                                allowedUser.map((value, index) => {
-                                    return (
-                                        <div className={Style.optionDiv} key={index}>
-                                            <div className={Style.sameLine}>
-                                                <span id={index}>{index + 1}: </span>
-                                                <p className={Style.spanPara}>{value}</p>
+                    {isPublicQuiz === false &&
+                        <div className={Style.titleDiv}>
+                            <div>
+                                <h4 className={Style.title}>Allowed Users *</h4>
+                                {!!allowedUser &&
+                                    allowedUser.map((value, index) => {
+                                        return (
+                                            <div className={Style.optionDiv} key={index}>
+                                                <div className={Style.sameLine}>
+                                                    <span id={index}>{index + 1}: </span>
+                                                    {users.map((user) => {
+                                                        if(user?._id === value) {
+                                                            return <p className={Style.spanPara} key={value}>{value}: {user?.name}</p>
+                                                        }
+                                                    })}
+                                                </div>
                                             </div>
-                                        </div>
-                                    )
-                                })
-                            }
-                        </div>
-                    </div>  
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>  
+                    }
                 </div>
             </div>
             {isLoading && 

@@ -101,20 +101,18 @@ function ExamPage() {
                     setIsLoading(false);
                     navigate('/auth/login');
                 })
-        } else {
-            setIsLoading(false);
         }
         if(!!quizId) {
             axios
                 .get(`http://localhost:3002/exam/${quizId}`, { headers })
                 .then((response) => {
                     setIsLoading(false);
-                    setQuizId("");
+                    setQuizId();
                     setQuiz(response?.data?.data);
                 })
                 .catch((error) => {
                     setIsLoading(false);
-                    setQuizId("");
+                    setQuizId();
                     const message = error?.response?.data?.message;
                     if(message.includes("You have zero attempts left!")) {
                         navigate('/auth/published-quiz', { state: { token, message: true }});
@@ -133,7 +131,7 @@ function ExamPage() {
                 setIsLoading(false);
                 navigate('/auth/login');
             })
-    }, [quizId, errors, flag]);
+    }, [errors, flag]);
     if(!token) {
         return <Navigate to='/auth/login' />
     }

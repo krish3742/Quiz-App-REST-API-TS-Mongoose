@@ -259,6 +259,13 @@
     margin-top: -.1rem;
 }
 
+.options {
+    margin: 0.2rem;
+    padding: 0.25rem;
+    font-size: medium;
+    cursor: pointer;
+}
+
 .myAccountDiv {
     position: absolute;
     width: 8rem;

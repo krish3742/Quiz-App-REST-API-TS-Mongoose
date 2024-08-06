@@ -13,7 +13,7 @@ function FavoriteQuestion() {
     const [isMyQuizOpen, setIsMyQuizOpen] = useState(false);
     const [isQuizzesOpen, setIsQuizzesOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
-    const [isFavouriteQuestionOpen, setIsFavouriteQuestionOpen] = useState(false);
+    const [isFavouriteQuestionOpen, setIsFavouriteQuestionOpen] = useState(true);
     const token = location?.state?.token;
     const headers = {'Authorization': `Bearer ${token}`};
     function handleMyQuizClick(evt) {
@@ -85,7 +85,7 @@ function FavoriteQuestion() {
                     {isQuizzesOpen &&
                         <div className={Style.quizzesDiv}></div>
                     }
-                    <h4 className={Style.menu} onMouseEnter={() => {setIsFavouriteQuestionOpen(true)}} onMouseLeave={() => {setIsFavouriteQuestionOpen(false)}} onClick={handleFavouriteQuestionClick}>Favorite Questions</h4>
+                    <h4 className={Style.menu} onClick={handleFavouriteQuestionClick}>Favorite Questions</h4>
                     {isFavouriteQuestionOpen &&
                         <div className={Style.favouriteQuestionsDiv}></div>
                     }

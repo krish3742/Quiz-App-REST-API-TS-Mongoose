@@ -12,7 +12,7 @@ function MyQuiz() {
     const [viewQuizId, setViewQuizId] = useState();
     const [myQuizList, setMyQuizList] = useState([]); 
     const [isLoading, setIsLoading] = useState(true);
-    const [isMyQuizOpen, setIsMyQuizOpen] = useState(false);
+    const [isMyQuizOpen, setIsMyQuizOpen] = useState(true);
     const [isQuizzesOpen, setIsQuizzesOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [isFavouriteQuestionOpen, setIsFavouriteQuestionOpen] = useState(false);
@@ -122,7 +122,7 @@ function MyQuiz() {
                     {isFavouriteQuestionOpen &&
                         <div className={Style.favouriteQuestionsDiv}></div>
                     }
-                    <h4 className={Style.menu} onMouseEnter={() => {setIsMyQuizOpen(true)}} onMouseLeave={() => {setIsMyQuizOpen(false)}} onClick={handleMyQuizClick}>My Quiz</h4>
+                    <h4 className={Style.menu} onClick={handleMyQuizClick}>My Quiz</h4>
                     {isMyQuizOpen &&
                         <div className={Style.myQuizDiv}></div>
                     }
@@ -146,11 +146,8 @@ function MyQuiz() {
                                             <h4 className={Style.title}>{list.name}</h4>
                                         </div>
                                         <div className={Style.buttonDiv}>
-                                            {(!list?.isPublicQuiz && list.allowedUser.includes("")) ? 
-                                                <button className={Style.editButtonDisabled} disabled>View</button> :
-                                                <button className={Style.editButton} onClick={(e) => handleViewQuizClick(list._id, e)}>View</button>
-                                            }
-                                            {(list?.isPublished || (!list?.isPublicQuiz && list.allowedUser.includes(""))) ? 
+                                            <button className={Style.editButton} onClick={(e) => handleViewQuizClick(list._id, e)}>View</button>
+                                            {list?.isPublished ? 
                                                 <button className={Style.editButtonDisabled} disabled>Edit</button> :
                                                 <button className={Style.editButton} onClick={(e) => handleEditButtonClick(list._id, e)}>Edit</button>
                                             }

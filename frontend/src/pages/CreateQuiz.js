@@ -5,8 +5,10 @@ import axios from 'axios';
 import Style from './CreateQuiz.module.css';
 
 function CreateQuiz() {
+    let data;
     const location = useLocation();
     const navigate = useNavigate();
+    const [users, setUsers] = useState();
     const [color, setColor] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState(["Testing"]);
@@ -17,8 +19,7 @@ function CreateQuiz() {
     const [name, setName] = useState("");
     const [category, setCategory] = useState("Choose Option");
     const [difficultyLevel, setDifficultyLevel] = useState("Choose Option");
-    let [questionNo, setQuestionNo] = useState(1);
-    const [questionList, setQuestionList] = useState([{questionNumber: 1, question: '', options: {'1': ''}}]);
+    const [questionList, setQuestionList] = useState([]);
     const [answers, setAnswers] = useState({});
     const [passingPercentage, setPassingPercentage] = useState(0);
     const [attemptsAllowedPerUser, setAttemptsAllowed] = useState(0);
@@ -85,14 +86,17 @@ function CreateQuiz() {
     }
     function handleAllowedUserChange(index, e) {
         setAllowedUser((oldArray) => {
-            let allowedUserList = [];
-            return oldArray.map((value, ind) => {
-                if(index === ind) {
-                    return e.target.value;
-                } else {
-                    return value;
-                }
-            })
+            if(oldArray.length === 0) {
+                return [e.target.value];
+            } else {
+                return oldArray.map((value, ind) => {
+                    if(index === ind) {
+                        return e.target.value;
+                    } else {
+                        return value;
+                    }
+                })
+            }    
         })
     }
     function handleQuizAppClick(evt) {
@@ -162,28 +166,43 @@ function CreateQuiz() {
     }
     function handleAddQuesClick(evt) {
         evt.preventDefault();
-        setQuestionNo(++questionNo);
         setQuestionList((oldArray) => {
-            return [...oldArray, {questionNumber: questionNo, question: '', options: {'1': ''}}]
+            const length = questionList.length;
+            return [...oldArray, {questionNumber: length + 1, question: '', options: {'1': ''}}]
         })
     }
     function handleRemoveQuesClick(evt) {
         evt.preventDefault();
         setQuestionList((oldArray) => {
-            const questionNumber = questionNo + 1;
+            const length = questionList.length;
             return oldArray.filter((list) => {
-                if(list.questionNumber === questionNumber) {
+                if(list.questionNumber === length) {
                     return false;
                 }
                 return true;
             })
         });
-        setQuestionNo(--questionNo);
+        setAnswers((oldObject) => {
+            const length = questionList.length;
+            const answersLength = Object.keys(answers).length;
+            if(answersLength !== 0) {
+                let object = {};
+                for(let i in oldObject) {
+                    if(i == length) {
+                        object = {...object};
+                    } else {
+                        object = {...object, [i]: oldObject[i]};
+                    }
+                }
+                return object;
+            } else {
+                return {};
+            }
+        })
     }
     function handleAddUserClick(evt) {
         evt.preventDefault();
         setAllowedUser((oldArray) => {
-            let length = oldArray.length;
             return [...oldArray, ''];
         })
     }
@@ -224,26 +243,29 @@ function CreateQuiz() {
         } else if(difficultyLevel === 'Hard') {
             setDifficultyLevel('hard');
         }
-        questionList.forEach((list) => {
-            flag = true;
-            if(!list.question) {
-                flag = false;
-            }
-            Object.values(list.options).forEach((option) => {
-                if(!option) {
+        if(questionList.length === 0) {
+            setErrors((oldArray) => [...oldArray, "Please enter atleast 1 question"]);
+        } else {
+            questionList.forEach((list) => {
+                flag = true;
+                if(!list.question) {
                     flag = false;
                 }
+                Object.values(list.options).forEach((option) => {
+                    if(!option) {
+                        flag = false;
+                    }
+                })
+                if(!flag) {
+                    setErrors((oldArray) => [...oldArray, "Please enter question with options"])
+                }
             })
-            if(!flag) {
-                setErrors((oldArray) => [...oldArray, "Please enter question with options"])
-            }
-        })
+        }
         if(questionList.length !== Object.keys(answers).length) {
             setErrors((oldArray) => [...oldArray, "Please enter answers"])
         } else {
             flag = true;
             questionList.forEach((list) => {
-                // (question: { questionNumber: Number; question: String; options: {} }) => {
                 let opt = Object.keys(list.options);
                 if (
                     opt.indexOf(
@@ -269,22 +291,43 @@ function CreateQuiz() {
         }
         if(isPublicQuiz === 'Choose Option') {
             setErrors((oldArray) => [...oldArray, "Please choose is this is a public quiz?"]);
-        } else if(isPublicQuiz === 'True') {
-            setIsPublicQuiz(true);
-        } else if(isPublicQuiz === 'False') {
-            setIsPublicQuiz(false);
+        }
+        if(isPublicQuiz === "false") {
+            flag = true;
+            allowedUser.forEach((value) => {
+                if(value === '') {
+                    flag = false;
+                }
+            })
+            if(!flag) {
+                setErrors((oldArray) => [...oldArray, "Please choose allowed users"]);
+            }
         }
     }
-    const data = {
-        name,
-        category,
-        difficultyLevel,
-        questionList,
-        answers,
-        passingPercentage,
-        attemptsAllowedPerUser,
-        isPublicQuiz,
-        allowedUser
+    if(isPublicQuiz === 'true') {
+        data = {
+            name,
+            category,
+            difficultyLevel,
+            questionList,
+            answers,
+            passingPercentage,
+            attemptsAllowedPerUser,
+            isPublicQuiz,
+            allowedUser: []
+        }
+    } else if(isPublicQuiz === 'false') {
+        data = {
+            name,
+            category,
+            difficultyLevel,
+            questionList,
+            answers,
+            passingPercentage,
+            attemptsAllowedPerUser,
+            isPublicQuiz,
+            allowedUser
+        }
     }
     useEffect(() => {
         if(errors.length === 0) {
@@ -309,9 +352,17 @@ function CreateQuiz() {
                         navigate('/auth/login');
                     }
                 })
-        } else {
-            setIsLoading(false);
         }
+        axios
+            .get('http://localhost:3002/user/all', { headers })
+            .then((response) => {
+                setIsLoading(false);
+                setUsers(response?.data?.data);
+            })
+            .catch((error) => {
+                setIsLoading(false);
+                navigate('/auth/login');
+            })
     }, [errors]);
     if(!token) {
         return <Navigate to='/auth/login' />
@@ -372,12 +423,8 @@ function CreateQuiz() {
                             </select>
                         </div>
                     </div>
-                    {!!questionList && 
+                    {!!questionList && questionList.length !== 0 &&
                         questionList.map((list) => {
-                            let length = questionList.length;
-                            if(length === 1) {
-                                length = undefined;
-                            }
                             return (
                                 <div className={Style.titleDiv} key={list.questionNumber}>
                                     <div>
@@ -410,31 +457,34 @@ function CreateQuiz() {
                                             })
                                         }
                                     </div>
-                                    {list.questionNumber === 1 &&
-                                        <button className={Style.addRemoveQuesButton} onClick={handleAddQuesClick} key='addQues'>Add Question</button>
-                                    }
-                                    {list.questionNumber === length &&
-                                        <button className={Style.addRemoveQuesButton} onClick={handleRemoveQuesClick} key='removeQues'>Remove Question</button>
-                                    }
                                 </div>
                             )
                         })
                     }
-                    <div className={Style.titleDiv}>
-                        <div>
-                            <h4 className={Style.title}>Answers *</h4>
-                            {!!questionList &&
-                                questionList.map((list) => {
-                                    return (
-                                        <div key={list.questionNumber}>
-                                            <span>Ques {list.questionNumber}: </span>
-                                            <input type='text' maxLength={1} placeholder='Enter the correct option number' onChange={(e) => handleAnswersChange(list.questionNumber, e)}  id='Answers' className={Style.input}></input>
-                                        </div>
-                                    )
-                                })
-                            }
-                        </div>
+                    <div className={Style.buttonDiv}>
+                        <button className={Style.addRemoveQuesButton} onClick={handleAddQuesClick} key='addQues'>Add Question</button>
+                        {questionList.length === 0 ? 
+                            <button className={Style.addRemoveQuesButtonDisabled} onClick={handleRemoveQuesClick} key='removeQues' disabled>Remove Question</button> :
+                            <button className={Style.addRemoveQuesButton} onClick={handleRemoveQuesClick} key='removeQues'>Remove Question</button>
+                        }
                     </div>
+                    {questionList.length !== 0 && 
+                        <div className={Style.titleDiv}>
+                            <div>
+                                <h4 className={Style.title}>Answers *</h4>
+                                {!!questionList &&
+                                    questionList.map((list) => {
+                                        return (
+                                            <div key={list.questionNumber}>
+                                                <span>Ques {list.questionNumber}: </span>
+                                                <input type='text' maxLength={1} placeholder='Enter the correct option number' onChange={(e) => handleAnswersChange(list.questionNumber, e)}  id='Answers' className={Style.input}></input>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
+                    }
                     <div className={Style.titleDiv}>
                         <div>
                             <h4 className={Style.title}>Passing Percentage *</h4>
@@ -452,38 +502,49 @@ function CreateQuiz() {
                             <h4 className={Style.title}>Is this is a public quiz? *</h4>
                             <select className={Style.option} onChange={handlePublicQuizChange}>
                                 <option value='Choose Option'>Choose Option</option>
-                                <option value='True'>True</option>
-                                <option value='False'>False</option>
+                                <option value={true}>True</option>
+                                <option value={false}>False</option>
                             </select>
                         </div>
                     </div>
-                    <div className={Style.titleDiv}>
-                        <div>
-                            <h4 className={Style.title}>Allowed User</h4>
-                            {!!allowedUser &&
-                                allowedUser.map((value, index) => {
-                                    let lastKey = allowedUser.length;
-                                    if(lastKey === 1) {
-                                        lastKey = undefined;
-                                    } 
-                                    return (
-                                        <div className={Style.optionDiv} key={index}>
-                                            <div>
-                                                <span id={index}>{index + 1}: </span>
-                                                <input type='text' value={value} placeholder='Enter user id' id='allowedUser' onChange={(e) => handleAllowedUserChange(index, e)} className={Style.input}></input>
+                    {isPublicQuiz === "false" &&
+                        <div className={Style.titleDiv}>
+                            <div>
+                                <h4 className={Style.title}>Allowed Users *</h4>
+                                {!!allowedUser && 
+                                    allowedUser.map((value, index) => {
+                                        let lastKey = allowedUser.length;
+                                        if(lastKey === 1) {
+                                            lastKey = undefined;
+                                        } 
+                                        return (
+                                            <div className={Style.optionDiv} key={index}>
+                                                <div>
+                                                    <span id={index}>{index + 1}: </span>
+                                                    <select className={Style.option} value={value} onChange={(e) => handleAllowedUserChange(index, e)}>
+                                                        <option value=''>Choose Option</option>
+                                                        {users.map((user) => {
+                                                            if(allowedUser.includes(user?._id)) {
+                                                                return <option value={user?._id} key={user?._id} disabled>{user?._id}: {user?.name}</option>
+                                                            } else {
+                                                                return <option value={user?._id} key={user?._id}>{user?._id}: {user?.name}</option>
+                                                            }
+                                                        })}
+                                                    </select>
+                                                </div>
+                                                {index === 0 &&
+                                                    <button onClick={handleAddUserClick} className={Style.addRemoveButton} key={index}>Add User</button>
+                                                }
+                                                {index === (lastKey-1) &&
+                                                    <button onClick={handleRemoveUserClick} className={Style.addRemoveButton} key={index}>Remove User</button>
+                                                }
                                             </div>
-                                            {index === 0 &&
-                                                <button onClick={handleAddUserClick} className={Style.addRemoveButton} key={index}>Add User</button>
-                                            }
-                                            {index === (lastKey-1) &&
-                                                <button onClick={handleRemoveUserClick} className={Style.addRemoveButton} key={index}>Remove User</button>
-                                            }
-                                        </div>
-                                    )
-                                })
-                            }
+                                        )
+                                    })
+                                }
+                            </div>
                         </div>
-                    </div>
+                    }
                     {!!errors && errors.length > 0 && !errors.includes("Testing") &&
                         <div className={Style.instructionParaDiv}>
                             <ul>
