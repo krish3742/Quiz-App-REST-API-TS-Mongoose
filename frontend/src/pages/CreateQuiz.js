@@ -1,4 +1,5 @@
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { MdDeleteOutline } from "react-icons/md";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -145,19 +146,22 @@ function CreateQuiz() {
             })
         });
     }
-    function handleRemoveOptionClick(questionNumber) {
+    function handleRemoveOptionClick(questionNumber, key) {
         setQuestionList((oldArray) => {
             return oldArray.map((list) => {
                 if(list.questionNumber === questionNumber) {
-                    let length = Object.keys(oldArray[questionNumber - 1].options).length;
+                    let length = 1;
                     const optionsList = list.options;
-                    let option = {};
-                    for(let key in optionsList) {
-                        if(key != (length)) {
-                            option = {...option, [key]: optionsList[key]};
+                    let option = {}, tempOption = {};
+                    for(let i in optionsList) {
+                        if(i !== key) {
+                            option = {...option, [i]: optionsList[i]};
                         }
                     }
-                    return {questionNumber: list.questionNumber, question: list.question, options: option};
+                    for(let i in option) {
+                        tempOption = {...tempOption, [length++]: option[i]};
+                    }
+                    return {questionNumber: list.questionNumber, question: list.question, options: tempOption};
                 } else {
                     return list;
                 }
@@ -171,33 +175,34 @@ function CreateQuiz() {
             return [...oldArray, {questionNumber: length + 1, question: '', options: {'1': ''}}]
         })
     }
-    function handleRemoveQuesClick(evt) {
+    function handleRemoveQuesClick(questionNumber, evt) {
         evt.preventDefault();
         setQuestionList((oldArray) => {
-            const length = questionList.length;
-            return oldArray.filter((list) => {
-                if(list.questionNumber === length) {
-                    return false;
+            let tempQuestionNumber = 1;
+            let tempList = oldArray.filter((list) => {
+                if(list.questionNumber !== questionNumber) {
+                    return true;
                 }
-                return true;
+                return false;
+            })
+            return tempList.map((list) => {
+                return {questionNumber: tempQuestionNumber++, question: list.question, options: list.options};
             })
         });
         setAnswers((oldObject) => {
-            const length = questionList.length;
-            const answersLength = Object.keys(answers).length;
-            if(answersLength !== 0) {
-                let object = {};
-                for(let i in oldObject) {
-                    if(i == length) {
-                        object = {...object};
-                    } else {
-                        object = {...object, [i]: oldObject[i]};
-                    }
+            let newAnswers= {}, tempAnswers = {};
+            let tempQuestionNumber = 1;
+            for(let i in oldObject) {
+                if(i != questionNumber) {
+                    newAnswers = {...newAnswers, [i]: oldObject[i]};
+                } else {
+                    newAnswers = {...newAnswers};
                 }
-                return object;
-            } else {
-                return {};
             }
+            for(let i in newAnswers) {
+                tempAnswers = {...tempAnswers, [tempQuestionNumber++]: newAnswers[i]};
+            }
+            return tempAnswers;
         })
     }
     function handleAddUserClick(evt) {
@@ -206,12 +211,11 @@ function CreateQuiz() {
             return [...oldArray, ''];
         })
     }
-    function handleRemoveUserClick(evt) {
+    function handleRemoveUserClick(index, evt) {
         evt.preventDefault();
         setAllowedUser((oldArray) => {
-            let length = oldArray.length;
-            return oldArray.filter((value, index) => {
-                if(index === (length - 1)) {
+            return oldArray.filter((value, i) => {
+                if(i === index) {
                     return false;
                 }
                 return true;
@@ -423,68 +427,6 @@ function CreateQuiz() {
                             </select>
                         </div>
                     </div>
-                    {!!questionList && questionList.length !== 0 &&
-                        questionList.map((list) => {
-                            return (
-                                <div className={Style.titleDiv} key={list.questionNumber}>
-                                    <div>
-                                        <h4 className={Style.title}>Question {list.questionNumber}: *</h4>
-                                        <input type='text' placeholder='Enter question' value={list.question} onChange={(e) => handleQuestionChange(list.questionNumber, e)} id='questionName' className={Style.input}></input>
-                                    </div>
-                                    <div>
-                                        <h4 className={Style.titleOption}>Options</h4>
-                                        {!!list.options &&
-                                            Object.keys(list.options).map(function (key) {
-                                                const lastKey = Object.keys(list.options).length;
-                                                let lastKeyString;
-                                                if(lastKey !== 1) {
-                                                    lastKeyString = lastKey.toString();
-                                                }
-                                                return (
-                                                    <div className={Style.optionDiv} key={key}>
-                                                        <div>
-                                                            <span key={key}>{key}: </span>
-                                                            <input type='text' value={list.options[key]} placeholder='Enter option' id='options' onChange={(e) => handleOptionsChange(list.questionNumber, key, e)} className={Style.input}></input>
-                                                        </div>
-                                                        {key === '1' &&
-                                                            <button onClick={() => handleAddOptionClick(list.questionNumber)} className={Style.addRemoveButton} key='addOption'>Add Option</button>
-                                                        }
-                                                        {key === lastKeyString &&
-                                                            <button onClick={() => handleRemoveOptionClick(list.questionNumber)} className={Style.addRemoveButton} key='removeOption'>Remove Option</button>
-                                                        } 
-                                                    </div>
-                                                )    
-                                            })
-                                        }
-                                    </div>
-                                </div>
-                            )
-                        })
-                    }
-                    <div className={Style.buttonDiv}>
-                        <button className={Style.addRemoveQuesButton} onClick={handleAddQuesClick} key='addQues'>Add Question</button>
-                        {questionList.length === 0 ? 
-                            <button className={Style.addRemoveQuesButtonDisabled} onClick={handleRemoveQuesClick} key='removeQues' disabled>Remove Question</button> :
-                            <button className={Style.addRemoveQuesButton} onClick={handleRemoveQuesClick} key='removeQues'>Remove Question</button>
-                        }
-                    </div>
-                    {questionList.length !== 0 && 
-                        <div className={Style.titleDiv}>
-                            <div>
-                                <h4 className={Style.title}>Answers *</h4>
-                                {!!questionList &&
-                                    questionList.map((list) => {
-                                        return (
-                                            <div key={list.questionNumber}>
-                                                <span>Ques {list.questionNumber}: </span>
-                                                <input type='text' maxLength={1} placeholder='Enter the correct option number' onChange={(e) => handleAnswersChange(list.questionNumber, e)}  id='Answers' className={Style.input}></input>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                        </div>
-                    }
                     <div className={Style.titleDiv}>
                         <div>
                             <h4 className={Style.title}>Passing Percentage *</h4>
@@ -513,10 +455,6 @@ function CreateQuiz() {
                                 <h4 className={Style.title}>Allowed Users *</h4>
                                 {!!allowedUser && 
                                     allowedUser.map((value, index) => {
-                                        let lastKey = allowedUser.length;
-                                        if(lastKey === 1) {
-                                            lastKey = undefined;
-                                        } 
                                         return (
                                             <div className={Style.optionDiv} key={index}>
                                                 <div>
@@ -532,11 +470,9 @@ function CreateQuiz() {
                                                         })}
                                                     </select>
                                                 </div>
-                                                {index === 0 &&
-                                                    <button onClick={handleAddUserClick} className={Style.addRemoveButton} key={index}>Add User</button>
-                                                }
-                                                {index === (lastKey-1) &&
-                                                    <button onClick={handleRemoveUserClick} className={Style.addRemoveButton} key={index}>Remove User</button>
+                                                {index === 0 ?
+                                                    <button onClick={handleAddUserClick} className={Style.addRemoveButton} key={index}>+</button> :
+                                                    <button onClick={(e) => handleRemoveUserClick(index, e)} className={Style.addRemoveButton} key={index}><MdDeleteOutline /></button>
                                                 }
                                             </div>
                                         )
@@ -545,6 +481,47 @@ function CreateQuiz() {
                             </div>
                         </div>
                     }
+                    {!!questionList && questionList.length !== 0 &&
+                        questionList.map((list) => {
+                            return (
+                                <div className={Style.titleDiv} key={list.questionNumber}>
+                                    <div>
+                                        <h4 className={Style.title}>Question {list.questionNumber}: *</h4>
+                                        <input type='text' placeholder='Enter question' value={list.question} onChange={(e) => handleQuestionChange(list.questionNumber, e)} id='questionName' className={Style.input}></input>
+                                    </div>
+                                    <div>
+                                        <h4 className={Style.titleOption}>Options</h4>
+                                        {!!list.options &&
+                                            Object.keys(list.options).map(function (key) {
+                                                return (
+                                                    <div className={Style.optionDiv} key={key}>
+                                                        <div>
+                                                            <span key={key}>{key}: </span>
+                                                            <input type='text' value={list.options[key]} placeholder='Enter option' id='options' onChange={(e) => handleOptionsChange(list.questionNumber, key, e)} className={Style.input}></input>
+                                                        </div>
+                                                        {key === '1' ?
+                                                            <button onClick={() => handleAddOptionClick(list.questionNumber)} className={Style.addRemoveButton} key='addOption'>+</button> :
+                                                            <button onClick={() => handleRemoveOptionClick(list.questionNumber, key)} className={Style.addRemoveButton} key='removeOption'><MdDeleteOutline /></button>
+                                                        }
+                                                    </div>
+                                                )    
+                                            })
+                                        }
+                                    </div>
+                                    <div className={Style.titleOptionDiv}>
+                                        <h4 className={Style.titleOption}>Answer: </h4>
+                                        <input type='text' maxLength={1} placeholder='Enter the correct option number' onChange={(e) => handleAnswersChange(list.questionNumber, e)}  id='Answers' className={Style.inputAnswers} value={Object.keys(answers).length !== 0 ? answers[list.questionNumber] : ''}></input>
+                                    </div>
+                                    <div className={Style.buttonDiv}>
+                                        <button className={Style.removeQuesButton} onClick={(e) => handleRemoveQuesClick(list.questionNumber, e)} key='removeQues'><MdDeleteOutline /></button>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
+                    <div className={Style.buttonDiv}>
+                        <button className={Style.addRemoveQuesButton} onClick={handleAddQuesClick} key='addQues'>Add Question</button>
+                    </div>
                     {!!errors && errors.length > 0 && !errors.includes("Testing") &&
                         <div className={Style.instructionParaDiv}>
                             <ul>

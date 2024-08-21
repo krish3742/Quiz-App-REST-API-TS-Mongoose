@@ -129,6 +129,41 @@ function ViewQuiz() {
                             <p className={Style.para}>{category === "exam" ? "Exam" : "Test"}</p>
                         </div>
                     </div>
+                    <div className={Style.titleDiv}>
+                        <div>
+                            <h4 className={Style.title}>Passing Percentage *</h4>
+                            <p className={Style.para}>{passingPercentage}</p>
+                        </div>
+                    </div>
+                    <div className={Style.titleDiv}>
+                        <div>
+                            <h4 className={Style.title}>Is this is a public quiz? *</h4>
+                            <p className={Style.para}>{isPublicQuiz ? "True" : "False"}</p>
+                        </div>
+                    </div>
+                    {isPublicQuiz === false &&
+                        <div className={Style.titleDiv}>
+                            <div>
+                                <h4 className={Style.title}>Allowed Users *</h4>
+                                {!!allowedUser &&
+                                    allowedUser.map((value, index) => {
+                                        return (
+                                            <div className={Style.optionDiv} key={index}>
+                                                <div className={Style.sameLine}>
+                                                    <span id={index}>{index + 1}: </span>
+                                                    {users?.map((user) => {
+                                                        if(user?._id === value) {
+                                                            return <p className={Style.spanPara} key={value}>{value}: {user?.name}</p>
+                                                        }
+                                                    })}
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>  
+                    }
                     {!!questionList && 
                         questionList.map((list) => {
                             return (
@@ -152,59 +187,13 @@ function ViewQuiz() {
                                             })
                                         }
                                     </div>
+                                    <div className={Style.titleAnswer}>
+                                        <h4 className={Style.titleOption}>Answer: </h4>
+                                        <p className={Style.answersPara}>{answers[list.questionNumber]}</p>
+                                    </div>
                                 </div>
                             )
                         })
-                    }
-                    <div className={Style.titleDiv}>
-                        <div>
-                            <h4 className={Style.title}>Answers *</h4>
-                            {!!answers &&
-                                Object.keys(answers).map(function (key) {
-                                    return (
-                                        <div key={key} className={Style.sameLine}>
-                                            <span>Ques {key}: </span>
-                                            <p className={Style.spanPara}>{answers[key]}</p>
-                                        </div>
-                                    )
-                                })
-                            }
-                        </div>
-                    </div>
-                    <div className={Style.titleDiv}>
-                        <div>
-                            <h4 className={Style.title}>Passing Percentage *</h4>
-                            <p className={Style.para}>{passingPercentage}</p>
-                        </div>
-                    </div>
-                    <div className={Style.titleDiv}>
-                        <div>
-                            <h4 className={Style.title}>Is this is a public quiz? *</h4>
-                            <p className={Style.para}>{isPublicQuiz ? "True" : "False"}</p>
-                        </div>
-                    </div>
-                    {isPublicQuiz === false &&
-                        <div className={Style.titleDiv}>
-                            <div>
-                                <h4 className={Style.title}>Allowed Users *</h4>
-                                {!!allowedUser &&
-                                    allowedUser.map((value, index) => {
-                                        return (
-                                            <div className={Style.optionDiv} key={index}>
-                                                <div className={Style.sameLine}>
-                                                    <span id={index}>{index + 1}: </span>
-                                                    {users.map((user) => {
-                                                        if(user?._id === value) {
-                                                            return <p className={Style.spanPara} key={value}>{value}: {user?.name}</p>
-                                                        }
-                                                    })}
-                                                </div>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                        </div>  
                     }
                 </div>
             </div>

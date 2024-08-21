@@ -109,6 +109,12 @@
     color: #0F0C2C;
 }
 
+.titleOptionDiv {
+    margin: 0;
+    display: flex;
+    color: #0F0C2C;
+}
+
 .instructionParaDiv {
     width: 21rem;
     background-color: white;
@@ -137,6 +143,18 @@
     background-color: transparent;
     border-bottom: 1.5px solid black;
     padding: 0 0 0 0.25rem;
+    color: #0F0C2C;
+}
+
+.inputAnswers {
+    outline: none;
+    width: 21rem;
+    height: 2rem;
+    font-size: large;
+    margin: 0 0 0 0.25rem;
+    border: none;
+    background-color: transparent;
+    border-bottom: 1.5px solid black;
     color: #0F0C2C;
 }
 
@@ -169,15 +187,18 @@
 }
 
 .addRemoveButton {
-    height: 2rem;
-    width: 7rem;
-    margin-left: 1rem;
+    height: 1.8rem;
+    width: 2rem;
+    margin: 0.5rem 0 0 1rem;
     border-radius: 5px;
     border: none;
     background-color: #080E2F;
     color: white;
+    font-size: larger;
     cursor: pointer;
-    margin-top: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .optionNumber {
@@ -197,23 +218,26 @@
     margin-bottom: .5rem;
 }
 
+.removeQuesButton {
+    height: 1.8rem;
+    width: 2rem;
+    border-radius: 5px;
+    border: none;
+    background-color: #080E2F;
+    color: white;
+    font-size: larger;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: .5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .buttonDiv {
     display: flex;
     gap: 1rem;
     justify-content: end;
-}
-
-.addRemoveQuesButtonDisabled {
-    height: 2rem;
-    width: 10rem;
-    border-radius: 5px;
-    border: none;
-    background-color: white;
-    color: #080E2F;
-    font-size: medium;
-    font-weight: bold;
-    margin-bottom: .5rem;
-    cursor: not-allowed;
 }
 
 .createDiv {
