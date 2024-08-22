@@ -78,7 +78,18 @@
 
 .heading {
     margin: 1rem 0 0 0;
-    margin-left: -55rem;
+    margin-left: -52rem;
+}
+
+.button {
+    width: 6rem;
+    height: 2rem;
+    border-radius: 10px;
+    border: 1px solid black;
+    outline: none;
+    background-color: white;
+    color: black;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .para {
@@ -92,14 +103,18 @@
     border-radius: 10px;
 }
 
+.quiz {
+    margin: 0;
+}
+
 .titleDiv {
     display: flex;
     justify-content: space-between;
-    flex-direction: column;
     background-color: rgb(255, 255, 255);
+    color: black;
     border-radius: 5px;
     margin: 0;
-    padding: 0.8rem 0 1rem 0;
+    padding: 1rem;
     gap: 1rem;
 }
 
@@ -122,18 +137,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}
-   
-.button {
-    height: 2.75rem;
-    width: 10rem;
-    background-color: wheat;
-    border-radius: 50px;
-    border: 1px solid black;
-    outline: none;
-    font-size: large;
-    color: #0F0C2C;
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .button:hover {

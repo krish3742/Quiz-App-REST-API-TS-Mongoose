@@ -2,31 +2,30 @@ import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import Style from './Reports.module.css';
+import Style from './AllReports.module.css';
 
 function Reports() {
-    const params = useParams();
     const location = useLocation();
     const navigate = useNavigate();
-    const [report, setReport] = useState();
-    const [quizId, setQuizId] = useState("");
+    const [flag, setFlag] = useState(0);
+    const [reports, setReports] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [tempReports, setTempReports] = useState();
     const [isMyQuizOpen, setIsMyQuizOpen] = useState(false);
     const [isQuizzesOpen, setIsQuizzesOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [isFavouriteQuestionOpen, setIsFavouriteQuestionOpen] = useState(false);
-    const reportId = params?.reportId;
     const token = location?.state?.token;
     const headers = {'Authorization': `Bearer ${token}`};
     function handleLogoutClick(evt) {
         setIsLoading(true);
         axios
             .post('http://localhost:3002/user/logout', {}, { headers })
-            .then((response) => {
+            .then(() => {
                 setIsLoading(false);
                 navigate('/auth/login');
             })
-            .catch((error) => {
+            .catch(() => {
                 setIsLoading(false);
                 navigate('/auth/register');
             })
@@ -50,23 +49,38 @@ function Reports() {
         evt.preventDefault();
         navigate('/auth/published-quiz', { state: { token }});
     }
-    function handleAllReportsClick(evt) {
+    function handleViewButtonClick(id, evt) {
         evt.preventDefault();
-        navigate('/auth/reports', { state: { token }});
+        navigate(`/auth/report/${id}`, { state: { token }});
     }
     useEffect(() => {
-        axios
-            .get(`http://localhost:3002/report/${reportId}`, { headers })
-            .then((response) => {
-                setIsLoading(false);
-                setReport(response?.data?.data);
-                setQuizId(response?.data?.data?.quizId);
-            })
-            .catch((error) => {
-                setIsLoading(false);
-                navigate('/auth/login');
-            })
-    }, [quizId]);
+        if(!tempReports) {
+            axios
+                .get(`http://localhost:3002/report`, { headers })
+                .then((response) => {
+                    setFlag(!flag);
+                    setTempReports(response?.data?.data);
+                })
+                .catch(() => {
+                    setIsLoading(false);
+                    navigate('/auth/login');
+                });
+        } else if(!!tempReports) {
+            tempReports.map((report) => {
+                axios
+                    .get(`http://localhost:3002/quiz/name/${report?.quizId}`, { headers })
+                    .then((response) => {
+                        setIsLoading(false);
+                        setReports((oldArray) => [...oldArray, {...report, quizName: response?.data?.data?.name}]);
+                    })
+                    .catch(() => {
+                        setIsLoading(false);
+                        navigate('/auth/login');
+                    })
+            });
+        }
+    }, [flag]);
+    console.log(reports);
     if(!token) {
         return <Navigate to='/auth/login' />
     }
@@ -97,26 +111,23 @@ function Reports() {
                     }
             </div>
             <div className={Style.linear}>
-                <h2 className={Style.heading}>Report</h2>
-                {!!report &&
-                    <div className={Style.accountDiv}> 
-                        <div className={Style.titleDiv}>
-                            <div>
-                                <label className={Style.statusBold}>Status: </label>
-                                <label className={Style.status}>{report.result}</label>
+                <h2 className={Style.heading}>All Reports</h2>
+                {!!reports &&
+                    reports.map((report) => {
+                        return (
+                            <div className={Style.accountDiv} key={report?._id}>
+                                <div className={Style.titleDiv}>
+                                    <div>
+                                        <h4 className={Style.quiz}>{report?.quizName}</h4>
+                                    </div>
+                                    <div>
+                                        <button className={Style.button} onClick={(evt) => handleViewButtonClick(report?._id, evt)}>View</button>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <label className={Style.statusBold}>Marks: </label>
-                                <label className={Style.status}>{report.score}/{report.total}</label>
-                            </div>
-                            <div>
-                                <label className={Style.statusBold}>Percentage: </label>
-                                <label className={Style.status}>{report.percentage}%</label>
-                            </div>
-                        </div>
-                    </div>
+                        )
+                    })
                 }
-                <button onClick={handleAllReportsClick} className={Style.button}>All Reports</button>
             </div>
             {isLoading && 
                 <div className={Style.loading}>

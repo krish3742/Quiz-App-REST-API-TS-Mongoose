@@ -21,6 +21,7 @@ import OuterLayout from './components/layout/OuterLayout';
 import ActivateUserCallback from './components/ActivateUserCallback';
 import UpdateQuiz from './pages/UpdateQuiz';
 import Reports from './pages/Reports';
+import AllReports from './pages/AllReports';
 import PublishedQuiz from './pages/PublishedQuiz';
 import StartExamPage from './pages/ExamPage';
 import FavoriteQuestion from './pages/FavoriteQuestion';
@@ -44,6 +45,7 @@ function App() {
         <Route path='/auth/quiz/update' element={<UpdateQuiz />}></Route>
         <Route path='/auth/quiz/view' element={<ViewQuiz />}></Route>
         <Route path='/auth/report/:reportId' element={<Reports />}></Route>
+        <Route path='/auth/reports' element={<AllReports />}></Route>
         <Route path='/auth/published-quiz' element={<PublishedQuiz />}></Route>
         <Route path='/auth/exam/:id' element={<StartExamPage />}></Route>
         <Route path='/auth/user/fav-ques' element={<FavoriteQuestion />}></Route>
