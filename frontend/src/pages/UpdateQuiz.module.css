@@ -220,6 +220,17 @@
     margin-top: 10rem;
 }
 
+.addButton {
+    margin: 0 0 0.75rem 0;
+    background-color: #080E2F;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    height: 1.5rem;
+    width: 6rem;
+    cursor: pointer;
+}
 
 .addRemoveQuesButton {
     height: 2rem;

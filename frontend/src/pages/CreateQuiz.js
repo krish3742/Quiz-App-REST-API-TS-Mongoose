@@ -470,14 +470,12 @@ function CreateQuiz() {
                                                         })}
                                                     </select>
                                                 </div>
-                                                {index === 0 ?
-                                                    <button onClick={handleAddUserClick} className={Style.addRemoveButton} key={index}>+</button> :
-                                                    <button onClick={(e) => handleRemoveUserClick(index, e)} className={Style.addRemoveButton} key={index}><MdDeleteOutline /></button>
-                                                }
+                                                <button onClick={(e) => handleRemoveUserClick(index, e)} className={Style.addRemoveButton} key={index}><MdDeleteOutline /></button>
                                             </div>
                                         )
                                     })
                                 }
+                                <button onClick={handleAddUserClick} className={Style.addButton}>Add User</button>
                             </div>
                         </div>
                     }
@@ -499,14 +497,12 @@ function CreateQuiz() {
                                                             <span key={key}>{key}: </span>
                                                             <input type='text' value={list.options[key]} placeholder='Enter option' id='options' onChange={(e) => handleOptionsChange(list.questionNumber, key, e)} className={Style.input}></input>
                                                         </div>
-                                                        {key === '1' ?
-                                                            <button onClick={() => handleAddOptionClick(list.questionNumber)} className={Style.addRemoveButton} key='addOption'>+</button> :
-                                                            <button onClick={() => handleRemoveOptionClick(list.questionNumber, key)} className={Style.addRemoveButton} key='removeOption'><MdDeleteOutline /></button>
-                                                        }
+                                                        <button onClick={() => handleRemoveOptionClick(list.questionNumber, key)} className={Style.addRemoveButton} key='removeOption'><MdDeleteOutline /></button>
                                                     </div>
                                                 )    
                                             })
                                         }
+                                        <button onClick={() => handleAddOptionClick(list.questionNumber)} className={Style.addButton} key='addOption'>Add Option</button>
                                     </div>
                                     <div className={Style.titleOptionDiv}>
                                         <h4 className={Style.titleOption}>Answer: </h4>
