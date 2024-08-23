@@ -17,7 +17,7 @@ function Quiz() {
     function handleLogoutClick(evt) {
         setIsLoading(true);
         axios
-            .post('http://localhost:3002/user/logout', {}, { headers })
+            .post(`http://${process.env.REACT_APP_BACKEND_URL}/user/logout`, {}, { headers })
             .then((response) => {
                 setIsLoading(false);
                 navigate('/auth/login');

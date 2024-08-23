@@ -88,7 +88,7 @@ function ResetPassword() {
     useEffect(() => {
         if(!!errors && errors.length === 0) {
             axios
-                .post(`http://localhost:3002/auth/forgotpassword/${userId}`, { password, confirmPassword})
+                .post(`http://${process.env.REACT_APP_BACKEND_URL}/auth/forgotpassword/${userId}`, { password, confirmPassword})
                 .then((response) => {
                     setIsLoading(false);
                     setErrors(["Password successfully reset"]);

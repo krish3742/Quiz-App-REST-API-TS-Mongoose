@@ -20,7 +20,7 @@ function PublishQuiz() {
     function handleLogoutClick(evt) {
         setIsLoading(true);
         axios
-            .post('http://localhost:3002/user/logout', {}, { headers })
+            .post(`http://${process.env.REACT_APP_BACKEND_URL}/user/logout`, {}, { headers })
             .then((response) => {
                 setIsLoading(false);
                 navigate('/auth/login');
@@ -57,7 +57,7 @@ function PublishQuiz() {
     useEffect(() => {
         if(!!quizId) {
             axios
-                .patch('http://localhost:3002/quiz/publish', { quizId }, { headers })
+                .patch(`http://${process.env.REACT_APP_BACKEND_URL}/quiz/publish`, { quizId }, { headers })
                 .then((response) => {
                     setQuizId("");
                     setFlag(!flag);
@@ -69,7 +69,7 @@ function PublishQuiz() {
                 })
         }
         axios
-            .get('http://localhost:3002/quiz', { headers })
+            .get(`http://${process.env.REACT_APP_BACKEND_URL}/quiz`, { headers })
             .then((response) => {
                 setIsLoading(false);
                 setMyQuizList(response?.data?.data);

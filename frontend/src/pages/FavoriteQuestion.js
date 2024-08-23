@@ -38,7 +38,7 @@ function FavoriteQuestion() {
     function handleLogoutClick(evt) {
         setIsLoading(true);
         axios
-            .post('http://localhost:3002/user/logout', {}, { headers })
+            .post(`http://${process.env.REACT_APP_BACKEND_URL}/user/logout`, {}, { headers })
             .then(() => {
                 setIsLoading(false);
                 navigate('/auth/login');
@@ -51,7 +51,7 @@ function FavoriteQuestion() {
     function handleRemoveFavouriteClick(id, e) {
         setIsLoading(true);
         axios
-            .delete(`http://localhost:3002/favquestion/${id}`, { headers })
+            .delete(`http://${process.env.REACT_APP_BACKEND_URL}/favquestion/${id}`, { headers })
             .then(() => {
                 setIsLoading(false);
                 setFlag(!flag);
@@ -63,7 +63,7 @@ function FavoriteQuestion() {
     }
     useEffect(() => {
         axios
-            .get('http://localhost:3002/favquestion', { headers })
+            .get(`http://${process.env.REACT_APP_BACKEND_URL}/favquestion`, { headers })
             .then((response) => {
                 setIsLoading(false);
                 setFavQues(response?.data?.data?.favQues);

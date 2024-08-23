@@ -55,7 +55,7 @@ function ExamPage() {
             })
             if(!result) {
                 axios
-                    .post('http://localhost:3002/favquestion', { question: questionList.question, options: questionList.options}, { headers })
+                    .post(`http://${process.env.REACT_APP_BACKEND_URL}/favquestion`, { question: questionList.question, options: questionList.options}, { headers })
                     .then(() => {
                         setIsLoading(false);
                         setFlag(!flag);
@@ -66,7 +66,7 @@ function ExamPage() {
                     })
             } else {
                 axios
-                    .delete(`http://localhost:3002/favquestion/${id}`, { headers })
+                    .delete(`http://${process.env.REACT_APP_BACKEND_URL}/favquestion/${id}`, { headers })
                     .then(() => {
                         setIsLoading(false);
                         setFlag(!flag);
@@ -78,7 +78,7 @@ function ExamPage() {
             }
         } else {
             axios
-                .post('http://localhost:3002/favquestion', { question: questionList.question, options: questionList.options}, { headers })
+                .post(`http://${process.env.REACT_APP_BACKEND_URL}/favquestion`, { question: questionList.question, options: questionList.options}, { headers })
                 .then(() => {
                     setIsLoading(false);
                     setFlag(!flag); 
@@ -92,7 +92,7 @@ function ExamPage() {
     useEffect(() => {
         if(!!errors && errors.length === 0) {
             axios
-                .post("http://localhost:3002/exam", {quizId: params?.id, attemptedQuestion}, { headers })
+                .post(`http://${process.env.REACT_APP_BACKEND_URL}/exam`, {quizId: params?.id, attemptedQuestion}, { headers })
                 .then((response) => {
                     setIsLoading(false);
                     navigate(`/auth/report/${response?.data?.data?.reportId}`, { state: { token }});
@@ -104,7 +104,7 @@ function ExamPage() {
         }
         if(!!quizId) {
             axios
-                .get(`http://localhost:3002/exam/${quizId}`, { headers })
+                .get(`http://${process.env.REACT_APP_BACKEND_URL}/exam/${quizId}`, { headers })
                 .then((response) => {
                     setIsLoading(false);
                     setQuizId();
@@ -122,7 +122,7 @@ function ExamPage() {
                 })
         }
         axios
-            .get('http://localhost:3002/favquestion', { headers })
+            .get(`http://${process.env.REACT_APP_BACKEND_URL}/favquestion`, { headers })
             .then((response) => {
                 setIsLoading(false);
                 setFavQues(response?.data?.data?.favQues);

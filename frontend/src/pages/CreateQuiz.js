@@ -119,7 +119,7 @@ function CreateQuiz() {
     function handleLogoutClick(evt) {
         setIsLoading(true);
         axios
-            .post('http://localhost:3002/user/logout', {}, { headers })
+            .post(`http://${process.env.REACT_APP_BACKEND_URL}/user/logout`, {}, { headers })
             .then((response) => {
                 setIsLoading(false);
                 navigate('/auth/login');
@@ -336,7 +336,7 @@ function CreateQuiz() {
     useEffect(() => {
         if(errors.length === 0) {
             axios
-                .post('http://localhost:3002/quiz', data, { headers })
+                .post(`http://${process.env.REACT_APP_BACKEND_URL}/quiz`, data, { headers })
                 .then((response) => {
                     setIsLoading(false);
                     setErrors(["Quiz created, redirecting..."]);
@@ -358,7 +358,7 @@ function CreateQuiz() {
                 })
         }
         axios
-            .get('http://localhost:3002/user/all', { headers })
+            .get(`http://${process.env.REACT_APP_BACKEND_URL}/user/all`, { headers })
             .then((response) => {
                 setIsLoading(false);
                 setUsers(response?.data?.data);

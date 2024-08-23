@@ -21,7 +21,7 @@ function MyAccount() {
     function handleLogoutClick(evt) {
         setIsLoading(true);
         axios
-            .post('http://localhost:3002/user/logout', {}, { headers })
+            .post(`http://${process.env.REACT_APP_BACKEND_URL}/user/logout`, {}, { headers })
             .then((response) => {
                 setIsLoading(false);
                 navigate('/auth/login');
@@ -60,7 +60,8 @@ function MyAccount() {
     function handleDeactivateAccountClick(evt) {
         evt.preventDefault();
         setIsLoading(true);
-        axios.patch('http://localhost:3002/user/deactivate', {}, { headers })
+        axios
+            .patch(`http://${process.env.REACT_APP_BACKEND_URL}/user/deactivate`, {}, { headers })
             .then((response) => {
                 setIsLoading(false);
                 navigate('/auth/user/deactivateaccount', { state: { token }})
@@ -83,7 +84,7 @@ function MyAccount() {
     useEffect(() => {
         if(!!token) {
             axios
-                .get('http://localhost:3002/user', { headers })
+                .get(`http://${process.env.REACT_APP_BACKEND_URL}/user`, { headers })
                 .then((response) => {
                     setIsLoading(false);
                     const data = response.data.data;

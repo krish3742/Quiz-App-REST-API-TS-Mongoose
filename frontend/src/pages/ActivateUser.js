@@ -31,7 +31,7 @@ function ActivateUser() {
     useEffect(() => {
         if(errors.length === 0) {
             axios
-                .post('http://localhost:3002/auth/activate', { email })
+                .post(`http://${process.env.REACT_APP_BACKEND_URL}/auth/activate`, { email })
                 .then((response) => {
                     setIsLoading(false);
                     setErrors(["A mail has been sent on your mail"]);

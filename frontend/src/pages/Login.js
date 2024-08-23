@@ -53,7 +53,7 @@ function Login() {
             setErrors(["Please enter email"]);
         } else {
             axios
-                .post('http://localhost:3002/auth/forgotpassword', {email})
+                .post(`http://${process.env.REACT_APP_BACKEND_URL}/auth/forgotpassword`, {email})
                 .then((response) => {
                     setIsLoading(false);
                     setErrors(["An email has been sent on your account, verify"]);
@@ -74,7 +74,7 @@ function Login() {
     useEffect(() => {
         if(errors.length === 0) {
             axios
-                .post("http://localhost:3002/auth/login", { email, password })
+                .post(`http://${process.env.REACT_APP_BACKEND_URL}/auth/login`, { email, password })
                 .then((response) => {
                     setIsLoading(false);
                     const token = response?.data?.data?.token;

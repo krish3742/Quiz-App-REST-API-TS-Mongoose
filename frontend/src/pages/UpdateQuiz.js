@@ -105,7 +105,7 @@ function UpdateQuiz() {
     function handleLogoutClick(evt) {
         setIsLoading(true);
         axios
-            .post('http://localhost:3002/user/logout', {}, { headers })
+            .post(`http://${process.env.REACT_APP_BACKEND_URL}/user/logout`, {}, { headers })
             .then((response) => {
                 setIsLoading(false);
                 navigate('/auth/login');
@@ -301,7 +301,7 @@ function UpdateQuiz() {
     useEffect(() => {
         if(errors.length === 0) {
             axios
-                .put('http://localhost:3002/quiz', data, { headers })
+                .put(`http://${process.env.REACT_APP_BACKEND_URL}/quiz`, data, { headers })
                 .then((response) => {
                     setIsLoading(false);
                     setErrors(["Quiz updated, redirecting..."]);
@@ -326,7 +326,7 @@ function UpdateQuiz() {
         }
         if(!!quizId) {
             axios
-            .get(`http://localhost:3002/quiz/${quizId}`, { headers })
+            .get(`http://${process.env.REACT_APP_BACKEND_URL}/quiz/${quizId}`, { headers })
             .then((response) => {
                 setQuizId("");
                 setIsLoading(false);
@@ -349,7 +349,7 @@ function UpdateQuiz() {
             setAllowedUser(['']);
         }    
         axios
-            .get('http://localhost:3002/user/all', { headers })
+            .get(`http://${process.env.REACT_APP_BACKEND_URL}/user/all`, { headers })
             .then((response) => {
                 setIsLoading(false);
                 setUsers(response?.data?.data);

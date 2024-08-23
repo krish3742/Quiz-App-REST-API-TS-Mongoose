@@ -70,7 +70,7 @@ function ActivateAccount() {
         }
         if(!!key && key.length === 8 && errors.length === 0) {
             axios
-                .post('http://localhost:3002/auth/activateaccount', {email, key})
+                .post(`http://${process.env.REACT_APP_BACKEND_URL}/auth/activateaccount`, {email, key})
                 .then((response) => {
                     setIsLoading(false);
                     setErrors(["Account activated, please login"]);

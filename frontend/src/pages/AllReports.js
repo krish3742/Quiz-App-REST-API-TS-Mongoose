@@ -20,7 +20,7 @@ function Reports() {
     function handleLogoutClick(evt) {
         setIsLoading(true);
         axios
-            .post('http://localhost:3002/user/logout', {}, { headers })
+            .post(`http://${process.env.REACT_APP_BACKEND_URL}/user/logout`, {}, { headers })
             .then(() => {
                 setIsLoading(false);
                 navigate('/auth/login');
@@ -56,7 +56,7 @@ function Reports() {
     useEffect(() => {
         if(!tempReports) {
             axios
-                .get(`http://localhost:3002/report`, { headers })
+                .get(`http://${process.env.REACT_APP_BACKEND_URL}/report`, { headers })
                 .then((response) => {
                     setFlag(!flag);
                     setTempReports(response?.data?.data);
@@ -68,7 +68,7 @@ function Reports() {
         } else if(!!tempReports) {
             tempReports.map((report) => {
                 axios
-                    .get(`http://localhost:3002/quiz/name/${report?.quizId}`, { headers })
+                    .get(`http://${process.env.REACT_APP_BACKEND_URL}/quiz/name/${report?.quizId}`, { headers })
                     .then((response) => {
                         setIsLoading(false);
                         setReports((oldArray) => [...oldArray, {...report, quizName: response?.data?.data?.name}]);
@@ -80,7 +80,6 @@ function Reports() {
             });
         }
     }, [flag]);
-    console.log(reports);
     if(!token) {
         return <Navigate to='/auth/login' />
     }

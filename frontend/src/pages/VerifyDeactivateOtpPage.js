@@ -103,7 +103,7 @@ function VerifyDeactivateOtpPage() {
     function handleLogoutClick(evt) {
         setIsLoading(true);
         axios
-            .post('http://localhost:3002/user/logout', {}, { headers })
+            .post(`http://${process.env.REACT_APP_BACKEND_URL}/user/logout`, {}, { headers })
             .then((response) => {
                 setIsLoading(false);
                 navigate('/auth/login');
@@ -121,7 +121,7 @@ function VerifyDeactivateOtpPage() {
             const otpToNumber = parseInt(otp);
             if(otpToNumber) {
                 axios
-                    .post(`http://localhost:3002/user/deactivate/verify-deactivate-account-otp`, { otp }, { headers })
+                    .post(`http://${process.env.REACT_APP_BACKEND_URL}/user/deactivate/verify-deactivate-account-otp`, { otp }, { headers })
                     .then((response) => {
                         setIsLoading(false);
                         setErrors((oldArray) => {

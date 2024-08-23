@@ -21,7 +21,7 @@ function Reports() {
     function handleLogoutClick(evt) {
         setIsLoading(true);
         axios
-            .post('http://localhost:3002/user/logout', {}, { headers })
+            .post(`http://${process.env.REACT_APP_BACKEND_URL}/user/logout`, {}, { headers })
             .then((response) => {
                 setIsLoading(false);
                 navigate('/auth/login');
@@ -56,7 +56,7 @@ function Reports() {
     }
     useEffect(() => {
         axios
-            .get(`http://localhost:3002/report/${reportId}`, { headers })
+            .get(`http://${process.env.REACT_APP_BACKEND_URL}/report/${reportId}`, { headers })
             .then((response) => {
                 setIsLoading(false);
                 setReport(response?.data?.data);

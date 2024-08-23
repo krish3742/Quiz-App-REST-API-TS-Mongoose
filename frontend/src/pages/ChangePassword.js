@@ -33,7 +33,7 @@ function Register() {
     function handleLogoutClick(evt) {
         setIsLoading(true);
         axios
-            .post('http://localhost:3002/user/logout', {}, { headers })
+            .post(`http://${process.env.REACT_APP_BACKEND_URL}/user/logout`, {}, { headers })
             .then((response) => {
                 setIsLoading(false);
                 navigate('/auth/login');
@@ -118,7 +118,7 @@ function Register() {
     useEffect(() => {
         if(errors.length === 0) {
             axios
-                .put("http://localhost:3002/user/changepassword", {currentPassword, newPassword, confirmPassword}, { headers })
+                .put(`http://${process.env.REACT_APP_BACKEND_URL}/user/changepassword`, {currentPassword, newPassword, confirmPassword}, { headers })
                 .then((response) => {
                     setIsLoading(false);
                     setErrors(["Password successfully changed, redirecting..."]);

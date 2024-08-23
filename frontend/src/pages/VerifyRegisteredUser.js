@@ -43,7 +43,7 @@ function VerifyRegisteredUser() {
         setIsLoading(true);
         const token = state.token;
         axios
-            .get(`http://localhost:3002/auth/resend-registration-otp/${token}`)
+            .get(`http://${process.env.REACT_APP_BACKEND_URL}/auth/resend-registration-otp/${token}`)
             .then((response) => {setIsLoading(false)})
             .catch((error) => {
                 const message = error.response.data.message;
@@ -126,7 +126,7 @@ function VerifyRegisteredUser() {
             if(otpToNumber) {
                 const token = state.token;
                 axios
-                    .post(`http://localhost:3002/auth/verify-registration-otp/${token}`, { otp })
+                    .post(`http://${process.env.REACT_APP_BACKEND_URL}/auth/verify-registration-otp/${token}`, { otp })
                     .then((response) => {
                         setIsLoading(false);
                         setErrors((oldArray) => {

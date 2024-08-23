@@ -23,7 +23,7 @@ function PublishedQuiz() {
         evt.preventDefault();
         setIsLoading(true);
         axios
-            .post('http://localhost:3002/user/logout', {}, { headers })
+            .post(`http://${process.env.REACT_APP_BACKEND_URL}/user/logout`, {}, { headers })
             .then(() => {
                 setIsLoading(false);
                 navigate('/auth/login');
@@ -59,7 +59,7 @@ function PublishedQuiz() {
     }
     useEffect(() => {
         axios
-            .get('http://localhost:3002/quiz/allpublishedquiz/exam', { headers })
+            .get(`http://${process.env.REACT_APP_BACKEND_URL}/quiz/allpublishedquiz/exam`, { headers })
             .then((response) => {
                 setIsLoading(false);
                 setQuizExam(response?.data?.data);
@@ -69,7 +69,7 @@ function PublishedQuiz() {
                 navigate('/auth/login');
             })
         axios
-            .get('http://localhost:3002/quiz/allpublishedquiz/test', { headers })
+            .get(`http://${process.env.REACT_APP_BACKEND_URL}/quiz/allpublishedquiz/test`, { headers })
             .then((response) => {
                 setIsLoading(false);
                 setQuizTest(response?.data?.data);

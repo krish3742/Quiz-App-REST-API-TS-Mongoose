@@ -30,7 +30,7 @@ function ViewQuiz() {
     function handleLogoutClick(evt) {
         setIsLoading(true);
         axios
-            .post('http://localhost:3002/user/logout', {}, { headers })
+            .post(`http://${process.env.REACT_APP_BACKEND_URL}/user/logout`, {}, { headers })
             .then((response) => {
                 setIsLoading(false);
                 navigate('/auth/login');
@@ -57,7 +57,7 @@ function ViewQuiz() {
     }
     useEffect(() => {
         axios
-            .get(`http://localhost:3002/quiz/${quizId}`, { headers })
+            .get(`http://${process.env.REACT_APP_BACKEND_URL}/quiz/${quizId}`, { headers })
             .then((response) => {
                 setIsLoading(false);
                 const quiz = response?.data?.data; 
@@ -75,7 +75,7 @@ function ViewQuiz() {
                 navigate('/auth/login');
             });
         axios
-            .get('http://localhost:3002/user/all', { headers })
+            .get(`http://${process.env.REACT_APP_BACKEND_URL}/user/all`, { headers })
             .then((response) => {
                 setIsLoading(false);
                 setUsers(response?.data?.data);

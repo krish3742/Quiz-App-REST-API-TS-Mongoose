@@ -21,7 +21,7 @@ function MyQuiz() {
     function handleLogoutClick(evt) {
         setIsLoading(true);
         axios
-            .post('http://localhost:3002/user/logout', {}, { headers })
+            .post(`http://${process.env.REACT_APP_BACKEND_URL}/user/logout`, {}, { headers })
             .then((response) => {
                 setIsLoading(false);
                 navigate('/auth/login');
@@ -60,7 +60,7 @@ function MyQuiz() {
         e.preventDefault();
         setIsLoading(true);
         axios
-            .delete(`http://localhost:3002/quiz/${id}`, { headers })
+            .delete(`http://${process.env.REACT_APP_BACKEND_URL}/quiz/${id}`, { headers })
             .then(() => {
                 setFlag(!flag);
             })
@@ -79,7 +79,7 @@ function MyQuiz() {
     useEffect(() => {
         if(!!quizId) {
             axios
-                .get(`http://localhost:3002/quiz/${quizId}`, { headers })
+                .get(`http://${process.env.REACT_APP_BACKEND_URL}/quiz/${quizId}`, { headers })
                 .then((response) => {
                     setIsLoading(false);
                     navigate('/auth/quiz/update', { state: { token, quizId }});
@@ -93,7 +93,7 @@ function MyQuiz() {
             navigate('/auth/quiz/view', { state: { token, viewQuizId}});
         }
         axios
-            .get('http://localhost:3002/quiz', { headers })
+            .get(`http://${process.env.REACT_APP_BACKEND_URL}/quiz`, { headers })
             .then((response) => {
                 setIsLoading(false);
                 setMyQuizList(response?.data?.data);
