@@ -9,7 +9,7 @@ import sendEmail from "../utils/email";
 
 
 import OTP from "../models/otp"
-import { sendDeactivateEmailOTP } from "./otp";
+import { resendRegistrationOTP, sendDeactivateEmailOTP } from "./otp";
 
 const getUser: RequestHandler = async (req, res, next) => {
   let resp: ReturnResponse;
@@ -262,4 +262,26 @@ const isActiveUser = async (userId: String) => {
   return !user.isDeactivated;
 };
 
-export { deactivateUser, getUser, isActiveUser, updateUser, changePassword, verifyDeactivateAccountOTP};
+const getAllUsers: RequestHandler = async(req, res, next) => {
+  try {
+    let resp: ReturnResponse;
+    let users = await User.find({isVerified: true, isDeactivated: false}, {name: 1});
+    users = users.filter((user) => {
+      return user._id.toString() !== req.userId;
+    });
+    if (!users) {
+      const err = new ProjectError("User Not Found..");
+      err.statusCode = 401;
+      throw err;
+    }
+    resp = {
+      status: "success",
+      message: "All Users",
+      data: users,
+    }
+    res.status(200).send(resp);
+  } catch (error) {
+    next(error);
+  }
+} 
+export { deactivateUser, getUser, isActiveUser, updateUser, changePassword, verifyDeactivateAccountOTP, getAllUsers};

@@ -153,7 +153,7 @@ const loginUser: RequestHandler = async (req, res, next) => {
 
           //This function is used if the account is blocked user will recieve an email with a temperory key to activate the account if it is used and still invalid tries take place it will blocks the account for 24 hours otherwise it will tell the user to check your registered email address
 
-          const err = new ProjectError(`${user?.isTempKeyUsed ? "Your account have been blocked due to multiple attempts for 24 hours" : "Your Account has been deactivated check your registered email for further instructions!"}`);
+          const err = new ProjectError(`${user?.isTempKeyUsed ? "Your account have been blocked due to multiple attempts for 24 hours" : "Your Account has been deactivated check your registered email for further instructions"}`);
           err.statusCode = 401;
           throw err;
         }
@@ -247,7 +247,7 @@ const generateEmail = async (name: string, temperoryKey: string, emailaddress: s
         `,
         button: {
           text: 'Thank You',
-          link: `http://${SERVER_BASE_URL}/auth/activateaccount/${temperoryKey}`
+          link: `http://${SERVER_BASE_URL}/auth/activateaccount`
         }
       },
       outro: "Discover your inner genius - Take the quiz now!"
@@ -445,9 +445,15 @@ const forgotPasswordCallback: RequestHandler = async (req, res, next) => {
 
     const userId = decodedToken.userId;
 
-    // const redirectLink = `http://${process.env.BASE_URL}/auth/forgotpassword/${userId}`;
+    const redirectLink = `http://${process.env.BASE_URL}/auth/resetpassword/${userId}`;
     // res.redirect(redirectLink);
-    console.log(`http://${process.env.BASE_URL}/auth/forgotpassword/${userId}`);
+    // console.log(`http://${process.env.BASE_URL}/auth/forgotpassword/${userId}`);
+    resp = {
+      status: "success",
+      message: redirectLink,
+      data: {}
+    }
+    res.send(resp);
 
   } catch (error) {
     next(error);

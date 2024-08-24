@@ -11,7 +11,8 @@ import {
   updateQuiz,
   getAllQuiz,
   getAllQuizExam,
-  getAllQuizTest
+  getAllQuizTest,
+  getQuizName
 } from "../controllers/quiz";
 import { validateRequest } from "../helper/validateRequest";
 import { isAuthenticated } from "../middlewares/isAuth";
@@ -90,6 +91,8 @@ router.get("/allpublishedquiz/test",isAuthenticated, getAllQuizTest);
 // get
 // GET /quiz/:quizId
 router.get("/:quizId?", isAuthenticated, getQuiz);
+
+router.get("/name/:quizId?", isAuthenticated, getQuizName);
 
 //
 

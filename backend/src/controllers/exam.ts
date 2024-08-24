@@ -45,7 +45,6 @@ const startExam: RequestHandler = async (req, res, next) => {
     }
     if (quiz.category === "test") {
       if (quiz.attemptsAllowedPerUser) {
-
         if (quiz.attemptedUsers.length) {
           quiz.attemptedUsers.forEach((user) => {
             const id = user.id;
@@ -55,6 +54,7 @@ const startExam: RequestHandler = async (req, res, next) => {
                   user.attemptsLeft -= 1;
                 }
                 else {
+                  console.log("1");
                   const err = new ProjectError("You have zero attempts left!");
                   err.statusCode = 405;
                   throw err;
@@ -62,12 +62,19 @@ const startExam: RequestHandler = async (req, res, next) => {
               }
             }
           })
+          if(!quiz.attemptedUsers.some((user) => {
+            return user?.id === req?.userId;
+          })) {
+            if (req.userId && quiz.attemptsAllowedPerUser) {
+              const newUser = { id: req.userId.toString(), attemptsLeft: quiz.attemptsAllowedPerUser - 1};
+              quiz.attemptedUsers.push(newUser);
+            }
+          }
           const updated = await quiz.save();
         }
         else {
-
           if (req.userId && quiz.attemptsAllowedPerUser) {
-            const newUser = { id: req.userId.toString(), attemptsLeft: quiz.attemptsAllowedPerUser - 1 };
+            const newUser = { id: req.userId.toString(), attemptsLeft: quiz.attemptsAllowedPerUser - 1};
             quiz.attemptedUsers.push(newUser);
             const updated = await quiz.save();
           }
@@ -79,6 +86,7 @@ const startExam: RequestHandler = async (req, res, next) => {
       message: "Quiz",
       data: quiz,
     };
+    console.log("2");
     res.status(200).send(resp);
   } catch (error) {
     next(error);
@@ -91,7 +99,7 @@ const submitExam: RequestHandler = async (req, res, next) => {
     const quizId = req.body.quizId;
     const attemptedQuestion = req.body.attemptedQuestion;
     
-    const quiz = await Quiz.findById(quizId, { questionList: 1 ,answers: 1, passingPercentage:1 });
+    const quiz = await Quiz.findById(quizId, { questionList: 1 ,answers: 1, passingPercentage:1, createdBy: 1 });
     if (!quiz) {
       const err = new ProjectError("No quiz found!");
       err.statusCode = 404;

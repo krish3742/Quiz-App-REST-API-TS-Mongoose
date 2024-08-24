@@ -28,7 +28,7 @@ const isAuthenticated = async (
     try {
       decodedToken = <any>jwt.verify(token, secretKey);
     } catch (error) {
-      const err = new ProjectError("Not authenticated");
+      const err = new ProjectError("Not authenticated1");
       err.statusCode = 401;
       throw err;
     }

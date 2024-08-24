@@ -51,11 +51,6 @@ const getQuiz: RequestHandler = async (req, res, next) => {
         err.statusCode = 404;
         throw err;
       }
-      if(!quiz.isPublicQuiz && !quiz.allowedUser.includes(req.userId)){
-        const err = new ProjectError("You are not authorized!");
-        err.statusCode = 403;
-        throw err;
-      }
       if (req.userId !== quiz.createdBy.toString()) {
         const err = new ProjectError("You are not authorized!");
         err.statusCode = 403;
@@ -81,6 +76,31 @@ const getQuiz: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+const getQuizName: RequestHandler = async (req, res, next) => {
+  try {
+    const quizId = req.params.quizId;
+    let quiz;
+    if (quizId) {
+      quiz = await Quiz.findById(quizId, {
+        name: 1
+      })
+    }
+    if (!quiz) {
+      const err = new ProjectError("No quiz found!");
+      err.statusCode = 404;
+      throw err;
+    }
+    const resp: ReturnResponse = {
+      status: "success",
+      message: "Quiz",
+      data: quiz,
+    };
+    res.status(200).send(resp);
+  } catch (error) {
+    next(error);
+  }
+}
 
 const updateQuiz: RequestHandler = async (req, res, next) => {
   try {
@@ -365,5 +385,6 @@ export {
   updateQuiz,
   getAllQuiz,
   getAllQuizExam,
-  getAllQuizTest
+  getAllQuizTest,
+  getQuizName
 };
