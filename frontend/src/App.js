@@ -27,10 +27,11 @@ import StartExamPage from './pages/ExamPage';
 import FavoriteQuestion from './pages/FavoriteQuestion';
 
 function App() {
+  const status = null;
   return (
     <OuterLayout>
       <Routes>
-        <Route path='/auth/register' element={<Register />}></Route>
+        <Route path='/auth/register' element={<Register status={status}/>}></Route>
         <Route path='/auth/verifyaccount' element={<VerifyRegisteredUser />}></Route>
 
         <Route path='/auth/login' element={<Login />}></Route>

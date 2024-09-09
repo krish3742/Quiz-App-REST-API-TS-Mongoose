@@ -1,10 +1,12 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import Style from './Register.module.css';
+import './Global.css';
 
-function Register() {
+function Register(props) {
     let flag = 1;
     const navigate = useNavigate();
     const [name, setName] = useState("");
@@ -13,6 +15,7 @@ function Register() {
     const [errors, setErrors] = useState(["Testing"]);
     const [isLoading, setIsLoading] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState("");
+    const notify = (message) => toast.error(message);
     function handleNameChange(evt) {
         setName(evt.target.value);
     }
@@ -140,56 +143,55 @@ function Register() {
                         }
                     }
                 })
-        } else {
+        } else if(errors.length > 0 && !errors.includes("Testing")){
+            errors.forEach((message) => {
+                notify(message);
+            })
             setIsLoading(false);
         }
     },[errors])
     return (
         <>
-            <div className={Style.container}>
-                <h2 className={Style.title}>Quiz App</h2>
-                <button className={Style.LoginButton}><Link to='/auth/login' className={Style.link}>Login</Link></button>
+            <div className="navbar">
+                <h2 className="app-title">Quizzard</h2>
             </div>
-            <div className={Style.linear}>
-                <div className={Style.body}>
-                    <h2 className={Style.heading}>Register yourself!</h2>
-                    <div>
-                        <label htmlFor='Name'></label>
-                        <input type='text' id='Name' value={name} className={Style.input} onChange={handleNameChange} placeholder='Name'></input>
-                    </div>
-                    <div>
-                        <label htmlFor='Email'></label>
-                        <input type='text' id='Email' value={email} className={Style.input} onChange={handleEmailChange} placeholder='Email ID'></input>
-                    </div>
-                    <div>
-                        <label htmlFor='Password'></label>
-                        <input type='password' id='Password' value={password} className={Style.input} onChange={handlePasswordChange} placeholder='Password'></input>
-                    </div>
-                    <div>
-                        <label htmlFor='Confirm_Password'></label>
-                        <input type='password' id='Confirm_Password' value={confirmPassword} className={Style.input} onChange={handleConfirmPasswordChange} placeholder='Confirm Password'></input>
-                    </div>
-                    <div className={Style.paraDiv}>
-                        <p className={Style.para}>Note: Password must be 8 characters long, including 1 upper case alphabet, 1 lower case alphabet, and 1 special character.</p>
-                    </div>
-                    {errors.length > 0 && !errors.includes("Testing") && 
-                        <div className={Style.instructionParaDiv}>
-                            <ul>
-                                {errors.map(message =>  {
-                                    return <li key={message}>{message}</li>
-                                })}
-                            </ul>
+            <div className="hero-container">
+                <div className="imgDiv">
+                    <div className="img"></div>
+                </div>
+                <div className="content">
+                    <h1 className="page-title">Register yourself!</h1>
+                    <form className="form">
+                        <div className='inputDiv'>
+                            <label htmlFor='Name'></label>
+                            <input type='text' id='Name' value={name} className="input" onChange={handleNameChange} placeholder='Name'></input>
                         </div>
-                    }
-                    <button type='submit' className={Style.RegisterButton} onClick={handleRegisterClick}>Register</button>
-                </div>
-                <div className={Style.imgDiv}>
-                    <div className={Style.img}></div>
-                </div>
+                        <div className='inputDiv'>
+                            <label htmlFor='Email'></label>
+                            <input type='text' id='Email' value={email} className="input" onChange={handleEmailChange} placeholder='Email ID'></input>
+                        </div>
+                        <div className='inputDiv'>
+                            <label htmlFor='Password'></label>
+                            <input type='password' id='Password' value={password} className="input" onChange={handlePasswordChange} placeholder='Password'></input>
+                        </div>
+                        <div className='inputDiv'>
+                            <label htmlFor='Confirm_Password'></label>
+                            <input type='password' id='Confirm_Password' value={confirmPassword} className="input" onChange={handleConfirmPasswordChange} placeholder='Confirm Password'></input>
+                        </div>
+                        <div className="instructionDiv">
+                            <p className="instruction">Note: Password must be 8 characters long, including 1 upper case alphabet, 1 lower case alphabet, and 1 special character.</p>
+                        </div>
+                    </form>
+                    <button type='submit' className="button" onClick={handleRegisterClick}>Register</button>
+                    <div className='redirectDiv'>
+                        <p>Have already an account? <span className='redirectLink' onClick={() => navigate('/auth/login')}>Login Here!</span></p>
+                    </div>
+                </div> 
             </div>
+            <ToastContainer />
             {isLoading && 
-                <div className={Style.loading}>
-                    <div className={Style.loader}></div>
+                <div className="loading">
+                    <div className="loader"></div>
                 </div>
             }
         </>

@@ -1,19 +1,24 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import Style from './Login.module.css';
+import './Global.css';
+
 
 function Login() {
     const navigate = useNavigate();
     const location = useLocation();
     const [flag, setFlag] = useState(true);
-    const [color, setColor] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [errors, setErrors] = useState(["testing"]);
-    const [message, setMessage] = useState(location?.state?.message);
+    const [errors, setErrors] = useState(["Testing"]);
+    const success = (message) => toast.success(message);
+    success(location?.state?.message);
+    const notify = (message) => toast.error(message);
     function handleEmailChange(evt) { 
         setEmail(evt.target.value);
     }
@@ -22,7 +27,6 @@ function Login() {
     }
     function handleLoginClick(evt) {
         evt.preventDefault();
-        setMessage("");
         setErrors([]);
         setIsLoading(true);
         if(!email) {
@@ -42,27 +46,26 @@ function Login() {
             })
         }
         setFlag(!flag);
-        setColor("");
     }
     function handleForgotPasswordClick(evt) {
         evt.preventDefault();
-        setMessage("");
+        setErrors([]);
         setIsLoading(true);
         if(!email) {
+            console.log('h');
             setIsLoading(false);
-            setErrors(["Please enter email"]);
+            notify('Please enter email');
         } else {
             axios
                 .post(`http://${process.env.REACT_APP_BACKEND_URL}/auth/forgotpassword`, {email})
                 .then((response) => {
                     setIsLoading(false);
-                    setErrors(["An email has been sent on your account, verify"]);
-                    setColor("black");
+                    success('An email has been sent on your account, verify!');
                 })
                 .catch((error) => {
                     const message = errors?.response?.data?.message;
                     setIsLoading(false);
-                    if(error.response.status === 500) {
+                    if(error?.response?.status === 500) {
                         setErrors(["Try again after some time"])
                     }
                     if(message.includes("No user exist")) {
@@ -160,55 +163,54 @@ function Login() {
                         });
                     }
                 })
-        } else {
+        } else if(errors.length > 0 && !errors.includes("Testing")){
+            errors.forEach((message) => {
+                notify(message);
+            })
             setIsLoading(false);
         }
     }, [flag])
     return (
         <>
-            <div className={Style.container}>
-                <h2 className={Style.title}>Quiz App</h2>
-                <button className={Style.RegisterButton}><Link to='/auth/register' className={Style.link}>Register</Link></button>
+            <div className="navbar">
+                <h2 className="app-title">Quizzard</h2>
             </div>
-            <div className={Style.linear}>
-                <div className={Style.body}>
-                    <h2 className={Style.heading}>Login yourself!</h2>
-                    <div>
-                        <label htmlFor='Email'></label>
-                        <input type='text' id='Email' value={email} onChange={handleEmailChange} className={Style.input} placeholder='Email ID'></input>
-                    </div>
-                    <div>
-                        <label htmlFor='Password'></label>
-                        <input type='password' id='Password' value={password} onChange={handlePasswordChange} className={Style.input} placeholder='Password'></input>
-                    </div>
-                    <div className={Style.paraDiv}>
-                        <p className={Style.para} onClick={handleForgotPasswordClick}>Forgot password?</p>
-                    </div>
-                    {errors.length > 0 && !errors.includes("testing") &&
-                        <div className={Style.instructionParaDiv}>
-                            <ul>
-                                {errors.map(message =>  {
-                                    return <li className={!!color ? Style.black : Style.red} key={message}>{message}</li>
-                                })}
-                            </ul>
-                        </div>
-                    }
-                    {!!message &&
-                        <div className={Style.instructionParaDiv}>
-                            <ul>
-                                <li className={Style.black}>{message}</li>
-                            </ul>
-                        </div>
-                    }
-                    <button type='submit' onClick={handleLoginClick} className={Style.LoginButton}>Login</button>
+            <div className="hero-container">
+                <div className="imgDiv">
+                    <div className="img"></div>
                 </div>
-                <div className={Style.imgDiv}>
-                    <div className={Style.img}></div>
+                <div className="content">
+                    <h2 className="page-title">Login yourself!</h2>
+                    <form className="form">
+                        <div className='inputDiv'>
+                            <label htmlFor='Email'></label>
+                            <input type='text' id='Email' value={email} onChange={handleEmailChange} className="input" placeholder='Email ID'></input>
+                        </div>
+                        <div className='inputDiv'>
+                            <label htmlFor='Password'></label>
+                            <input type='password' id='Password' value={password} onChange={handlePasswordChange} className="input" placeholder='Password'></input>
+                        </div>
+                        <div className={Style.faDiv}>
+                            <div className={Style.faInnerDiv}>
+                                <div className={Style.redirect1Div}>
+                                    <p className="redirectLink" onClick={handleForgotPasswordClick}>Forgot password?</p>
+                                </div>
+                                <div className={Style.redirect2Div}>
+                                    <p className="redirectLink" onClick={() => navigate('/auth/activateaccount')}>Activate account</p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <button type='submit' onClick={handleLoginClick} className="button">Login</button>
+                    <div className="redirectDiv">
+                        <p>Not registered? <span className='redirectLink' onClick={() => navigate('/auth/register')}>Create an account!</span></p>
+                    </div>
                 </div>
             </div>
+            <ToastContainer />
             {isLoading && 
-                <div className={Style.loading}>
-                    <div className={Style.loader}></div>
+                <div className="loading">
+                    <div className="loader"></div>
                 </div>
             }
         </>
