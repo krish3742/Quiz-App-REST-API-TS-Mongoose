@@ -1,13 +1,15 @@
-import { Link, useLocation, Navigate } from 'react-router-dom';
+import { useLocation, Navigate, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import { AutoTabProvider } from 'react-auto-tab';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import Style from './VerifyRegisteredUser.module.css';
+import Style from './Verify.module.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 function VerifyRegisteredUser() {
     const location = useLocation();
-    const state = location.state;
+    const navigate = useNavigate();
     const [otp, setOtp] = useState();
     const [otp1, setOtp1] = useState("");
     const [otp2, setOtp2] = useState("");
@@ -15,10 +17,12 @@ function VerifyRegisteredUser() {
     const [otp4, setOtp4] = useState("");
     const [otp5, setOtp5] = useState("");
     const [otp6, setOtp6] = useState("");
+    const token = location?.state?.token;
     const [flag, setFlag] = useState(true);
-    const [color, setColor] = useState("");
     const [errors, setErrors] = useState([]);
     const [isLoading, setIsLoading]= useState(false);
+    const notify = (message) => toast.error(message);
+    const success = (message) => toast.success(message);
     function handleOtp1Change(evt) {
         setOtp1(evt.target.value);
     }
@@ -41,216 +45,177 @@ function VerifyRegisteredUser() {
         evt.preventDefault();
         setErrors([]);
         setIsLoading(true);
-        const token = state.token;
         axios
             .get(`http://${process.env.REACT_APP_BACKEND_URL}/auth/resend-registration-otp/${token}`)
-            .then((response) => {setIsLoading(false)})
+            .then((response) => { 
+                setIsLoading(false);
+                success('OTP has been send successfully!') 
+            })
             .catch((error) => {
                 const message = error.response.data.message;
                 setIsLoading(false);
                 if(error.response.status === 500) {
-                    setErrors(["Try again after some time"])
-                }
-                if(message.includes("Resend OTP")) {
-                    setErrors([message]);
-                }
-                if(message.includes("Already Verified your Account")) {
-                    setErrors((oldArray) => {
-                        if(oldArray.includes("Account already registered, login")) {
-                            return [...oldArray];
-                        }
-                        return [...oldArray, "Account already registered, login"];
-                    });
+                    notify('Try again after some time!');
+                } else if(message.includes("Resend OTP")) {
+                    notify(`${message}!`);
+                } else if(message.includes("Already Verified your Account")) {
+                    notify('Account already registered, login!');
                 }
             })
     }
     function handleVerifyClick(evt) {
         evt.preventDefault();
         setErrors([]);
-        setColor("");
         setIsLoading(true);
         if(!otp1 || otp1 === undefined) {
             setErrors((oldArray) =>  {
-                if(oldArray.includes("Please enter OTP")) {
+                if(oldArray.includes("Please enter OTP!")) {
                     return [...oldArray];
                 }
-                return [...oldArray, "Please enter OTP"];
+                return [...oldArray, "Please enter OTP!"];
             });
         }
         if(!otp2 || otp2 === undefined) {
             setErrors((oldArray) =>  {
-                if(oldArray.includes("Please enter OTP")) {
+                if(oldArray.includes("Please enter OTP!")) {
                     return [...oldArray];
                 }
-                return [...oldArray, "Please enter OTP"];
+                return [...oldArray, "Please enter OTP!"];
             });
         }
         if(!otp3 || otp3 === undefined) {
             setErrors((oldArray) =>  {
-                if(oldArray.includes("Please enter OTP")) {
+                if(oldArray.includes("Please enter OTP!")) {
                     return [...oldArray];
                 }
-                return [...oldArray, "Please enter OTP"];
+                return [...oldArray, "Please enter OTP!"];
             });
         }
         if(!otp4 || otp4 === undefined) {
             setErrors((oldArray) =>  {
-                if(oldArray.includes("Please enter OTP")) {
+                if(oldArray.includes("Please enter OTP!")) {
                     return [...oldArray];
                 }
-                return [...oldArray, "Please enter OTP"];
+                return [...oldArray, "Please enter OTP!"];
             });
         }
         if(!otp5 || otp5 === undefined) {
             setErrors((oldArray) =>  {
-                if(oldArray.includes("Please enter OTP")) {
+                if(oldArray.includes("Please enter OTP!")) {
                     return [...oldArray];
                 }
-                return [...oldArray, "Please enter OTP"];
+                return [...oldArray, "Please enter OTP!"];
             });
         }
         if(!otp6 || otp6 === undefined) {
             setErrors((oldArray) =>  {
-                if(oldArray.includes("Please enter OTP")) {
+                if(oldArray.includes("Please enter OTP!")) {
                     return [...oldArray];
                 }
-                return [...oldArray, "Please enter OTP"];
+                return [...oldArray, "Please enter OTP!"];
             });
         }
         setOtp(otp1 + otp2 + otp3 + otp4 + otp5 + otp6);
         setFlag(!flag);
     }
     useEffect(() => {
-        if(!errors.includes("Please enter OTP")) {
+        if(!errors.includes("Please enter OTP!")) {
             const otpToNumber = parseInt(otp);
             if(otpToNumber) {
-                const token = state.token;
                 axios
                     .post(`http://${process.env.REACT_APP_BACKEND_URL}/auth/verify-registration-otp/${token}`, { otp })
                     .then((response) => {
                         setIsLoading(false);
-                        setErrors((oldArray) => {
-                            if(oldArray.includes("Account registered, please login")) {
-                                return [...oldArray];
-                            }
-                            return [...oldArray, "Account registered, please login"];
-                        });
-                        setColor("black");
+                        success('Account registered, please login!');
                     })
                     .catch((error) => {
                         const message = error.response.data.message;
                         setIsLoading(false);
                         if(error.response.status === 500) {
-                            setErrors(["Try again after some time"])
-                        }
-                        if(message.includes("OTP has not send on this email or Invalid OTP")) {
-                            setErrors((oldArray) => {
-                                if(oldArray.includes("OTP expired, please resend")) {
-                                    return [...oldArray];
-                                }
-                                return [...oldArray, "OTP expired, please resend"];
-                            });
-                        }
-                        if(message.includes("Incorrect OTP")) {
-                            setErrors((oldArray) => {
-                                if(oldArray.includes("Incorrect OTP")) {
-                                    return [...oldArray];
-                                }
-                                return [...oldArray, "Incorrect OTP"];
-                            });
-                        }
-                        if(message.includes("User already exist")) {
-                            setErrors((oldArray) => {
-                                if(oldArray.includes("Account already registered, login")) {
-                                    return [...oldArray];
-                                }
-                                return [...oldArray, "Account already registered, login"];
-                            });
+                            notify("Try again after some time!");
+                        } else if(message.includes("OTP has not send on this email or Invalid OTP")) {
+                            notify("OTP expired, please resend!");
+                        } else if(message.includes("Incorrect OTP")) {
+                            notify("Incorrect OTP!");
+                        } else if(message.includes("User already exist")) {
+                            notify("Account already registered, login!");
                         }
                     })
             } else if(!isNaN(otpToNumber)){
-                setErrors((oldArray) =>  {
-                    if(oldArray.includes("Please enter OTP")) {
-                        return [...oldArray];
-                    }
-                    return [...oldArray, "Please enter OTP"];
-                });
+                notify("Please enter OTP!");
             }
-        } else {
+        } else if(errors.length > 0) {
+            errors.forEach((message) => {
+                notify(message);
+            })
             setIsLoading(false);
         }
     }, [otp, flag]);
-    if(state === null) {
+    if(!token) {
         return <Navigate to='/auth/register' /> ; 
     }
     return (
         <>
-            <div className={Style.container}>
-                <h2 className={Style.title}>Quiz App</h2>
-                <button className={Style.LoginButton}><Link to='/auth/login' className={Style.link}>Login</Link></button>
+            <div className="navbar">
+                <h2 className="app-title">Quizzard</h2>
             </div>
-            <div className={Style.linear}>
-                <div className={Style.body}>
-                    <h2 className={Style.heading}>Register yourself!</h2>
-                    <div className={Style.otpPara}>
+            <div className="hero-container">
+                <div className="imgDiv">
+                    <div className="img"></div>
+                </div>
+                <div className="content">
+                    <h2 className="page-title">Verify yourself!</h2>
+                    <div className={Style.contentTitle}>
                         Enter OTP
                     </div>
                     <AutoTabProvider settings={{tabOnMax: true}}>
-                        <div className={Style.inputDiv}>
+                        <div className={Style.otpInputDiv}>
                             <div>
                                 <label htmlFor='OTP'></label>
-                                <input type='text' id='otp1' value={otp1} maxLength={1} onChange={handleOtp1Change} className={Style.input} tabbable="true" ></input>
+                                <input type='text' id='otp1' value={otp1} maxLength={1} onChange={handleOtp1Change} className={Style.otpInput} tabbable="true" ></input>
                             </div>
                             <div>
                                 <label htmlFor='OTP'></label>
-                                <input type='text' id='otp2' value={otp2} maxLength={1} onChange={handleOtp2Change} className={Style.input} tabbable="true" ></input>
+                                <input type='text' id='otp2' value={otp2} maxLength={1} onChange={handleOtp2Change} className={Style.otpInput} tabbable="true" ></input>
                             </div>
                             <div>
                                 <label htmlFor='OTP'></label>
-                                <input type='text' id='otp3' value={otp3} maxLength={1} onChange={handleOtp3Change} className={Style.input} tabbable="true" ></input>
+                                <input type='text' id='otp3' value={otp3} maxLength={1} onChange={handleOtp3Change} className={Style.otpInput} tabbable="true" ></input>
                             </div>
                             <div>
                                 <label htmlFor='OTP'></label>
-                                <input type='text' id='otp4' value={otp4} maxLength={1} onChange={handleOtp4Change} className={Style.input} tabbable="true" ></input>
+                                <input type='text' id='otp4' value={otp4} maxLength={1} onChange={handleOtp4Change} className={Style.otpInput} tabbable="true" ></input>
                             </div>
                             <div>
                                 <label htmlFor='OTP'></label>
-                                <input type='text' id='otp5' value={otp5} maxLength={1} onChange={handleOtp5Change} className={Style.input} tabbable="true" ></input>
+                                <input type='text' id='otp5' value={otp5} maxLength={1} onChange={handleOtp5Change} className={Style.otpInput} tabbable="true" ></input>
                             </div>
                             <div>
                                 <label htmlFor='OTP'></label>
-                                <input type='text' id='otp6' value={otp6} maxLength={1} onChange={handleOtp6Change} className={Style.input} tabbable="true" ></input>
+                                <input type='text' id='otp6' value={otp6} maxLength={1} onChange={handleOtp6Change} className={Style.otpInput} tabbable="true" ></input>
                             </div>
                         </div>
                     </AutoTabProvider>
-                    <div className={Style.resendDiv}>
-                        <p className={Style.resend} onClick={handleResendClick}>Resend</p>
+                    <div className={Style.contentResendDiv}>
+                        <p className='redirectLink' onClick={handleResendClick}>Resend</p>
                     </div>
-                    <div className={Style.paraDiv}>
-                        <p className={Style.para}>Note: An OTP has been sent on your email. Please verify.</p>
+                    <div className={Style.instructionDiv}>
+                        <p className="instruction">Note: An OTP has been sent on your email. Please verify.</p>
                     </div>
-                    {errors.length > 0 && 
-                        <div className={Style.instructionParaDiv}>
-                            <ul>
-                                {errors.map(message =>  {
-                                    return <li className={!!color ? Style.black : Style.red} key={message}>{message}</li>
-                                })}
-                            </ul>
-                        </div>
-                    }
-                    <button type='submit' onClick={handleVerifyClick} className={Style.RegisterButton}>Verify</button>
-                </div>
-                <div className={Style.imgDiv}>
-                    <div className={Style.img}></div>
+                    <button type='submit' onClick={handleVerifyClick} className='button'>Verify</button>
+                    <div className='redirectDiv'>
+                        <p>Already have an account? <span className='redirectLink' onClick={() => navigate('/auth/login')}>Login Here!</span></p>
+                    </div>
                 </div>
             </div>
+            <ToastContainer />
             {isLoading && 
-                <div className={Style.loading}>
-                    <div className={Style.loader}></div>
+                <div className="loading">
+                    <div className="loader"></div>
                 </div>
             }
         </>
-    )
+    );
 };
 
 export default VerifyRegisteredUser;

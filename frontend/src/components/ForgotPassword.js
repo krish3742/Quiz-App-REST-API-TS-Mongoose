@@ -7,22 +7,18 @@ function ForgotPasword() {
     const token = params.token;
     const navigate = useNavigate();
     useEffect(() => {
+        console.log('hey');
         axios
-            .get(`http://localhost:3002/auth/forgotpassword/${token}`)
+            .get(`http://${process.env.REACT_APP_BACKEND_URL}/auth/forgotpassword/${token}`)
             .then((response) => {
                 const message = response?.data?.message;
                 const messageArray = message.split('/');
                 const userId = messageArray[5];
-                navigate(`/auth/resetpassword`, {state: { userId }});
+                navigate(`/auth/resetpassword`, { state: { userId }});
             })
             .catch((error) => {
                 const message = error?.response?.data?.message;
-                if(error?.response?.status === 500) {
-                    navigate("/auth/login");
-                }
-                if(!!message && message.includes("Invalid link!")) {
-                    navigate("/auth/login");
-                }
+                navigate('/auth/login');
             })
     }, [])
 }

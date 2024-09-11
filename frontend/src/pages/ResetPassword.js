@@ -1,19 +1,22 @@
-import { Link, useLocation, Navigate } from 'react-router-dom';
+import { useLocation, Navigate, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import Style from './ResetPassword.module.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ResetPassword() {
     let passwordCheck = 1;
     const location = useLocation();
+    const navigate = useNavigate();
     const [flag, setFlag] = useState(true);
-    const [color, setColor] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errors, setErrors] = useState(["Testing"]);
     const userId = location?.state?.userId;
+    const notify = (message) => toast.error(message);
+    const success = (message) => toast.success(message);
     function handlePasswordChange(evt) {
         setPassword(evt.target.value);
     }
@@ -24,10 +27,9 @@ function ResetPassword() {
         evt.preventDefault();
         setErrors([]);
         setIsLoading(true);
-        setColor("");
         passwordCheck = 1;
         if(!password) {
-            setErrors((oldArray) => [...oldArray, "Please enter password"]);
+            setErrors((oldArray) => [...oldArray, "Please enter password!"]);
         } else {
             if(
                 password.indexOf('!') === -1 &&
@@ -40,7 +42,7 @@ function ResetPassword() {
             }
             if(!passwordCheck) {
                 setErrors((oldArray) => {
-                    return [...oldArray, "Enter the valid password"]
+                    return [...oldArray, "Enter the valid password!"]
                 })
             }
             for(let index = 0; index < password.length; index++) {
@@ -51,7 +53,7 @@ function ResetPassword() {
             }
             if(!passwordCheck) {
                 setErrors((oldArray) => {
-                    return [...oldArray, "Enter the valid password"]
+                    return [...oldArray, "Enter the valid password!"]
                 })
             }
             for(let index = 0; index < password.length; index++) {
@@ -62,7 +64,7 @@ function ResetPassword() {
             }
             if(!passwordCheck) {
                 setErrors((oldArray) => {
-                    return [...oldArray, "Enter the valid password"]
+                    return [...oldArray, "Enter the valid password!"]
                 })
             }
             for(let index = 0; index < password.length; index++) {
@@ -73,15 +75,15 @@ function ResetPassword() {
             }
             if(!passwordCheck) {
                 setErrors((oldArray) => {
-                    return [...oldArray, "Enter the valid password"]
+                    return [...oldArray, "Enter the valid password!"]
                 })
             }
         }
         if(!confirmPassword) {
-            setErrors((oldArray) => [...oldArray, "Please enter confirm password"]); 
+            setErrors((oldArray) => [...oldArray, "Please enter confirm password!"]); 
         }
         if(password !== confirmPassword) {
-            setErrors((oldArray) => [...oldArray, "Confirm password mismatch"]);
+            setErrors((oldArray) => [...oldArray, "Confirm password mismatch!"]);
         }
         setFlag(!flag);
     }
@@ -91,16 +93,16 @@ function ResetPassword() {
                 .post(`http://${process.env.REACT_APP_BACKEND_URL}/auth/forgotpassword/${userId}`, { password, confirmPassword})
                 .then((response) => {
                     setIsLoading(false);
-                    setErrors(["Password successfully reset"]);
-                    setColor("black");
+                    success('Password successfully reset');
                 })
                 .catch((error) => {
                     setIsLoading(false);
-                    if(error.response.status === 500) {
-                        setErrors(["Try again after some time"])
-                    }
+                    notify('Try again after some time!');
                 })
-        } else {
+        } else if(errors.length > 0 && !errors.includes("Testing")){
+            errors.forEach((message) => {
+                notify(message);
+            })
             setIsLoading(false);
         }
     }, [flag]);
@@ -109,46 +111,42 @@ function ResetPassword() {
     }
     return (
         <>
-            <div className={Style.container}>
-                <h2 className={Style.title}>Quiz App</h2>
-                <button className={Style.LoginButton}><Link to='/auth/login' className={Style.link}>Login</Link></button>
+            <div className="navbar">
+                <h2 className="app-title">Quizzard</h2>
             </div>
-            <div className={Style.linear}>
-                <div className={Style.body}>
-                    <h2 className={Style.heading}>Reset your password!</h2>
-                    <div>
-                        <label htmlFor='Password'></label>
-                        <input type='password' id='Password' value={password} onChange={handlePasswordChange} className={Style.input} placeholder='Password'></input>
-                    </div>
-                    <div>
-                        <label htmlFor='ConfirmPassword'></label>
-                        <input type='text' id='ConfirmPassword' value={confirmPassword} onChange={handleConfirmPasswordChange} className={Style.input} placeholder='Confirm Password'></input>
-                    </div>
-                    <div className={Style.paraDiv}>
-                        <p className={Style.para}>Note: Password must be 8 characters long, including 1 upper case alphabet, 1 lower case alphabet, and 1 special character.</p>
-                    </div>
-                    {!!errors && errors.length > 0 && !errors.includes("Testing") &&
-                        <div className={Style.instructionParaDiv}>
-                            <ul>
-                                {errors.map(message =>  {
-                                    return <li className={!!color ? Style.black : Style.red} key={message}>{message}</li>
-                                })}
-                            </ul>
+            <div className="hero-container">
+                <div className="imgDiv">
+                    <div className="img"></div>
+                </div>
+                <div className="content">
+                    <h2 className="page-title">Reset your password!</h2>
+                    <form className="form">
+                        <div className='inputDiv'>
+                            <label htmlFor='Password'></label>
+                            <input type='password' id='Password' value={password} onChange={handlePasswordChange} className="input" placeholder='Password'></input>
                         </div>
-                    }
-                    <button type='submit' onClick={handleVerifyClick} className={Style.VerifyButton}>Verify</button>
-                </div>
-                <div className={Style.imgDiv}>
-                    <div className={Style.img}></div>
+                        <div className='inputDiv'>
+                            <label htmlFor='ConfirmPassword'></label>
+                            <input type='text' id='ConfirmPassword' value={confirmPassword} onChange={handleConfirmPasswordChange} className="input" placeholder='Confirm Password'></input>
+                        </div>
+                        <div className="instructionDiv">
+                            <p className="instruction">Note: Password must be 8 characters long, including 1 upper case alphabet, 1 lower case alphabet, and 1 special character.</p>
+                        </div>
+                    </form>
+                    <button type='submit' onClick={handleVerifyClick} className="button">Reset</button>
+                    <div className='redirectDiv'>
+                        <p>Already have an account? <span className='redirectLink' onClick={() => navigate('/auth/login')}>Login Here!</span></p>
+                    </div>
                 </div>
             </div>
+            <ToastContainer />
             {isLoading && 
-                <div className={Style.loading}>
-                    <div className={Style.loader}></div>
+                <div className="loading">
+                    <div className="loader"></div>
                 </div>
             }
         </>
-    )
+    );
 };
 
 export default ResetPassword;

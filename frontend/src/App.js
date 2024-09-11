@@ -3,40 +3,40 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Quiz from './pages/Quiz';
 import Login from './pages/Login';
 import MyQuiz from './pages/MyQuiz';
+import Reports from './pages/Reports';
 import ViewQuiz from './pages/ViewQuiz';
 import Register from './pages/Register';
 import MyAccount from './pages/MyAccount';
 import ChangeName from './pages/ChangeName';
 import CreateQuiz from './pages/CreateQuiz';
+import AllReports from './pages/AllReports';
+import UpdateQuiz from './pages/UpdateQuiz';
+import StartExamPage from './pages/ExamPage';
 import ActivateUser from './pages/ActivateUser';
 import PublishQuiz from './pages/PublishQuizPage';
 import ResetPassword from './pages/ResetPassword';
+import PublishedQuiz from './pages/PublishedQuiz';
 import ChangePassword from './pages/ChangePassword';
 import ActivateAccount from './pages/ActivateAccount';
-import VerifyRegisteredUser from './pages/VerifyRegisteredUser';
-import VerifyDeactivateOtpPage from './pages/VerifyDeactivateOtpPage';
-
 import ForgotPasword from './components/ForgotPassword';
-import OuterLayout from './components/layout/OuterLayout';
-import ActivateUserCallback from './components/ActivateUserCallback';
-import UpdateQuiz from './pages/UpdateQuiz';
-import Reports from './pages/Reports';
-import AllReports from './pages/AllReports';
-import PublishedQuiz from './pages/PublishedQuiz';
-import StartExamPage from './pages/ExamPage';
 import FavoriteQuestion from './pages/FavoriteQuestion';
+import OuterLayout from './components/layout/OuterLayout';
+import VerifyRegisteredUser from './pages/VerifyRegisteredUser';
+import ActivateUserCallback from './components/ActivateUserCallback';
+import VerifyDeactivateOtpPage from './pages/VerifyDeactivateOtpPage';
+import ActivateAccountCallback from './components/ActivateAccountCallback';
 
 function App() {
-  const status = null;
   return (
     <OuterLayout>
       <Routes>
-        <Route path='/auth/register' element={<Register status={status}/>}></Route>
+        <Route path='/auth/register' element={<Register />}></Route>
         <Route path='/auth/verifyaccount' element={<VerifyRegisteredUser />}></Route>
 
         <Route path='/auth/login' element={<Login />}></Route>
         <Route path='/auth/forgotpassword/:token' element={<ForgotPasword />} ></Route>
         <Route path='/auth/activateaccount' element={<ActivateAccount />}></Route>
+        <Route path='/auth/activateaccount/:key' element={<ActivateAccountCallback />}></Route>
         <Route path='/auth/resetpassword' element={<ResetPassword />}></Route>
 
         <Route path='/auth/quiz' element={<Quiz />}></Route>

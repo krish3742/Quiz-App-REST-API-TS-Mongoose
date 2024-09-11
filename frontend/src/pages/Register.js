@@ -1,10 +1,9 @@
-import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import './Global.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Register(props) {
     let flag = 1;
@@ -35,17 +34,17 @@ function Register(props) {
         flag = 1;
         if(name.length < 5) {
             setErrors((oldArray) => {
-                return [...oldArray, "Name must be 5 characters long"]
+                return [...oldArray, "Name must be 5 characters long!"]
             });
         }
         if(!email) {
             setErrors((oldArray) => {
-                return [...oldArray, "Please enter Email"]
+                return [...oldArray, "Please enter email!"]
             });
         }
         if(!password) {
             setErrors((oldArray) => {
-                return [...oldArray, "Please enter password"]
+                return [...oldArray, "Please enter password!"]
             });
         } else {
             if(
@@ -59,7 +58,7 @@ function Register(props) {
             }
             if(!flag) {
                 setErrors((oldArray) => {
-                    return [...oldArray, "Enter the valid password"]
+                    return [...oldArray, "Enter the valid password!"]
                 })
             }
             for(let index = 0; index < password.length; index++) {
@@ -70,7 +69,7 @@ function Register(props) {
             }
             if(!flag) {
                 setErrors((oldArray) => {
-                    return [...oldArray, "Enter the valid password"]
+                    return [...oldArray, "Enter the valid password!"]
                 })
             }
             for(let index = 0; index < password.length; index++) {
@@ -81,7 +80,7 @@ function Register(props) {
             }
             if(!flag) {
                 setErrors((oldArray) => {
-                    return [...oldArray, "Enter the valid password"]
+                    return [...oldArray, "Enter the valid password!"]
                 })
             }
             for(let index = 0; index < password.length; index++) {
@@ -92,13 +91,13 @@ function Register(props) {
             }
             if(!flag) {
                 setErrors((oldArray) => {
-                    return [...oldArray, "Enter the valid password"]
+                    return [...oldArray, "Enter the valid password!"]
                 })
             }
         }
         if(confirmPassword !== password) {
             setErrors((oldArray) => {
-                return [...oldArray, "Confirm password mismatch"]
+                return [...oldArray, "Confirm password mismatch!"]
             });
         }
     }
@@ -122,23 +121,22 @@ function Register(props) {
                     setIsLoading(false);
                     const message = error?.response?.data?.message;
                     if(error?.response?.status === 500) {
-                        setErrors(["Try again after some time"])
-                    }
-                    if(message.includes("Validation failed!")) {
+                        setErrors(["Try again after some time!"])
+                    } else if(message.includes("Validation failed!")) {
                         const path = error?.response?.data?.data[0]?.msg;
                         if(path.includes("User already exist!")) {
                             setErrors((oldArray) => {
-                                if(oldArray.includes("Account already registered, login")) {
+                                if(oldArray.includes("Account already registered, login!")) {
                                     return [...oldArray];
                                 }
-                                return [...oldArray, "Account already registered, login"];
+                                return [...oldArray, "Account already registered, login!"];
                             });
                         } else {
                             setErrors((oldArray) => {
-                                if(oldArray.includes("Invalid email")) {
+                                if(oldArray.includes("Invalid email!")) {
                                     return [...oldArray];
                                 }
-                                return [...oldArray, "Invalid email"];
+                                return [...oldArray, "Invalid email!"];
                             });
                         }
                     }
@@ -149,7 +147,7 @@ function Register(props) {
             })
             setIsLoading(false);
         }
-    },[errors])
+    }, [errors])
     return (
         <>
             <div className="navbar">
@@ -184,7 +182,7 @@ function Register(props) {
                     </form>
                     <button type='submit' className="button" onClick={handleRegisterClick}>Register</button>
                     <div className='redirectDiv'>
-                        <p>Have already an account? <span className='redirectLink' onClick={() => navigate('/auth/login')}>Login Here!</span></p>
+                        <p>Already have an account? <span className='redirectLink' onClick={() => navigate('/auth/login')}>Login Here!</span></p>
                     </div>
                 </div> 
             </div>
@@ -195,7 +193,7 @@ function Register(props) {
                 </div>
             }
         </>
-    )
+    );
 };
 
 export default Register;

@@ -1,6 +1,6 @@
 .faDiv {
     width: 21rem;
-    margin-top: -0.75rem;
+    margin-top: -0.25rem;
     display: flex;
     justify-content: center;
 }
@@ -19,8 +19,23 @@
     text-align: end;
 }
 
-@media screen and (max-width: 340px) {
+@media screen and (max-width: 420px) {
     .faDiv {
         width: 19rem;
+    }
+}
+
+@media screen and (max-width: 370px) {
+    .faInnerDiv {
+        font-size: small;
+    }
+    .faDiv {
+        width: 17rem;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .faDiv {
+        width: 15rem;
     }
 }

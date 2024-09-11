@@ -1,6 +1,6 @@
-import axios from "axios";
-import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
 
 function ActivateUserCallback() {
     const params = useParams();
@@ -11,7 +11,7 @@ function ActivateUserCallback() {
             navigate('/auth/register');
         } else if(!!token) {
             axios
-                .get(`http://localhost:3002/auth/activate/${token}`)
+                .get(`http://${process.env.REACT_APP_BACKEND_URL}/auth/activate/${token}`)
                 .then((response) => {
                     navigate('/auth/login', { state: { message: "Account activated, login!" }});
                 })

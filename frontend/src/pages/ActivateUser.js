@@ -1,15 +1,19 @@
-import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
+import 'react-toastify/dist/ReactToastify.css';
 import Style from './ActivateUser.module.css';
 
 function ActivateUser() {
+    const navigate = useNavigate();
     const [flag, setFlag] = useState(true);
     const [email, setEmail] = useState("");
-    const [color, setColor] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [errors, setErrors] = useState(["testing"]);
+    const [errors, setErrors] = useState(["Testing"]);
+    const notify = (message) => toast.error(message);
+    const success = (message) => toast.success(message);
     function handleEmailChange(evt) { 
         setEmail(evt.target.value);
     }
@@ -18,7 +22,6 @@ function ActivateUser() {
         setErrors([]);
         setIsLoading(true);
         setFlag(!flag);
-        setColor("");
         if(!email) {
             setErrors((oldArray) => {
                 if(oldArray.includes("Please enter email")) {
@@ -34,64 +37,58 @@ function ActivateUser() {
                 .post(`http://${process.env.REACT_APP_BACKEND_URL}/auth/activate`, { email })
                 .then((response) => {
                     setIsLoading(false);
-                    setErrors(["A mail has been sent on your mail"]);
-                    setColor("black");
+                    success('A mail has been sent on your email!');
                 })
                 .catch((error) => {
                     setIsLoading(false);
                     const message = error?.response?.data?.message;
                     if(error?.response?.status === 500) {
-                        setErrors(["Try again after some time"])
-                    }
-                    if(message.includes("No user exist")) {
-                        setErrors(["User not registered, please register"]);
-                    }
-                    if(message.includes("User is already activated!")) {
-                        setErrors(["Account already activated"]);
+                        notify('Try again after some time!');
+                    } else if(message.includes("No user exist")) {
+                        notify('User not registered, please register!');
+                    } else if(message.includes("User is already activated!")) {
+                        notify('Account already activated!');
                     }
                 })
-        } else {
+        } else if(errors.length > 0 && !errors.includes("Testing")){
+            errors.forEach((message) => {
+                notify(message);
+            })
             setIsLoading(false);
         }
     }, [flag])
     return (
         <>
-            <div className={Style.container}>
-                <h2 className={Style.title}>Quiz App</h2>
-                <button className={Style.RegisterButton}><Link to='/auth/login' className={Style.link}>Login</Link></button>
+            <div className="navbar">
+                <h2 className="app-title">Quizzard</h2>
             </div>
-            <div className={Style.linear}>
-                <div className={Style.body}>
-                    <h2 className={Style.heading}>Activate User!</h2>
-                    <div className={Style.keyPara}>
+            <div className="hero-container">
+                <div className="imgDiv">
+                    <div className="img"></div>
+                </div>
+                <div className="content">
+                    <h2 className="page-title">Activate User!</h2>
+                    <div className={Style.contentTitle}>
                         Email
                     </div>
-                    <div>
+                    <div className={Style.inputDiv}>
                         <label htmlFor='Email'></label>
                         <input type='text' id='Email' value={email} onChange={handleEmailChange} className={Style.input} placeholder='Email ID'></input>
                     </div>
-                    {errors.length > 0 && !errors.includes("testing") &&
-                        <div className={Style.instructionParaDiv}>
-                            <ul>
-                                {errors.map(message =>  {
-                                    return <li className={!!color ? Style.black : Style.red} key={message}>{message}</li>
-                                })}
-                            </ul>
-                        </div>
-                    }
-                    <button type='submit' onClick={handleActivateClick} className={Style.LoginButton}>Activate</button>
-                </div>
-                <div className={Style.imgDiv}>
-                    <div className={Style.img}></div>
+                    <button type='submit' onClick={handleActivateClick} className="button">Activate</button>
+                    <div className='redirectDiv'>
+                        <p>User already activated? <span className='redirectLink' onClick={() => navigate('/auth/login')}>Login Here!</span></p>
+                    </div>
                 </div>
             </div>
+            <ToastContainer />
             {isLoading && 
-                <div className={Style.loading}>
-                    <div className={Style.loader}></div>
+                <div className="loading">
+                    <div className="loader"></div>
                 </div>
             }
         </>
-    )
+    );
 };
 
 export default ActivateUser;
