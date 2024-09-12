@@ -681,10 +681,6 @@ video {
   width: 2rem;
 }
 
-.w-screen {
-  width: 100vw;
-}
-
 .w-\[calc\(100vw-20px\)\] {
   width: calc(100vw - 20px);
 }
@@ -812,6 +808,11 @@ video {
   line-height: 1.25rem;
 }
 
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
 .font-bold {
   font-weight: 700;
 }
@@ -872,10 +873,6 @@ video {
 
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
-.\*\:font-medium > * {
-  font-weight: 500;
 }
 
 .hover\:bg-gray-700:hover {

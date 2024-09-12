@@ -2,7 +2,7 @@ import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import Style from './FavoriteQuestion.module.css';
+import Style from './Question.module.css';
 import Navbar from './Navbar';
 
 function FavoriteQuestion() {
@@ -57,7 +57,7 @@ function FavoriteQuestion() {
                                         <button className={Style.favItem} onClick={(e) => handleRemoveFavouriteClick(list._id, e)}></button>
                                     </div>
                                 </div>
-                                <p className={Style.heroTitle}>Options:</p>
+                                <p className="heroTitle">Options:</p>
                                 {!!list.options &&
                                     Object.keys(list.options).map(function (key) {
                                         return (

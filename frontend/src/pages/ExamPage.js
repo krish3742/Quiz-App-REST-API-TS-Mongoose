@@ -1,8 +1,10 @@
 import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import Style from './ExamPage.module.css';
+import 'react-toastify/dist/ReactToastify.css';
+import Style from './Question.module.css';
 
 function ExamPage() {
     const params = useParams();
@@ -12,10 +14,11 @@ function ExamPage() {
     const [flag, setFlag] = useState(false);
     const [quizId, setQuizId] = useState(params?.id);
     const [isLoading, setIsLoading] = useState(true);
-    const [errors, setErrors] = useState(["testing"]);
+    const [errors, setErrors] = useState(["Testing"]);
     const [favQues, setFavQues] = useState();
     const [attemptedQuestion, setAttemptedQuestion] = useState({});
     const token = location?.state?.token;
+    const notify = (message) => toast.error(message);
     const headers = {'Authorization': `Bearer ${token}`};
     function handleOptionChangeClick(questionNumber, key) {
         setAttemptedQuestion((oldObject) => {
@@ -41,6 +44,7 @@ function ExamPage() {
         setErrors([]);
         setIsLoading(true);
         if(quiz.questionList.length !== Object.keys(attemptedQuestion).length) {
+            notify('Attempt all the questions!');
             setErrors(["Attempt all the questions"]);
         }
     }
@@ -98,6 +102,7 @@ function ExamPage() {
                     navigate(`/auth/report/${response?.data?.data?.reportId}`, { state: { token }});
                 })
                 .catch((error) => {
+                    console.log(error);
                     setIsLoading(false);
                     navigate('/auth/login');
                 })
@@ -137,73 +142,58 @@ function ExamPage() {
     }
     return (
         <>
-            <div className={Style.container}>
-                <h2 className={Style.title}>Quiz App</h2>
+            <div className="navbar">
+                <h2 className="app-title">Quizzard</h2>
             </div>
-            <div className={Style.linear}>
-                <h2 className={Style.heading}>{quiz?.name}</h2>
+            <div className="heroContainer">
+                <h2 className="pageTitle">{quiz?.name}</h2>
                 {!!quiz && quiz?.questionList.map((list) => {
                     return (
-                        <div className={Style.titleDiv} key={list.questionNumber}>
-                            <div>
-                                <div className={Style.questionDiv}>
-                                    <div className={Style.quesDiv}>
-                                        <h4 className={Style.quesTitle}>Question {list.questionNumber}:</h4>
-                                        <p className={Style.para}>{list.question}</p>
-                                        <p className={Style.star}>*</p>
-                                    </div>
-                                    <div>
-                                        <button  className={!!favQues && favQues.some((favList) => {
-                                            return list.question === favList.question;
-                                        }) ? Style.favItem : Style.unfavItem
-                                        } onClick={(e) => handleToggleFavouriteClick(list, e)}></button>
-                                    </div>
+                        <div className="heroContainerContent" key={list.questionNumber}>
+                            <div className={Style.between}>
+                                <div className={Style.quesDiv}>
+                                    <p className="heroTitle">Question {list.questionNumber}: <span className={Style.para}>{list.question} *</span></p>
                                 </div>
-                                <div className={Style.optionDiv}>
-                                    <h4 className={Style.titleOption}>Options</h4>
-                                    {!!list.options &&
-                                        Object.keys(list.options).map(function (key) {
-                                            return (
-                                                <div className={Style.optionsDiv} key={key}>
-                                                    <input type='radio' name={'question' + list.questionNumber} onChange={(e) => handleOptionChangeClick(list.questionNumber, key)} value={key} checked={
-                                                        !!attemptedQuestion && 
-                                                            Object.keys(attemptedQuestion).some((index) => {
-                                                                if(index == list.questionNumber && attemptedQuestion[index] == key) {
-                                                                    return true;
-                                                                }
-                                                                return false;
-                                                            })
-                                                    }></input>
-                                                    <p className={Style.para}>{key}:</p>
-                                                    <p className={Style.para}>{list.options[key]}</p>
-                                                </div>
-                                            )    
-                                        })
-                                    }
-                                    <button className={Style.clearButton} onClick={(e) => handleClearButtonClick(list.questionNumber, e)}>Clear choice</button>
+                                <div>
+                                    <button  className={!!favQues && favQues.some((favList) => {
+                                        return list.question === favList.question;
+                                    }) ? Style.favItem : Style.unfavItem
+                                    } onClick={(e) => handleToggleFavouriteClick(list, e)}></button>
                                 </div>
                             </div>
+                            <h4 className="heroTitle">Options</h4>
+                            {!!list.options &&
+                                Object.keys(list.options).map(function (key) {
+                                    return (
+                                        <div className="heroOptionDiv" key={key}>
+                                            <input type='radio' name={'question' + list.questionNumber} onChange={(e) => handleOptionChangeClick(list.questionNumber, key)} value={key} 
+                                                checked={!!attemptedQuestion && 
+                                                    Object.keys(attemptedQuestion).some((index) => {
+                                                        if(index == list.questionNumber && attemptedQuestion[index] == key) {
+                                                            return true;
+                                                        }
+                                                        return false;
+                                                    })
+                                            }></input>
+                                            <p className={Style.title}>{key}: <span className={Style.para}>{list.options[key]}</span></p>
+                                        </div>
+                                    );    
+                                })
+                            }
+                            <button className={Style.clearButton} onClick={(e) => handleClearButtonClick(list.questionNumber, e)}>Clear choice</button>
                         </div>
-                    )
+                    );
                 })}
-                {!!errors && errors.length > 0 && !errors.includes('testing') &&
-                    <div className={Style.instructionParaDiv}>
-                        <ul>
-                            {errors.map(message =>  {
-                                return <li key={message}>{message}</li>
-                            })}
-                        </ul>
-                    </div>
-                }
-                <button className={Style.submitButton} onClick={(e) => handleSubmitClick(e)}>Submit</button>
+                <button className="heroButton" onClick={(e) => handleSubmitClick(e)}>Submit</button>
             </div>
+            <ToastContainer />
             {isLoading && 
-                <div className={Style.loading}>
-                    <div className={Style.loader}></div>
+                <div className="loading">
+                    <div className="loader"></div>
                 </div>
             }
         </>
-    )
-}
+    );
+};
 
 export default ExamPage;

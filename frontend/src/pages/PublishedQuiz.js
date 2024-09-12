@@ -93,7 +93,7 @@ function PublishedQuiz() {
             {!!isMessage && 
                 <div className='loading'>
                     <div className={Style.confirmationDiv}>
-                        <label className='text-2xl'>You have zero attempts left!</label>
+                        <label className='text-lg'>You have zero attempts left!</label>
                         <div className={Style.buttonDiv}>
                             <button className={Style.confirmationButton} onClick={(e) => setIsAMessage(false)}>Okay</button>
                         </div>
